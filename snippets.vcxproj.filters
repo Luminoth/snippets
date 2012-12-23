@@ -32,9 +32,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="doc\dependencies.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\core\common.cc">
       <Filter>Source Files\core</Filter>
     </ClCompile>
@@ -153,5 +150,8 @@
     <ResourceCompile Include="snippets.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\dependencies.txt" />
   </ItemGroup>
 </Project>
