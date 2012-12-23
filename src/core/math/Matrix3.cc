@@ -30,6 +30,9 @@ public:
         CPPUNIT_TEST(test_vector_multiply);
         CPPUNIT_TEST(test_scalar_multiply);
         CPPUNIT_TEST(test_scalar_divide);
+        CPPUNIT_TEST(test_equality);
+        CPPUNIT_TEST(test_inverse);
+        CPPUNIT_TEST(test_transposition);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -132,6 +135,20 @@ public:
         CPPUNIT_ASSERT_EQUAL(4.5f, m1[8]);
 
 // TODO: test /=
+    }
+
+    void test_equality()
+    {
+        static const float MATRIX[] = { 1.0f, 2.0f, 3.0f, 4.0, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f };
+        CPPUNIT_ASSERT(energonsoftware::Matrix3(MATRIX) == energonsoftware::Matrix3(MATRIX));
+    }
+
+    void test_inverse()
+    {
+    }
+
+    void test_transposition()
+    {
     }
 };
 
