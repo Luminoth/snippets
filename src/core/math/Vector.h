@@ -66,6 +66,10 @@ public:
         _value[3] = v[3];
     }
 
+#if defined _MSC_VER && _MSC_VER > 1700
+    explicit Vector(const std::initializer_list<int> v);
+#endif
+
     // NOTE: v must have at least 4 floats
     // regardless of the "size" of the vector
     Vector(const float* const v)
@@ -75,6 +79,10 @@ public:
         _value[2] = v[2];
         _value[3] = v[3];
     }
+
+#if defined _MSC_VER && _MSC_VER > 1700
+    explicit Vector(const std::initializer_list<float> v);
+#endif
 
     virtual ~Vector() throw() {}
 

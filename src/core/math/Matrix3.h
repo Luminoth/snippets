@@ -44,6 +44,14 @@ public:
             && _m[6] == 0.0f && _m[7] == 0.0f && _m[8] == 1.0f;
     }
 
+    bool is_zero() const
+    {
+        // TODO: should be able to use SSE to do this compare
+        return _m[0] == 0.0f && _m[1] == 0.0f && _m[2] == 0.0f
+            && _m[3] == 0.0f && _m[4] == 0.0f && _m[5] == 0.0f
+            && _m[6] == 0.0f && _m[7] == 0.0f && _m[8] == 0.0f;
+    }
+
     float determinant() const
     {
         return _m[0] * _m[4] * _m[8] - _m[0] * _m[5] * _m[7]
