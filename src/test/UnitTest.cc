@@ -18,6 +18,12 @@ int main(int argc, char* argv[])
     energonsoftware::Logger& logger(energonsoftware::Logger::instance("energonsoftware.test"));
     LOG_INFO("Initializing tests...\n");
 
+#if defined _MSC_VER
+    LOG_INFO("Visual C++ version: " << _MSC_VER << "\n");
+#elif defined __GNUC__
+    LOG_INFO("gcc version: " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__<< "\n");
+#endif
+
     std::string testPath = (argc > 1) ? std::string(argv[1]) : "";
     CppUnit::TestResult controller;
 
