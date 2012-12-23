@@ -1,3 +1,5 @@
 *.sdf
 *.suo
 *.opensdf
+.sconf_temp/
+.sconsign.dblite
