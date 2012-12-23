@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E478DF05-0F88-4A5A-9A35-E02D2A4EF58A}</ProjectGuid>
+    <RootNamespace>snippets</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>src/pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_UNICODE;%(PreprocessorDefinitions);WIN32;WITH_UNIT_TESTS;USE_SSE</PreprocessorDefinitions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>userenv.lib;cppunitd.lib;libboost_system-vc110-mt-gd-1_52.lib;libboost_thread-vc110-mt-gd-1_52.lib;libboost_date_time-vc110-mt-gd-1_52.lib;libboost_filesystem-vc110-mt-gd-1_52.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>src/pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_UNICODE;%(PreprocessorDefinitions);WIN32;WITH_UNIT_TESTS;USE_SSE</PreprocessorDefinitions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>userenv.lib;cppunit.lib;libboost_system-vc110-mt-1_52.lib;libboost_thread-vc110-mt-1_52.lib;libboost_date_time-vc110-mt-1_52.lib;libboost_filesystem-vc110-mt-1_52.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="doc\dependencies.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\common.cc" />
+    <ClCompile Include="src\core\configuration\Configuration.cc" />
+    <ClCompile Include="src\core\logging\Logger.cc" />
+    <ClCompile Include="src\core\math\Geometry.cc" />
+    <ClCompile Include="src\core\math\math_util.cc" />
+    <ClCompile Include="src\core\math\Matrix3.cc" />
+    <ClCompile Include="src\core\math\Vector.cc" />
+    <ClCompile Include="src\core\util\fs_util.cc" />
+    <ClCompile Include="src\core\util\MemoryAllocator.cc" />
+    <ClCompile Include="src\core\util\StackAllocator.cc" />
+    <ClCompile Include="src\core\util\string_util.cc" />
+    <ClCompile Include="src\core\util\SystemAllocator.cc" />
+    <ClCompile Include="src\core\util\util.cc" />
+    <ClCompile Include="src\main.cc" />
+    <ClCompile Include="src\pch.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">src/pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">src/pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\test\UnitTest.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\common.h" />
+    <ClInclude Include="src\core\configuration\Configuration.h" />
+    <ClInclude Include="src\core\errors\NotImplementedError.h" />
+    <ClInclude Include="src\core\logging\Logger.h" />
+    <ClInclude Include="src\core\math\Geometry.h" />
+    <ClInclude Include="src\core\math\Intersectable.h" />
+    <ClInclude Include="src\core\math\math_util.h" />
+    <ClInclude Include="src\core\math\Matrix3.h" />
+    <ClInclude Include="src\core\math\Vector.h" />
+    <ClInclude Include="src\core\util\fs_util.h" />
+    <ClInclude Include="src\core\util\MemoryAllocator.h" />
+    <ClInclude Include="src\core\util\StackAllocator.h" />
+    <ClInclude Include="src\core\util\string_util.h" />
+    <ClInclude Include="src\core\util\SystemAllocator.h" />
+    <ClInclude Include="src\core\util\util.h" />
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\resource.h" />
+    <ClInclude Include="src\targetver.h" />
+    <ClInclude Include="src\test\UnitTest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="snippets.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

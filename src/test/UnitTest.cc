@@ -1,0 +1,53 @@
+#include "src/pch.h"
+#if defined WITH_UNIT_TESTS
+#include <conio.h>
+#include "src/core/common.h"
+#include "UnitTest.h"
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/CompilerOutputter.h>
+#include <cppunit/TestResult.h>
+#include <cppunit/TestResultCollector.h>
+#include <cppunit/TestRunner.h>
+#include <cppunit/TextTestProgressListener.h>
+
+int main(int argc, char* argv[])
+{
+    std::cout << "Initializing logging..." << std::endl;
+    energonsoftware::Logger::configure(energonsoftware::Logger::LogLevel::Debug);
+
+    energonsoftware::Logger& logger(energonsoftware::Logger::instance("energonsoftware.test"));
+    LOG_INFO("Initializing tests...\n");
+
+    std::string testPath = (argc > 1) ? std::string(argv[1]) : "";
+    CppUnit::TestResult controller;
+
+    CppUnit::TestResultCollector result;
+    controller.addListener(&result);
+
+    CppUnit::TextTestProgressListener progress;
+    controller.addListener(&progress);
+
+    CppUnit::TestRunner runner;
+    runner.addTest(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
+    try {
+        LOG_INFO("Running tests "  <<  testPath << "\n");
+#if defined WITH_CRYPTO
+        LOG_INFO("Including crypto tests...\n");
+#endif
+        runner.run(controller, testPath);
+
+        CppUnit::CompilerOutputter outputter(&result, std::cerr);
+        outputter.write();
+    } catch(const std::invalid_argument &e) {
+        LOG_ERROR("ERROR: " << e.what() << "\n");
+        return 0;
+    }
+
+#if defined WIN32
+    std::cout << "Press any key to continue..." << std::endl;
+    getch();
+#endif
+
+    return result.wasSuccessful() ? 0 : 1;
+}
+#endif

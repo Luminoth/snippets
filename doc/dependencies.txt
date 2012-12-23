@@ -1,0 +1,14 @@
+Linux
+----
+g++ 4.7 - http://gcc.gnu.org/
+scons 2.2.0 - http://www.scons.org/
+
+Windows
+----
+Visual Studio 2012 Update 1
+
+General
+----
+cppunit 1.12.1 - http://sourceforge.net/apps/mediawiki/cppunit/index.php?title=Main_Page
+boost 1.52.0 - http://www.boost.org/
+openssl ??? - http://www.openssl.org/

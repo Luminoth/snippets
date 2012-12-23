@@ -1,0 +1,15 @@
+#! /usr/bin/env python
+
+import os
+
+Import([ "env" ])
+
+obj = env.Object(env.Glob("*.cc"))
+
+obj.extend(SConscript(os.path.join("configuration", "SConscript"), exports=[ "env" ]))
+obj.extend(SConscript(os.path.join("errors", "SConscript"), exports=[ "env" ]))
+obj.extend(SConscript(os.path.join("logging", "SConscript"), exports=[ "env" ]))
+obj.extend(SConscript(os.path.join("math", "SConscript"), exports=[ "env" ]))
+obj.extend(SConscript(os.path.join("util", "SConscript"), exports=[ "env" ]))
+
+Return("obj")

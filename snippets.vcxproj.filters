@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{37933a5b-540a-4722-80bb-c4f6a8044543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\logging">
+      <UniqueIdentifier>{9a41c44d-ad6b-4e3e-97d6-4d8a9b148912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\test">
+      <UniqueIdentifier>{e31c8856-f868-4932-9887-34dd5408ac5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\configuration">
+      <UniqueIdentifier>{fd0f6282-7890-4d0c-98d4-911126c7aaa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\math">
+      <UniqueIdentifier>{ed887698-19c3-4c6f-bfce-10ef60b31865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\util">
+      <UniqueIdentifier>{538d5570-fa22-4ab0-9969-fe62ef4cfb17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\errors">
+      <UniqueIdentifier>{97042354-9eee-4e1e-bc1e-146f3018eaa1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\dependencies.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\common.cc">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\logging\Logger.cc">
+      <Filter>Source Files\core\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test\UnitTest.cc">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pch.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\configuration\Configuration.cc">
+      <Filter>Source Files\core\configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\math\math_util.cc">
+      <Filter>Source Files\core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\fs_util.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\string_util.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\util.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\MemoryAllocator.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\StackAllocator.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\SystemAllocator.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\math\Vector.cc">
+      <Filter>Source Files\core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\math\Geometry.cc">
+      <Filter>Source Files\core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\math\Matrix3.cc">
+      <Filter>Source Files\core\math</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\common.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\logging\Logger.h">
+      <Filter>Source Files\core\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test\UnitTest.h">
+      <Filter>Source Files\test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pch.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\targetver.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\configuration\Configuration.h">
+      <Filter>Source Files\core\configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math\math_util.h">
+      <Filter>Source Files\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\fs_util.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\string_util.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\util.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\errors\NotImplementedError.h">
+      <Filter>Source Files\core\errors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\MemoryAllocator.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\StackAllocator.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\SystemAllocator.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math\Vector.h">
+      <Filter>Source Files\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math\Geometry.h">
+      <Filter>Source Files\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math\Intersectable.h">
+      <Filter>Source Files\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math\Matrix3.h">
+      <Filter>Source Files\core\math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="snippets.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
