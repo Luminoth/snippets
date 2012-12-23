@@ -184,6 +184,7 @@ def CheckCommonConfiguration(env, check_libs):
             conf.env.MergeFlags({ "CPPDEFINES": [ "-DHAS_CALLGRIND_H" ] })
 
         if check_libs:
+            CheckLibOrExit(conf, "curses")
             CheckLibOrExit(conf, "pthread")
             CheckLibOrExit(conf, "ssl")
             CheckLibOrExit(conf, "crypto")

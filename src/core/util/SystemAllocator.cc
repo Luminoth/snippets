@@ -65,8 +65,12 @@ public:
 public:
     void test_unreasonable_allocation()
     {
-        // 2 terabytes is pretty unreasonable, right?
+        // 2-4 terabytes is pretty unreasonable, right?
+#if defined WIN32
         static const size_t size = INT_MAX;
+#else
+        static const size_t size = UINT_MAX;
+#endif
 
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(
             energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, size));

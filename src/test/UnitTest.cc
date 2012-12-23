@@ -1,6 +1,10 @@
 #include "src/pch.h"
 #if defined WITH_UNIT_TESTS
+#if defined WIN32
 #include <conio.h>
+#else
+#include <curses.h>
+#endif
 #include "src/core/common.h"
 #include "UnitTest.h"
 #include <cppunit/extensions/TestFactoryRegistry.h>
@@ -49,10 +53,8 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-#if defined WIN32
     std::cout << "Press any key to continue..." << std::endl;
     getch();
-#endif
 
     return result.wasSuccessful() ? 0 : 1;
 }
