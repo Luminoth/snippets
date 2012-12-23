@@ -10,6 +10,9 @@ namespace energonsoftware {
 class Matrix3
 {
 public:
+    static void destroy(Matrix3* const matrix, MemoryAllocator* const allocator);
+
+public:
     Matrix3() { identity(); }
     Matrix3(const Matrix3& matrix) { std::memcpy(_m, matrix._m, 9 * sizeof(float)); }
 

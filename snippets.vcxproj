@@ -90,6 +90,7 @@
     <ClCompile Include="src\core\math\Geometry.cc" />
     <ClCompile Include="src\core\math\math_util.cc" />
     <ClCompile Include="src\core\math\Matrix3.cc" />
+    <ClCompile Include="src\core\math\Matrix4.cc" />
     <ClCompile Include="src\core\math\Vector.cc" />
     <ClCompile Include="src\core\util\fs_util.cc" />
     <ClCompile Include="src\core\util\MemoryAllocator.cc" />
@@ -115,6 +116,7 @@
     <ClInclude Include="src\core\math\Intersectable.h" />
     <ClInclude Include="src\core\math\math_util.h" />
     <ClInclude Include="src\core\math\Matrix3.h" />
+    <ClInclude Include="src\core\math\Matrix4.h" />
     <ClInclude Include="src\core\math\Vector.h" />
     <ClInclude Include="src\core\util\fs_util.h" />
     <ClInclude Include="src\core\util\MemoryAllocator.h" />

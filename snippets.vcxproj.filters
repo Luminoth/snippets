@@ -83,6 +83,9 @@
     <ClCompile Include="src\core\math\Matrix3.cc">
       <Filter>Source Files\core\math</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\math\Matrix4.cc">
+      <Filter>Source Files\core\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\common.h">
@@ -140,6 +143,9 @@
       <Filter>Source Files\core\math</Filter>
     </ClInclude>
     <ClInclude Include="src\core\math\Matrix3.h">
+      <Filter>Source Files\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math\Matrix4.h">
       <Filter>Source Files\core\math</Filter>
     </ClInclude>
   </ItemGroup>

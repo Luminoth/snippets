@@ -4,6 +4,12 @@
 
 namespace energonsoftware {
 
+void Matrix3::destroy(Matrix3* const matrix, MemoryAllocator* const allocator)
+{
+    matrix->~Matrix3();
+    operator delete(matrix, 16, *allocator);
+}
+
 std::string Matrix3::str() const
 {
     std::stringstream ss;
@@ -22,6 +28,7 @@ class Matrix3Test : public CppUnit::TestFixture
 {
 public:
     CPPUNIT_TEST_SUITE(Matrix3Test);
+        CPPUNIT_TEST(test_allocation);
         CPPUNIT_TEST(test_initialize);
         CPPUNIT_TEST(test_determinant);
         CPPUNIT_TEST(test_addition);
@@ -40,10 +47,19 @@ public:
     virtual ~Matrix3Test() throw() {}
 
 public:
+    void test_allocation()
+    {
+        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 10 * 1024));
+        std::shared_ptr<energonsoftware::Matrix3> m1(new(16, *allocator) energonsoftware::Matrix3(),
+            std::bind(energonsoftware::Matrix3::destroy, std::placeholders::_1, allocator.get()));
+        CPPUNIT_ASSERT(m1);
+        CPPUNIT_ASSERT(m1->is_identity());
+
+        m1.reset();
+    }
+
     void test_initialize()
     {
-        energonsoftware::Matrix3 m;
-        CPPUNIT_ASSERT(m.is_identity());
     }
 
     void test_determinant()
