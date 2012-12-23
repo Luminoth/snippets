@@ -1,0 +1,215 @@
+    Energon Software Coding Style
+
+This document describes the preferred coding style for source
+from Energon Software.  It's by no means a bible, and in fact,
+most of it was taken from the Linux Kernel CodingStyle document,
+but it does provide some good habits to get into when writing
+code.
+
+If there's ever a conflict between code and this document, final
+say passes up the chain to the Linux Kernel style guide and finally
+to me. Generally if there's an inconsitancy in this document, I'll
+fix it.
+
+And just like Linus, "First off, I'd suggest printing out a copy
+of the GNU coding standards, and NOT read them.  Burn them, it's
+a great symbolic gesture." I'll also say that one should do the
+same with the coding guide for the Mozilla project. Portability is
+important, but anal retentiveness for compiling on obsolete compilers
+is ridiculous.
+
+Now on to the good stuff:
+
+        Section 1. Indentation
+
+Tabs are 4 or 8 spaces.  NO tab characters.
+
+Rationale: I prefer 4, but the Linux Kernel coding guide has
+very good reasons for using 8, and I support that. I am patently
+against tab characters and if I see them, I will junk them. If I
+see too many, I will junk the source and find someone else to write
+it.
+
+        Section 2. Braces
+
+Braces are to be placed K&R style:
+
+    if(x is true) {
+        we do y
+    }
+
+Spacing around parenthesis is up to the coder, but my style
+is no space. If having space is easier to read, do it that way,
+if not, don't have space.
+
+The special cases to this rule are: Namespaces, functions, classes, templates,
+and structures. Basically it comes down to, if it's a control structure,
+go K&R, if it's something on a larger scale, use the following style:
+
+    class MyClass
+    {
+    };
+
+Rationale: It saves space. Whitespace may alleviate the eyesore of looking
+at code for many hours, but too much white space becomes a nuisance on
+a limited console. It's also a lot more work to scroll down past
+all those lines containing nothing but curly braces.
+
+Note that in the case of certain control structures, such as do..while() and
+if..else, the ending brace doesn't have to be on it's own line as it is
+with a while() or if() block:
+
+    if(x == y) {
+        ...
+    } else if(x > y) {
+        ...
+    } else {
+        ...
+    }
+
+        Section 3. Naming
+
+This is by far the greyest area of this document. The main requirement
+is to not use stupid names. Do not call simple looping variables something
+like myImportantLoopingVariable. This is annoying and a waste of your own
+time typing it out every time you use it. Use something like i or j or k. Do
+NOT use a capital O or a lowercase l. On some systems the default can
+make these look like a 0 and 1, respectively.
+
+All types and namespaces should mixed-case starting with a capital
+letter. The only exception to this rule are types where it makes
+more sense to have them all lowercase, like a byte or bit type.
+
+Mixed case variable names are okay, but at this time, I'd prefer the use
+of underscore seperated names, such as my_variable. If you find that
+you want mixed case names to cut down on typing, you're name is too long.
+
+Hungarian style names are absolutely forbidden. Do not use this halfwit
+style of coding in any source for Energon Software. If you really can't keep
+track of what type your variables are, you're in the wrong profession.
+
+Global variables should all be prefixed with g_, no other variable can be
+prefixed with a g_. I know this breaks the no Hungarian rule, but if only
+globals can be prefixed with a g_, then it's not possible to shadow a global
+with a local.
+
+Member variables should be prefixed with a m_, no other variable can be
+prefixed with a m_. This does not apply to structures, only classes and
+templates. This is for similar reasons as the g_ for globals, it prevents
+shadowing. It also allows constructor arguments to share the name with the
+member (minus the m_), and if you've made your member names descriptive,
+then your constructor arguments are descriptive by default.
+
+Class variables should be prefixed with a s_ (for static). The reasoning
+is exactly the same as for member variables.
+
+Local variables should be short and sweet. It's alright to call a buffer buffer,
+it's not okay to call a temporary variable my_huge_tempVariable. A little
+common sense will go a long way in this reguard.
+
+Constants should be all uppercase and words should be seperated
+by underscores.
+
+Names should be as descriptive as possible without being overly long. If you
+find yourself stopping to remember a long name, it's too long.
+
+        Section 4. Functions
+
+Functions should be short and sweet. They should fit into a relatively small
+space on the screen. I run a fairly large screen on home PC, and if I can't
+fit an entire function into it, it is too long. Good design of functions
+before writing code will go a long way and will most likely lead to short
+functions that are modularized.
+
+The best way to think of how a function should be is to think of the math
+machine. You give the quadratic equation some values and it gives you roots
+of line. It doesn't calculate the derivative of the line, convert it to vector
+space, and then give you the roots, it just gives you the roots.
+
+Keep the amount of local variables in a function to a small amount. The less
+one has to remember when focusing on a single function, the better and the easier
+it is to not make mistakes.
+
+For C++ code, remember, you can declare your variables when you use them. There's
+nothing worse than opening up a C++ source file and seeing 10 variables
+declared at the top of a function. You've been given a wonderful tool in C++, use
+it. And while on this topic, initialize your variables when you declare them.
+You can never make assumptions about variable initialization.
+
+Functions should be of the form:
+
+retval my_function_name(type param1, type param2, type param3, ...);
+
+Rationale: I find this makes reading the function easier than mixed case
+names, and having it all on one line instead of broken up can help point
+to functions that are depending on too many things (ie, you need to objectify
+your code a bit more).
+
+        Section 5. Commenting
+
+Comments are good, but I really don't care how they get put in. Don't over-comment,
+don't under-comment. Some general rules of thumb I like to follow are:
+
+    Commenting a function where it's defined is good, but if it's declared in a header
+    that may be used by someone else, it must, must, must be commented there. When I say
+    comment the declaration, I mean, document that sucker. Tell the user what is going
+    to happen in this function, what the obscure parameters are for, what it will return
+    in each situation, what exceptions it will throw and why, what the running time of the
+    function is, and generally anything that may be of importance to someone that will
+    be using the function.
+
+    Commenting inside a function is okay, but saying what every two lines of code does when
+    it's blatently obvious to anyone who's been coding for a month is absured. As in the
+    Linux Kernel coding guide, you want to tell WHAT your code does, not HOW.
+
+    Use comments to break large sources into readable sections. When managing classes
+    that have classes that have classes, it can be tough to see where one begins
+    and one ends. Breaking it up into sections can make it easy to skim through and
+    sort out the mess. It also helps to break apart where prototypes go, where functions
+    start, where constants are, and where globals are. It may be obvious to most of us,
+    but when you've got a lot of different functions and methods in the source, anything
+    to help see where one begins and one ends is a major plus.
+
+        Section 6. Source File Naming
+
+Source files should be named in a manner that reflects what they do. A source file that
+defines a class MyClass should not be called SomeSource.cpp. In that same regard,
+there should be a single source .h/.cpp combination per-class unless the class is
+used by only one other class (and should only ever be used by that one class) or if
+the class is an inner-class of a class. These sources should have the same name
+as the class. So if the class is MyClass, the source should be MyClass.h and
+MyClass.cpp. This makes it easy to tell what's in the source and why it's been
+included if it's a header. If the header contains a namespace, it should have
+the name of the namespace. If the header contains neither a class or a namespace,
+it should have an all lowercase, underscore seperated name that identifies
+what the code inside is relating to. This helps enforce code modularization.
+
+Any C source files should be append with a .c and any C++ source file should be
+append with a .cpp. All headers should be appended with a .h. If a header is
+meant to work in both C and C++ languages then it should follow the guidelines
+of the least common denominator, ie, no C++ style comments, use extern "C" around
+the header contents when it's included in a C++ program (__cplusplus is defined
+in this case). Other extensions such as .C, .hxx, .hpp, etc. are just plain
+strange and don't make enough sense to me to be used.
+
+While on the subject of source files, always, always, always use multi-inclusion
+prevention methods. This means '#ifdef'ing header contents in EVERY header. Not
+taking this simple measure should be considered blasphemy, so don't do it.
+
+        Section 7. Language Considerations
+
+There really isn't much to say here except Do The Right Thing (R). Don't have a class
+that overloads 5 other classes, it's bad taste and it bloats your final product
+into a slobby mess. It's okay to use C tricks, but if there's any doubt about what's going
+on, use the good old C++ method of writing it out. It's better to have code that works
+than code that looks like you thought you were using Perl.
+
+If you're writing C++ code, use C++ style casts. I know it's more to type, but the reasons
+for having them are good. They will point you to poorly designed code. They were designed to
+be ugly and a pain to use for this reason, so use them and pay attention when you do.
+
+In C++ classes, instead of writing 30 thousand constructors or functions that do the same thing but
+have different parameters, make use of default values. This not only cuts down on the amount
+of code that gets shoved into class headers, but it also makes things easier to read.
+
+Shane Lillie <aszwad@softhome.net>
