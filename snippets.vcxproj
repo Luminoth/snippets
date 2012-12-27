@@ -108,6 +108,7 @@
     <ClCompile Include="src\test\UnitTest.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\core\common.h" />
     <ClInclude Include="src\core\configuration\Configuration.h" />
     <ClInclude Include="src\core\errors\NotImplementedError.h" />
@@ -125,7 +126,6 @@
     <ClInclude Include="src\core\util\SystemAllocator.h" />
     <ClInclude Include="src\core\util\util.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\resource.h" />
     <ClInclude Include="src\targetver.h" />
     <ClInclude Include="src\test\UnitTest.h" />
   </ItemGroup>

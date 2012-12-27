@@ -30,6 +30,7 @@ public:
     CPPUNIT_TEST_SUITE(Matrix3Test);
         CPPUNIT_TEST(test_allocation);
         CPPUNIT_TEST(test_initialize);
+        CPPUNIT_TEST(test_row);
         CPPUNIT_TEST(test_determinant);
         CPPUNIT_TEST(test_addition);
         CPPUNIT_TEST(test_subtraction);
@@ -62,12 +63,22 @@ public:
     {
     }
 
+    void test_row()
+    {
+        static const energonsoftware::Matrix3 m1;
+        energonsoftware::Vector r1 = m1.row(1);
+        CPPUNIT_ASSERT_EQUAL(0.0f, r1.x());
+        CPPUNIT_ASSERT_EQUAL(1.0f, r1.y());
+        CPPUNIT_ASSERT_EQUAL(0.0f, r1.z());
+        CPPUNIT_ASSERT_EQUAL(0.0f, r1.w());
+    }
+
     void test_determinant()
     {
         static const energonsoftware::Matrix3 m1;
         CPPUNIT_ASSERT_EQUAL(1.0f, m1.determinant());
 
-#if defined _MSC_VER && _MSC_VER > 1700
+#if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
         static const energonsoftware::Matrix3 m2({
             1.0f, 2.0f, 3.0f,
             4.0f, 5.0f, 4.0f,
@@ -86,15 +97,15 @@ public:
         static const float MATRIX[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f };
 
         energonsoftware::Matrix3 m1 = energonsoftware::Matrix3(MATRIX) + energonsoftware::Matrix3(MATRIX);
-        CPPUNIT_ASSERT_EQUAL(2.0f, m1[0]);
-        CPPUNIT_ASSERT_EQUAL(4.0f, m1[1]);
-        CPPUNIT_ASSERT_EQUAL(6.0f, m1[2]);
-        CPPUNIT_ASSERT_EQUAL(8.0f, m1[3]);
-        CPPUNIT_ASSERT_EQUAL(10.0f, m1[4]);
-        CPPUNIT_ASSERT_EQUAL(12.0f, m1[5]);
-        CPPUNIT_ASSERT_EQUAL(14.0f, m1[6]);
-        CPPUNIT_ASSERT_EQUAL(16.0f, m1[7]);
-        CPPUNIT_ASSERT_EQUAL(18.0f, m1[8]);
+        CPPUNIT_ASSERT_EQUAL(2.0f, m1(0, 0));
+        CPPUNIT_ASSERT_EQUAL(4.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(6.0f, m1(0, 2));
+        CPPUNIT_ASSERT_EQUAL(8.0f, m1(1, 0));
+        CPPUNIT_ASSERT_EQUAL(10.0f, m1(1, 1));
+        CPPUNIT_ASSERT_EQUAL(12.0f, m1(1, 2));
+        CPPUNIT_ASSERT_EQUAL(14.0f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(16.0f, m1(2, 1));
+        CPPUNIT_ASSERT_EQUAL(18.0f, m1(2, 2));
 
 // TODO: test +=
     }
@@ -122,15 +133,15 @@ public:
         static const float MATRIX[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f };
 
         energonsoftware::Matrix3 m1 = 2.0f * energonsoftware::Matrix3(MATRIX);
-        CPPUNIT_ASSERT_EQUAL(2.0f, m1[0]);
-        CPPUNIT_ASSERT_EQUAL(4.0f, m1[1]);
-        CPPUNIT_ASSERT_EQUAL(6.0f, m1[2]);
-        CPPUNIT_ASSERT_EQUAL(8.0f, m1[3]);
-        CPPUNIT_ASSERT_EQUAL(10.0f, m1[4]);
-        CPPUNIT_ASSERT_EQUAL(12.0f, m1[5]);
-        CPPUNIT_ASSERT_EQUAL(14.0f, m1[6]);
-        CPPUNIT_ASSERT_EQUAL(16.0f, m1[7]);
-        CPPUNIT_ASSERT_EQUAL(18.0f, m1[8]);
+        CPPUNIT_ASSERT_EQUAL(2.0f, m1(0, 0));
+        CPPUNIT_ASSERT_EQUAL(4.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(6.0f, m1(0, 2));
+        CPPUNIT_ASSERT_EQUAL(8.0f, m1(1, 0));
+        CPPUNIT_ASSERT_EQUAL(10.0f, m1(1, 1));
+        CPPUNIT_ASSERT_EQUAL(12.0f, m1(1, 2));
+        CPPUNIT_ASSERT_EQUAL(14.0f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(16.0f, m1(2, 1));
+        CPPUNIT_ASSERT_EQUAL(18.0f, m1(2, 2));
 
 // TODO: test *=
     }
@@ -140,15 +151,15 @@ public:
         static const float MATRIX[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f };
 
         energonsoftware::Matrix3 m1 = energonsoftware::Matrix3(MATRIX) / 2.0f;
-        CPPUNIT_ASSERT_EQUAL(0.5f, m1[0]);
-        CPPUNIT_ASSERT_EQUAL(1.0f, m1[1]);
-        CPPUNIT_ASSERT_EQUAL(1.5f, m1[2]);
-        CPPUNIT_ASSERT_EQUAL(2.0f, m1[3]);
-        CPPUNIT_ASSERT_EQUAL(2.5f, m1[4]);
-        CPPUNIT_ASSERT_EQUAL(3.0f, m1[5]);
-        CPPUNIT_ASSERT_EQUAL(3.5f, m1[6]);
-        CPPUNIT_ASSERT_EQUAL(4.0f, m1[7]);
-        CPPUNIT_ASSERT_EQUAL(4.5f, m1[8]);
+        CPPUNIT_ASSERT_EQUAL(0.5f, m1(0, 0));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(1.5f, m1(0, 2));
+        CPPUNIT_ASSERT_EQUAL(2.0f, m1(1, 0));
+        CPPUNIT_ASSERT_EQUAL(2.5f, m1(1, 1));
+        CPPUNIT_ASSERT_EQUAL(3.0f, m1(1, 2));
+        CPPUNIT_ASSERT_EQUAL(3.5f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(4.0f, m1(2, 1));
+        CPPUNIT_ASSERT_EQUAL(4.5f, m1(2, 2));
 
 // TODO: test /=
     }

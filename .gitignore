@@ -1,6 +1,7 @@
 *.sdf
 *.suo
 *.opensdf
+*.aps
 .sconf_temp/
 .sconsign.dblite
 build/

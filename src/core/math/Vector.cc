@@ -95,7 +95,7 @@ public:
 
     void test_initialize()
     {
-#if defined _MSC_VER && _MSC_VER > 1700
+#if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
         static const energonsoftware::Vector v1({ 1.0f, 2.0f, 3.0f, 4.0f });
         CPPUNIT_ASSERT_EQUAL(1.0f, v1.x());
         CPPUNIT_ASSERT_EQUAL(2.0f, v1.y());

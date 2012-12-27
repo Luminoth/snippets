@@ -12,8 +12,13 @@ public:
     static void destroy(Matrix4* const matrix, MemoryAllocator* const allocator);
 
 public:
+    // gluPerspective
     static Matrix4 perspective(float fov, float aspect, float near=0.1f, float far=1000.0f);
+
+    // glOrtho
     static Matrix4 orthographic(float left, float right, float bottom, float top, float near=-1.0f, float far=1.0f);
+
+    // glFrustum
     static Matrix4 frustum(float left, float right, float bottom, float top, float near=0.1f, float far=1000.0f);
     static Matrix4 infinite_frustum(float left, float right, float bottom, float top, float near=0.1f);
 
@@ -24,6 +29,10 @@ public:
     // matrix should be a 16 float array
     // NOTE: no bounds checking or anything is done here
     explicit Matrix4(const float* const matrix) { std::memcpy(_m, matrix, 16 * sizeof(float)); }
+
+#if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
+    explicit Matrix3(const std::initializer_list<float> matrix);
+#endif
 
     virtual ~Matrix4() throw() {}
 
@@ -39,6 +48,24 @@ public:
         _m[8]  = 0.0f; _m[9]  = 0.0f; _m[10] = 1.0f; _m[11] = 0.0f;
         _m[12] = 0.0f; _m[13] = 0.0f; _m[14] = 0.0f; _m[15] = 1.0f;
         return *this;
+    }
+
+    bool is_identity() const
+    {
+        // TODO: should be able to use SSE to do this compare
+        return 1.0f == _m[0]  && 0.0f == _m[1]  && 0.0f == _m[2]  && 0.0f == _m[3]
+            && 0.0f == _m[4]  && 1.0f == _m[5]  && 0.0f == _m[6]  && 0.0f == _m[7]
+            && 0.0f == _m[8]  && 0.0f == _m[9]  && 1.0f == _m[10] && 0.0f == _m[11]
+            && 0.0f == _m[12] && 0.0f == _m[13] && 0.0f == _m[14] && 1.0f == _m[15];
+    }
+
+    bool is_zero() const
+    {
+        // TODO: should be able to use SSE to do this compare
+        return 0.0f == _m[0]  && 0.0f == _m[1]  && 0.0f == _m[2]  && 0.0f == _m[3]
+            && 0.0f == _m[4]  && 0.0f == _m[5]  && 0.0f == _m[6]  && 0.0f == _m[7]
+            && 0.0f == _m[8]  && 0.0f == _m[9]  && 0.0f == _m[10] && 0.0f == _m[11]
+            && 0.0f == _m[12] && 0.0f == _m[13] && 0.0f == _m[14] && 0.0f == _m[15];
     }
 
     float determinant() const

@@ -66,7 +66,7 @@ public:
         _value[3] = v[3];
     }
 
-#if defined _MSC_VER && _MSC_VER > 1700
+#if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
     explicit Vector(const std::initializer_list<int> v);
 #endif
 
@@ -80,7 +80,7 @@ public:
         _value[3] = v[3];
     }
 
-#if defined _MSC_VER && _MSC_VER > 1700
+#if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
     explicit Vector(const std::initializer_list<float> v);
 #endif
 

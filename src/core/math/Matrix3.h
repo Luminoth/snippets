@@ -20,7 +20,7 @@ public:
     // NOTE: no bounds checking or anything is done here
     explicit Matrix3(const float* const matrix) { std::memcpy(_m, matrix, 9 * sizeof(float)); }
 
-#if defined _MSC_VER && _MSC_VER > 1700
+#if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
     explicit Matrix3(const std::initializer_list<float> matrix);
 #endif
 
@@ -42,17 +42,17 @@ public:
     bool is_identity() const
     {
         // TODO: should be able to use SSE to do this compare
-        return _m[0] == 1.0f && _m[1] == 0.0f && _m[2] == 0.0f
-            && _m[3] == 0.0f && _m[4] == 1.0f && _m[5] == 0.0f
-            && _m[6] == 0.0f && _m[7] == 0.0f && _m[8] == 1.0f;
+        return 1.0f == _m[0] && 0.0f == _m[1] && 0.0f == _m[2]
+            && 0.0f == _m[3] && 1.0f == _m[4] && 0.0f == _m[5]
+            && 0.0f == _m[6] && 0.0f == _m[7] && 1.0f == _m[8];
     }
 
     bool is_zero() const
     {
         // TODO: should be able to use SSE to do this compare
-        return _m[0] == 0.0f && _m[1] == 0.0f && _m[2] == 0.0f
-            && _m[3] == 0.0f && _m[4] == 0.0f && _m[5] == 0.0f
-            && _m[6] == 0.0f && _m[7] == 0.0f && _m[8] == 0.0f;
+        return 0.0f == _m[0] && 0.0f == _m[1] && 0.0f == _m[2]
+            && 0.0f == _m[3] && 0.0f == _m[4] && 0.0f == _m[5]
+            && 0.0f == _m[6] && 0.0f == _m[7] && 0.0f == _m[8];
     }
 
     float determinant() const

@@ -100,9 +100,6 @@
     <ClInclude Include="src\targetver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\resource.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\configuration\Configuration.h">
       <Filter>Source Files\core\configuration</Filter>
     </ClInclude>
@@ -145,13 +142,16 @@
     <ClInclude Include="src\core\math\Matrix4.h">
       <Filter>Source Files\core\math</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\dependencies.txt" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="snippets.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="doc\dependencies.txt" />
   </ItemGroup>
 </Project>
