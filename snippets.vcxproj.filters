@@ -30,6 +30,9 @@
     <Filter Include="Source Files\core\errors">
       <UniqueIdentifier>{97042354-9eee-4e1e-bc1e-146f3018eaa1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\core\physics">
+      <UniqueIdentifier>{f4d9e3a3-80e7-40fa-ad4b-9e1ec88568de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\common.cc">
@@ -162,6 +165,9 @@
     </ClInclude>
     <ClInclude Include="src\core\math\Quaternion.h">
       <Filter>Source Files\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\BoundingVolume.h">
+      <Filter>Source Files\core\physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
