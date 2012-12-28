@@ -121,22 +121,18 @@ public:
         return *this;
     }
 
-    /*Matrix4& scale(const Vector3& scale)
+    Matrix4& scale(const Vector3& scale)
     {
         Matrix4 matrix;
         matrix._m[0] = scale.x();
         matrix._m[5] = scale.y();
         matrix._m[10] = scale.z();
         return (*this) *= matrix;
-    }*/
+    }
 
     Matrix4& uniform_scale(float scale)
     {
-        Matrix4 matrix;
-        matrix._m[0] = scale;
-        matrix._m[5] = scale;
-        matrix._m[10] = scale;
-        return (*this) *= matrix;
+        return this->scale(Vector3(scale, scale, scale));
     }
 
     std::string str() const;

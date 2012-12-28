@@ -134,6 +134,20 @@ public:
         CPPUNIT_TEST(test_initialize);
         CPPUNIT_TEST(test_row);
         CPPUNIT_TEST(test_determinant);
+        CPPUNIT_TEST(test_normal_matrix);
+        CPPUNIT_TEST(test_translate);
+        CPPUNIT_TEST(test_rotate);
+        CPPUNIT_TEST(test_scale);
+        CPPUNIT_TEST(test_uniform_scale);
+        CPPUNIT_TEST(test_addition);
+        CPPUNIT_TEST(test_subtraction);
+        CPPUNIT_TEST(test_multiply);
+        CPPUNIT_TEST(test_vector_multiply);
+        CPPUNIT_TEST(test_scalar_multiply);
+        CPPUNIT_TEST(test_scalar_divide);
+        CPPUNIT_TEST(test_equality);
+        CPPUNIT_TEST(test_inverse);
+        CPPUNIT_TEST(test_transpose);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -340,6 +354,249 @@ public:
         static const float M3_MATRIX[] = { 1.0f, 2.0f, 3.0f, 9.0f, 4.0f, 5.0f, 4.0f, 8.0f, 3.0f, 2.0f, 1.0f, 7.0f, 6.0f, 7.0f, 8.0f, 9.0f };
         static const energonsoftware::Matrix4 m3(M3_MATRIX);
         CPPUNIT_ASSERT_EQUAL(160.0f, m3.determinant());
+    }
+
+    void test_normal_matrix()
+    {
+    }
+
+    void test_translate()
+    {
+        static const energonsoftware::Position p(123.35f, 345.35f, 312.3f);
+        energonsoftware::Matrix4 m1;
+        m1.translate(p);
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(0, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 2));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(p.x(), m1(0, 3), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 0));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(1, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 2));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(p.y(), m1(1, 3), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 1));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(2, 2));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(p.z(), m1(2, 3), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 2));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(3, 3));
+
+        m1.translate(p);
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(0, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 2));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(2.0f * p.x(), m1(0, 3), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 0));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(1, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 2));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(2.0f * p.y(), m1(1, 3), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 1));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(2, 2));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(2.0f * p.z(), m1(2, 3), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 2));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(3, 3));
+    }
+
+    void test_rotate()
+    {
+    }
+
+    void test_scale()
+    {
+        static const energonsoftware::Vector3 s1(2.0f, 3.0f, 4.0f);
+        energonsoftware::Matrix4 m1;
+        m1.scale(s1);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1.x(), m1(0, 0), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 2));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 0));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1.y(), m1(1, 1), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 2));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 1));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1.z(), m1(2, 2), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 2));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(3, 3));
+
+        m1.scale(s1);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1.x() * s1.x(), m1(0, 0), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 2));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 0));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1.y() * s1.y(), m1(1, 1), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 2));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 1));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1.z() * s1.z(), m1(2, 2), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 2));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(3, 3));
+    }
+
+    void test_uniform_scale()
+    {
+        static const float s1 = 4.0f;
+        energonsoftware::Matrix4 m1;
+        m1.uniform_scale(s1);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1, m1(0, 0), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 2));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 0));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1, m1(1, 1), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 2));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 1));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1, m1(2, 2), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 2));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(3, 3));
+
+        m1.uniform_scale(s1);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1 * s1, m1(0, 0), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 2));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(0, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 0));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1 * s1, m1(1, 1), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 2));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(1, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 1));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(s1 * s1, m1(2, 2), 0.0001f);
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(2, 3));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 0));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 1));
+        CPPUNIT_ASSERT_EQUAL(0.0f, m1(3, 2));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(3, 3));
+    }
+
+    void test_addition()
+    {
+        static const float MATRIX[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f };
+
+        energonsoftware::Matrix4 m1 = energonsoftware::Matrix4(MATRIX) + energonsoftware::Matrix4(MATRIX);
+        CPPUNIT_ASSERT_EQUAL(2.0f, m1(0, 0));
+        CPPUNIT_ASSERT_EQUAL(4.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(6.0f, m1(0, 2));
+        CPPUNIT_ASSERT_EQUAL(8.0f, m1(0, 3));
+        CPPUNIT_ASSERT_EQUAL(10.0f, m1(1, 0));
+        CPPUNIT_ASSERT_EQUAL(12.0f, m1(1, 1));
+        CPPUNIT_ASSERT_EQUAL(14.0f, m1(1, 2));
+        CPPUNIT_ASSERT_EQUAL(16.0f, m1(1, 3));
+        CPPUNIT_ASSERT_EQUAL(18.0f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(20.0f, m1(2, 1));
+        CPPUNIT_ASSERT_EQUAL(22.0f, m1(2, 2));
+        CPPUNIT_ASSERT_EQUAL(24.0f, m1(2, 3));
+        CPPUNIT_ASSERT_EQUAL(26.0f, m1(3, 0));
+        CPPUNIT_ASSERT_EQUAL(28.0f, m1(3, 1));
+        CPPUNIT_ASSERT_EQUAL(30.0f, m1(3, 2));
+        CPPUNIT_ASSERT_EQUAL(32.0f, m1(3, 3));
+
+// TODO: test +=
+    }
+
+    void test_subtraction()
+    {
+        static const float MATRIX[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f };
+
+        energonsoftware::Matrix4 m1 = energonsoftware::Matrix4(MATRIX) - energonsoftware::Matrix4(MATRIX);
+        CPPUNIT_ASSERT(m1.is_zero());
+
+// TODO: test -=
+    }
+
+    void test_multiply()
+    {
+    }
+
+    void test_vector_multiply()
+    {
+    }
+
+    void test_scalar_multiply()
+    {
+        static const float MATRIX[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f };
+
+        energonsoftware::Matrix4 m1 = 2.0f * energonsoftware::Matrix4(MATRIX);
+        CPPUNIT_ASSERT_EQUAL(2.0f, m1(0, 0));
+        CPPUNIT_ASSERT_EQUAL(4.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(6.0f, m1(0, 2));
+        CPPUNIT_ASSERT_EQUAL(8.0f, m1(0, 3));
+        CPPUNIT_ASSERT_EQUAL(10.0f, m1(1, 0));
+        CPPUNIT_ASSERT_EQUAL(12.0f, m1(1, 1));
+        CPPUNIT_ASSERT_EQUAL(14.0f, m1(1, 2));
+        CPPUNIT_ASSERT_EQUAL(16.0f, m1(1, 3));
+        CPPUNIT_ASSERT_EQUAL(18.0f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(20.0f, m1(2, 1));
+        CPPUNIT_ASSERT_EQUAL(22.0f, m1(2, 2));
+        CPPUNIT_ASSERT_EQUAL(24.0f, m1(2, 3));
+        CPPUNIT_ASSERT_EQUAL(26.0f, m1(3, 0));
+        CPPUNIT_ASSERT_EQUAL(28.0f, m1(3, 1));
+        CPPUNIT_ASSERT_EQUAL(30.0f, m1(3, 2));
+        CPPUNIT_ASSERT_EQUAL(32.0f, m1(3, 3));
+
+// TODO: test *=
+    }
+
+    void test_scalar_divide()
+    {
+        static const float MATRIX[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f };
+
+        energonsoftware::Matrix4 m1 = energonsoftware::Matrix4(MATRIX) / 2.0f;
+        CPPUNIT_ASSERT_EQUAL(0.5f, m1(0, 0));
+        CPPUNIT_ASSERT_EQUAL(1.0f, m1(0, 1));
+        CPPUNIT_ASSERT_EQUAL(1.5f, m1(0, 2));
+        CPPUNIT_ASSERT_EQUAL(2.0f, m1(0, 3));
+        CPPUNIT_ASSERT_EQUAL(2.5f, m1(1, 0));
+        CPPUNIT_ASSERT_EQUAL(3.0f, m1(1, 1));
+        CPPUNIT_ASSERT_EQUAL(3.5f, m1(1, 2));
+        CPPUNIT_ASSERT_EQUAL(4.0f, m1(1, 3));
+        CPPUNIT_ASSERT_EQUAL(4.5f, m1(2, 0));
+        CPPUNIT_ASSERT_EQUAL(5.0f, m1(2, 1));
+        CPPUNIT_ASSERT_EQUAL(5.5f, m1(2, 2));
+        CPPUNIT_ASSERT_EQUAL(6.0f, m1(2, 3));
+        CPPUNIT_ASSERT_EQUAL(6.5f, m1(3, 0));
+        CPPUNIT_ASSERT_EQUAL(7.0f, m1(3, 1));
+        CPPUNIT_ASSERT_EQUAL(7.5f, m1(3, 2));
+        CPPUNIT_ASSERT_EQUAL(8.0f, m1(3, 3));
+
+// TODO: test /=
+    }
+
+    void test_equality()
+    {
+        static const float MATRIX1[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f };
+        static const float MATRIX2[] = { 16.0f, 15.0f, 14.0f, 13.0f, 12.0f, 11.0f, 10.0f, 9.0f, 8.0f, 7.0f, 6.0f, 5.0f, 4.0f, 3.0f, 2.0f, 1.0f };
+        CPPUNIT_ASSERT(energonsoftware::Matrix4(MATRIX1) == energonsoftware::Matrix4(MATRIX1));
+        CPPUNIT_ASSERT(energonsoftware::Matrix4(MATRIX1) != energonsoftware::Matrix4(MATRIX2));
+    }
+
+    void test_inverse()
+    {
+    }
+
+    void test_transpose()
+    {
+        static const float MATRIX[] = { 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f };
+        static const float TRANSPOSE[] = { 1.0f, 5.0f, 9.0f, 13.0f, 2.0f, 6.0f, 10.0f, 14.0f, 3.0f, 7.0f, 11.0f, 15.0f, 4.0f, 8.0f, 12.0f, 16.0f };
+        CPPUNIT_ASSERT(~(energonsoftware::Matrix4(MATRIX)) == energonsoftware::Matrix4(TRANSPOSE));
     }
 };
 

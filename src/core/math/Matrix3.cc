@@ -166,8 +166,10 @@ public:
 
     void test_equality()
     {
-        static const float MATRIX[] = { 1.0f, 2.0f, 3.0f, 4.0, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f };
-        CPPUNIT_ASSERT(energonsoftware::Matrix3(MATRIX) == energonsoftware::Matrix3(MATRIX));
+        static const float MATRIX1[] = { 1.0f, 2.0f, 3.0f, 4.0, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f };
+        static const float MATRIX2[] = { 9.0f, 8.0f, 7.0f, 6.0f, 5.0f, 4.0f, 3.0f, 2.0f, 1.0f };
+        CPPUNIT_ASSERT(energonsoftware::Matrix3(MATRIX1) == energonsoftware::Matrix3(MATRIX1));
+        CPPUNIT_ASSERT(energonsoftware::Matrix3(MATRIX1) != energonsoftware::Matrix3(MATRIX2));
     }
 
     void test_inverse()
