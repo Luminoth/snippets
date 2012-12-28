@@ -83,6 +83,15 @@
     <ClCompile Include="src\core\math\Matrix4.cc">
       <Filter>Source Files\core\math</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\math\Plane.cc">
+      <Filter>Source Files\core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\math\Sphere.cc">
+      <Filter>Source Files\core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\math\Quaternion.cc">
+      <Filter>Source Files\core\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\common.h">
@@ -144,6 +153,15 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math\Plane.h">
+      <Filter>Source Files\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math\Sphere.h">
+      <Filter>Source Files\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math\Quaternion.h">
+      <Filter>Source Files\core\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

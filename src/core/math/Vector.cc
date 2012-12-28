@@ -95,20 +95,23 @@ public:
 
     void test_initialize()
     {
-#if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
-        static const energonsoftware::Vector v1({ 1.0f, 2.0f, 3.0f, 4.0f });
-        CPPUNIT_ASSERT_EQUAL(1.0f, v1.x());
-        CPPUNIT_ASSERT_EQUAL(2.0f, v1.y());
-        CPPUNIT_ASSERT_EQUAL(3.0f, v1.z());
-        CPPUNIT_ASSERT_EQUAL(4.0f, v1.w());
-#endif
+        static const energonsoftware::Vector v1;
+        CPPUNIT_ASSERT(v1.is_zero());
 
-        static const float V2_VECTOR[] = { 1.0f, 2.0f, 3.0f, 4.0f };
-        static const energonsoftware::Vector v2(V2_VECTOR);
+#if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
+        static const energonsoftware::Vector v2({ 1.0f, 2.0f, 3.0f, 4.0f });
         CPPUNIT_ASSERT_EQUAL(1.0f, v2.x());
         CPPUNIT_ASSERT_EQUAL(2.0f, v2.y());
         CPPUNIT_ASSERT_EQUAL(3.0f, v2.z());
         CPPUNIT_ASSERT_EQUAL(4.0f, v2.w());
+#endif
+
+        static const float V3_VECTOR[] = { 1.0f, 2.0f, 3.0f, 4.0f };
+        static const energonsoftware::Vector v3(V3_VECTOR);
+        CPPUNIT_ASSERT_EQUAL(1.0f, v3.x());
+        CPPUNIT_ASSERT_EQUAL(2.0f, v3.y());
+        CPPUNIT_ASSERT_EQUAL(3.0f, v3.z());
+        CPPUNIT_ASSERT_EQUAL(4.0f, v3.w());
     }
 
     void test_zero()

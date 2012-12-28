@@ -428,10 +428,13 @@ private:
 // derive from the more general Vector class
 typedef Vector Vector2;
 typedef Vector Point2;
+typedef Vector Normal2;
 typedef Vector Vector3;
 typedef Vector Point3;
+typedef Vector Normal3;
 typedef Vector Vector4;
 typedef Vector Point4;
+typedef Vector Normal4;
 typedef Vector Color;
 typedef Vector Direction;
 typedef Vector Position;
