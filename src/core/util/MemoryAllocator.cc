@@ -213,9 +213,10 @@ void MemoryAllocatorTest::check_value(int* const value)
     static const int EXPECTED = 10;
 
     CPPUNIT_ASSERT(nullptr != value);
-
-    *value = EXPECTED;
-    CPPUNIT_ASSERT_EQUAL(EXPECTED, *value);
+    if(nullptr != value) {
+        *value = EXPECTED;
+        CPPUNIT_ASSERT_EQUAL(EXPECTED, *value);
+    }
 }
 
 void MemoryAllocatorTest::check_buffer(char* const buffer)
@@ -223,10 +224,11 @@ void MemoryAllocatorTest::check_buffer(char* const buffer)
     static const std::string EXPECTED("this is a test string");
 
     CPPUNIT_ASSERT(nullptr != buffer);
-
-    ZeroMemory(buffer, MAX_BUFFER);
-    std::memcpy(buffer, EXPECTED.c_str(), EXPECTED.length());
-    CPPUNIT_ASSERT_EQUAL(0, std::strncmp(buffer, EXPECTED.c_str(), EXPECTED.length()));
+    if(nullptr != buffer) {
+        ZeroMemory(buffer, MAX_BUFFER);
+        std::memcpy(buffer, EXPECTED.c_str(), EXPECTED.length());
+        CPPUNIT_ASSERT_EQUAL(0, std::strncmp(buffer, EXPECTED.c_str(), EXPECTED.length()));
+    }
 }
 
 void MemoryAllocatorTest::test_allocate()

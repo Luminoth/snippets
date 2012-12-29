@@ -95,6 +95,12 @@
     <ClCompile Include="src\core\math\Quaternion.cc">
       <Filter>Source Files\core\math</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\physics\AABB.cc">
+      <Filter>Source Files\core\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\physics\BoundingSphere.cc">
+      <Filter>Source Files\core\physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\common.h">
@@ -167,6 +173,12 @@
       <Filter>Source Files\core\math</Filter>
     </ClInclude>
     <ClInclude Include="src\core\physics\BoundingVolume.h">
+      <Filter>Source Files\core\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\AABB.h">
+      <Filter>Source Files\core\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\BoundingSphere.h">
       <Filter>Source Files\core\physics</Filter>
     </ClInclude>
   </ItemGroup>

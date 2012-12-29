@@ -345,6 +345,7 @@ public:
     // regardless of the "size" of the vector
     float operator*(const float* const rhs) const
     {
+        assert(0.0f == rhs[3]);
 #if defined USE_SSE
         float d;
         __m128 A = _mm_load_ps(_value);

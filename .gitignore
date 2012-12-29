@@ -2,6 +2,8 @@
 *.suo
 *.opensdf
 *.aps
+*.psess
+*.vspx
 .sconf_temp/
 .sconsign.dblite
 build/
