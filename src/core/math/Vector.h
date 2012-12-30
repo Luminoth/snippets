@@ -343,9 +343,11 @@ public:
 
     // NOTE: rhs must have at least 4 floats
     // regardless of the "size" of the vector
+    // and rhs MUST be 16-byte aligned
     float operator*(const float* const rhs) const
     {
         assert(0.0f == rhs[3]);
+        assert(0 == reinterpret_cast<size_t>(rhs) % 16);
 #if defined USE_SSE
         float d;
         __m128 A = _mm_load_ps(_value);

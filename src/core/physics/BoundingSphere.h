@@ -11,7 +11,7 @@ class AABB;
 class BoundingSphere : public BoundingVolume
 {
 public:
-    explicit BoundingSphere(const Sphere& sphere);
+    explicit BoundingSphere(const Sphere& sphere=energonsoftware::Sphere());
     explicit BoundingSphere(const AABB& aabb);
     virtual ~BoundingSphere() throw();
 
@@ -27,7 +27,8 @@ public:
     float distance(const Point3& p) const;
     float distance_squared(const BoundingSphere& s) const;
     float distance(const BoundingSphere& s) const;
-    float distance(const AABB& other) const;
+    float distance_squared(const AABB& a) const;
+    float distance(const AABB& a) const;
 
     virtual std::string str() const;
 

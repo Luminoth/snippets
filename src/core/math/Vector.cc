@@ -333,7 +333,7 @@ public:
         static const energonsoftware::Vector v2(4.0f, -2.0f, 1.0f);
         CPPUNIT_ASSERT_DOUBLES_EQUAL(4.0f, v1 * v2, 0.001f);
 
-        static const float VECTOR3[] = { 4.0f, -2.0f, 1.0f, 0.0f };
+        static const ALIGN(16) float VECTOR3[] = { 4.0f, -2.0f, 1.0f, 0.0f };
         CPPUNIT_ASSERT_DOUBLES_EQUAL(4.0f, v1 * VECTOR3, 0.001f);
     }
 

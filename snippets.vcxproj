@@ -99,6 +99,7 @@
     <ClCompile Include="src\core\math\Vector.cc" />
     <ClCompile Include="src\core\physics\AABB.cc" />
     <ClCompile Include="src\core\physics\BoundingSphere.cc" />
+    <ClCompile Include="src\core\physics\Physical.cc" />
     <ClCompile Include="src\core\util\fs_util.cc" />
     <ClCompile Include="src\core\util\MemoryAllocator.cc" />
     <ClCompile Include="src\core\util\StackAllocator.cc" />
@@ -132,6 +133,7 @@
     <ClInclude Include="src\core\physics\AABB.h" />
     <ClInclude Include="src\core\physics\BoundingSphere.h" />
     <ClInclude Include="src\core\physics\BoundingVolume.h" />
+    <ClInclude Include="src\core\physics\Physical.h" />
     <ClInclude Include="src\core\util\fs_util.h" />
     <ClInclude Include="src\core\util\MemoryAllocator.h" />
     <ClInclude Include="src\core\util\StackAllocator.h" />

@@ -10,7 +10,9 @@ class BoundingSphere;
 class AABB : public BoundingVolume
 {
 public:
+    // creates an infinite/invalid bounding box
     AABB();
+
     AABB(const Point3& minimum, const Point3& maximum);
     AABB(const Point3& center, float radius);
     virtual ~AABB() throw();
@@ -27,8 +29,12 @@ public:
     void update(const AABB& bounds);
     void update(const Point3& point);
 
-    float distance(const Point3& other) const;
-    float distance(const BoundingSphere& other) const;
+    float distance_squared(const Point3& p) const;
+    float distance(const Point3& p) const;
+    float distance_squared(const BoundingSphere& s) const;
+    float distance(const BoundingSphere& s) const;
+    float distance_squared(const AABB& a) const;
+    float distance(const AABB& a) const;
 
     Point3 closest_point(const Point3& point) const;
 
