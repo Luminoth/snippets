@@ -61,12 +61,11 @@ public:
 public:
     void setUp()
     {
-LOG_ERROR("SKIPPING PARTITION TESTS\n");
-        /*_partition_types.push_back("flat");
+        _partition_types.push_back("flat");
         _partition_types.push_back("tree");
         _partition_types.push_back("spheretree");
         _partition_types.push_back("octree");
-        _partition_types.push_back("kdtree3");*/
+        _partition_types.push_back("kdtree3");
     }
 
     void test_trivial()
