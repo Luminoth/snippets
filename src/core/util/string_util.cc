@@ -7,7 +7,7 @@ namespace energonsoftware {
 void tokenize(const std::string& str, std::vector<std::string>& tokens, const std::string& delimiters)
 {
     boost::char_separator<char> sep(delimiters.c_str());
-    boost::tokenizer<boost::char_separator<char> > tok(str, sep);
+    boost::tokenizer<boost::char_separator<char>> tok(str, sep);
     for(const std::string& token : tok) {
         tokens.push_back(token);
     }

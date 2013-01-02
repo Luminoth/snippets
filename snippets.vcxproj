@@ -88,6 +88,9 @@
   <ItemGroup>
     <ClCompile Include="src\core\common.cc" />
     <ClCompile Include="src\core\configuration\Configuration.cc" />
+    <ClCompile Include="src\core\configuration\DatabaseConfiguration.cc" />
+    <ClCompile Include="src\core\database\ConnectionPool.cc" />
+    <ClCompile Include="src\core\database\DatabaseConnection.cc" />
     <ClCompile Include="src\core\logging\Logger.cc" />
     <ClCompile Include="src\core\math\Geometry.cc" />
     <ClCompile Include="src\core\math\math_util.cc" />
@@ -99,7 +102,10 @@
     <ClCompile Include="src\core\math\Vector.cc" />
     <ClCompile Include="src\core\physics\AABB.cc" />
     <ClCompile Include="src\core\physics\BoundingSphere.cc" />
+    <ClCompile Include="src\core\physics\partition\Partition.cc" />
     <ClCompile Include="src\core\physics\Physical.cc" />
+    <ClCompile Include="src\core\thread\BaseThread.cc" />
+    <ClCompile Include="src\core\thread\ThreadPool.cc" />
     <ClCompile Include="src\core\util\fs_util.cc" />
     <ClCompile Include="src\core\util\MemoryAllocator.cc" />
     <ClCompile Include="src\core\util\StackAllocator.cc" />
@@ -119,10 +125,13 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\core\common.h" />
     <ClInclude Include="src\core\configuration\Configuration.h" />
+    <ClInclude Include="src\core\configuration\DatabaseConfiguration.h" />
+    <ClInclude Include="src\core\database\ConnectionPool.h" />
+    <ClInclude Include="src\core\database\DatabaseConnection.h" />
+    <ClInclude Include="src\core\database\DatabaseError.h" />
     <ClInclude Include="src\core\errors\NotImplementedError.h" />
     <ClInclude Include="src\core\logging\Logger.h" />
     <ClInclude Include="src\core\math\Geometry.h" />
-    <ClInclude Include="src\core\math\Intersectable.h" />
     <ClInclude Include="src\core\math\math_util.h" />
     <ClInclude Include="src\core\math\Matrix3.h" />
     <ClInclude Include="src\core\math\Matrix4.h" />
@@ -133,9 +142,21 @@
     <ClInclude Include="src\core\physics\AABB.h" />
     <ClInclude Include="src\core\physics\BoundingSphere.h" />
     <ClInclude Include="src\core\physics\BoundingVolume.h" />
+    <ClInclude Include="src\core\physics\Intersectable.h" />
+    <ClInclude Include="src\core\physics\partition\KdTree.h" />
+    <ClInclude Include="src\core\physics\partition\Octree.h" />
+    <ClInclude Include="src\core\physics\partition\Partition.h" />
+    <ClInclude Include="src\core\physics\partition\Partitionable.h" />
+    <ClInclude Include="src\core\physics\partition\PartitionFactory.h" />
+    <ClInclude Include="src\core\physics\partition\SphereTree.h" />
+    <ClInclude Include="src\core\physics\partition\TreePartition.h" />
     <ClInclude Include="src\core\physics\Physical.h" />
+    <ClInclude Include="src\core\thread\BaseJob.h" />
+    <ClInclude Include="src\core\thread\BaseThread.h" />
+    <ClInclude Include="src\core\thread\ThreadPool.h" />
     <ClInclude Include="src\core\util\fs_util.h" />
     <ClInclude Include="src\core\util\MemoryAllocator.h" />
+    <ClInclude Include="src\core\util\Random.h" />
     <ClInclude Include="src\core\util\StackAllocator.h" />
     <ClInclude Include="src\core\util\string_util.h" />
     <ClInclude Include="src\core\util\SystemAllocator.h" />

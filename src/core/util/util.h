@@ -2,7 +2,7 @@
 #define __UTIL_H__
 
 #if defined WITH_CRYPTO || USE_OPENSSL
-    #include <openssl/md5.h>
+#include <openssl/md5.h>
 #endif
 
 namespace energonsoftware {
@@ -24,6 +24,7 @@ double get_time();
 
 #if defined WITH_CRYPTO
 // base64 encoding (caller is responsible for freeing the return value)
+// NOTE: these allocate memory without using a MemoryAllocator
 char* base64_encode(const unsigned char* input, size_t len);
 unsigned char* base64_decode(const char* input, size_t& len);
 
@@ -45,6 +46,7 @@ std::string md5_digest_password(const std::string& username, const std::string& 
 #endif
 
 // creates a hex dump of the given buffer, up to maxlen
+// NOTE: this allocates memory without using a MemoryAllocator
 std::string bin2hex(const unsigned char* bytes, size_t len, size_t maxlen=1024);
 
 // turns the current process into a daemon

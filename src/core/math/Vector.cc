@@ -1,4 +1,5 @@
 #include "src/pch.h"
+#include "src/core/util/Random.h"
 #include "Vector.h"
 
 namespace energonsoftware {
@@ -31,6 +32,14 @@ void Vector::destroy_array(Vector* const vectors, size_t count, MemoryAllocator*
     operator delete[](vectors, 16, *allocator);
 }
 
+Vector Vector::random(float length)
+{
+    Vector v(Random::uniform<float>(-0.5f, 0.5f),
+        Random::uniform<float>(-0.5f, 0.5f),
+        Random::uniform<float>(-0.5f, 0.5f));
+    return v.set_length(length);
+}
+
 std::string Vector::str() const
 {
     std::stringstream ss;
@@ -52,6 +61,7 @@ public:
         CPPUNIT_TEST(test_zero);
         CPPUNIT_TEST(test_components);
         CPPUNIT_TEST(test_length);
+        CPPUNIT_TEST(test_set_length);
         CPPUNIT_TEST(test_normalize);
         CPPUNIT_TEST(test_perpendicular);
         CPPUNIT_TEST(test_direction);
@@ -140,6 +150,12 @@ public:
         CPPUNIT_ASSERT_EQUAL(3.0f, v7.y());
         CPPUNIT_ASSERT_EQUAL(4.0f, v7.z());
         CPPUNIT_ASSERT_EQUAL(7.0f, v7.w());
+
+        static const energonsoftware::Vector v8(energonsoftware::Vector::random());
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0f, v8.length(), 0.0001f);
+
+        static const energonsoftware::Vector v9(energonsoftware::Vector::random(5345.346f));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(5345.346f, v9.length(), 0.0001f);
     }
 
     void test_zero()
@@ -185,6 +201,13 @@ public:
 
         static const energonsoftware::Vector v2(17.0f, 3.13f, 22.75f);
         CPPUNIT_ASSERT_DOUBLES_EQUAL(816.3594f, v2.length_squared(), 0.001f);
+    }
+
+    void test_set_length()
+    {
+        energonsoftware::Vector v1(1.0f, 2.0f, 3.0f);
+        v1.set_length(123.5f);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(123.5f, v1.length(), 0.0001f);
     }
 
     void test_normalize()

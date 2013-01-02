@@ -108,15 +108,52 @@ std::string Physical::str() const
 #ifdef WITH_UNIT_TESTS
 #include "src/test/UnitTest.h"
 
+class TestPhysical : public energonsoftware::Physical
+{
+public:
+    TestPhysical()
+        : energonsoftware::Physical(),
+            _simulated(false)
+    {
+    }
+
+    virtual ~TestPhysical() throw()
+    {
+    }
+
+public:
+    bool simulated() const { return _simulated; }
+
+private:
+    virtual bool on_simulate(double dt) override
+    {
+        _simulated = true;
+        return true;
+    }
+
+private:
+    bool _simulated;
+};
+
 class PhysicalTest : public CppUnit::TestFixture
 {
 public:
     CPPUNIT_TEST_SUITE(PhysicalTest);
+        CPPUNIT_TEST(test_simulate);
     CPPUNIT_TEST_SUITE_END();
 
 public:
     PhysicalTest() : CppUnit::TestFixture() {}
     virtual ~PhysicalTest() throw() {}
+
+public:
+    virtual void test_simulate()
+    {
+        TestPhysical p;
+        CPPUNIT_ASSERT(!p.simulated());
+        p.simulate();
+        CPPUNIT_ASSERT(p.simulated());
+    }
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(PhysicalTest);

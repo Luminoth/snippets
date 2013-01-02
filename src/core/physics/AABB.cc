@@ -81,6 +81,17 @@ void AABB::update(const Point3& point)
     calculate_center();
 }
 
+float AABB::distance(const Intersectable& other) const
+{
+    if(typeid(other) == typeid(BoundingSphere)) {
+        return distance(dynamic_cast<const BoundingSphere&>(other));
+    } else if(typeid(other) == typeid(AABB)) {
+        return distance(dynamic_cast<const AABB&>(other));
+    } else {
+        throw std::runtime_error(std::string("BoundingSphere doesn't know how to intersect ") + typeid(other).name());
+    }
+}
+
 float AABB::distance_squared(const Point3& p) const
 {
     return p.distance_squared(closest_point(p));

@@ -33,6 +33,15 @@
     <Filter Include="Source Files\core\physics">
       <UniqueIdentifier>{f4d9e3a3-80e7-40fa-ad4b-9e1ec88568de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\core\database">
+      <UniqueIdentifier>{73153fd8-9aa3-4941-affc-a107088a4ff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\thread">
+      <UniqueIdentifier>{01f95992-fb22-49ac-93c3-275156190376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\physics\partition">
+      <UniqueIdentifier>{55d6ef88-19aa-43be-a785-f5a0d3d11919}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\common.cc">
@@ -104,6 +113,24 @@
     <ClCompile Include="src\core\physics\Physical.cc">
       <Filter>Source Files\core\physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\database\DatabaseConnection.cc">
+      <Filter>Source Files\core\database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\configuration\DatabaseConfiguration.cc">
+      <Filter>Source Files\core\configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\database\ConnectionPool.cc">
+      <Filter>Source Files\core\database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\thread\BaseThread.cc">
+      <Filter>Source Files\core\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\thread\ThreadPool.cc">
+      <Filter>Source Files\core\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\physics\partition\Partition.cc">
+      <Filter>Source Files\core\physics\partition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\common.h">
@@ -154,9 +181,6 @@
     <ClInclude Include="src\core\math\Geometry.h">
       <Filter>Source Files\core\math</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\math\Intersectable.h">
-      <Filter>Source Files\core\math</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\math\Matrix3.h">
       <Filter>Source Files\core\math</Filter>
     </ClInclude>
@@ -186,6 +210,54 @@
     </ClInclude>
     <ClInclude Include="src\core\physics\Physical.h">
       <Filter>Source Files\core\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\database\DatabaseError.h">
+      <Filter>Source Files\core\database</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\database\DatabaseConnection.h">
+      <Filter>Source Files\core\database</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\configuration\DatabaseConfiguration.h">
+      <Filter>Source Files\core\configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\database\ConnectionPool.h">
+      <Filter>Source Files\core\database</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\thread\BaseThread.h">
+      <Filter>Source Files\core\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\thread\BaseJob.h">
+      <Filter>Source Files\core\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\thread\ThreadPool.h">
+      <Filter>Source Files\core\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\partition\Partitionable.h">
+      <Filter>Source Files\core\physics\partition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\partition\Partition.h">
+      <Filter>Source Files\core\physics\partition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\Random.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\Intersectable.h">
+      <Filter>Source Files\core\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\partition\PartitionFactory.h">
+      <Filter>Source Files\core\physics\partition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\partition\KdTree.h">
+      <Filter>Source Files\core\physics\partition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\partition\Octree.h">
+      <Filter>Source Files\core\physics\partition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\partition\SphereTree.h">
+      <Filter>Source Files\core\physics\partition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\partition\TreePartition.h">
+      <Filter>Source Files\core\physics\partition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

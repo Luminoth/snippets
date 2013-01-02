@@ -12,6 +12,7 @@ class BoundingSphere : public BoundingVolume
 {
 public:
     explicit BoundingSphere(const Sphere& sphere=energonsoftware::Sphere());
+    explicit BoundingSphere(const Point3& center, float radius);
     explicit BoundingSphere(const AABB& aabb);
     virtual ~BoundingSphere() throw();
 
@@ -19,9 +20,11 @@ public:
     void sphere(const Sphere& sphere) { _sphere = sphere; }
     const Sphere& sphere() const { return _sphere; }
 
-    virtual const Point3& center() const { return _sphere.center(); }
-    virtual float radius() const { return _sphere.radius(); }
-    virtual float radius_squared() const { return std::pow(_sphere.radius(), 2); }
+    virtual const Point3& center() const override { return _sphere.center(); }
+    virtual float radius() const override { return _sphere.radius(); }
+    virtual float radius_squared() const override { return std::pow(_sphere.radius(), 2); }
+
+    virtual float distance(const Intersectable& other) const override;
 
     float distance_squared(const Point3& p) const;
     float distance(const Point3& p) const;
@@ -30,7 +33,7 @@ public:
     float distance_squared(const AABB& a) const;
     float distance(const AABB& a) const;
 
-    virtual std::string str() const;
+    virtual std::string str() const override;
 
 protected:
     Sphere _sphere;

@@ -21,13 +21,15 @@ public:
     const Point3& minimum() const { return _minimum; }
     const Point3& maximum() const { return _maximum; }
 
-    virtual const Point3& center() const { return _center; }
-    virtual float radius() const { return _radius; }
-    virtual float radius_squared() const { return std::pow(_radius, 2); }
+    virtual const Point3& center() const override { return _center; }
+    virtual float radius() const override { return _radius; }
+    virtual float radius_squared() const override { return std::pow(_radius, 2); }
 
     // updates the current bounds to encompass the given point(s)
     void update(const AABB& bounds);
     void update(const Point3& point);
+
+    virtual float distance(const Intersectable& other) const override;
 
     float distance_squared(const Point3& p) const;
     float distance(const Point3& p) const;
@@ -38,7 +40,7 @@ public:
 
     Point3 closest_point(const Point3& point) const;
 
-    virtual std::string str() const;
+    std::string str() const;
 
 public:
     friend AABB operator+(const Point3& lhs, const AABB& rhs) { return AABB(lhs + rhs._minimum, lhs + rhs._maximum); }

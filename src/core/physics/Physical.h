@@ -15,57 +15,57 @@ public:
     virtual ~Physical() throw();
 
 public:
-    const Position& position() const { return _position; }
-    void position(const Position& position);
+    virtual const Position& position() const final { return _position; }
+    virtual void position(const Position& position) final;
 
-    const Direction& view_unrotated() const { return _view; }
-    void view(const Direction& view);
-
-    // NOTE: not normalized
-    Direction view() const { return _orientation * _view; }
-
-    const Direction& up_unrotated() const { return _up; }
-    void up(const Direction& up);
+    virtual const Direction& view_unrotated() const final { return _view; }
+    virtual void view(const Direction& view) final;
 
     // NOTE: not normalized
-    Direction up() const { return _orientation * _up; }
+    virtual Direction view() const final { return _orientation * _view; }
 
-    const Quaternion& orientation() const { return _orientation; }
-    void orientation(const Quaternion& orientation);
+    virtual const Direction& up_unrotated() const final { return _up; }
+    virtual void up(const Direction& up) final;
+
+    // NOTE: not normalized
+    virtual Direction up() const final { return _orientation * _up; }
+
+    virtual const Quaternion& orientation() const final { return _orientation; }
+    virtual void orientation(const Quaternion& orientation) final;
 
     // angle is in radians
-    void rotate(float angle, const Vector3& around);
-    void pitch(float angle);
-    void yaw(float angle);
-    void roll(float angle);
+    virtual void rotate(float angle, const Vector3& around) final;
+    virtual void pitch(float angle) final;
+    virtual void yaw(float angle) final;
+    virtual void roll(float angle) final;
 
     // applies this physicals translation, rotation, and scale to the matrix
     // useful for generating the model matrix for this physical
-    void transform(Matrix4& matrix) const;
+    virtual void transform(Matrix4& matrix) const final;
 
-    const Vector3& velocity() const { return _velocity; }
-    void velocity(const Vector3& velocity) { _velocity = velocity; }
+    virtual const Vector3& velocity() const final { return _velocity; }
+    virtual void velocity(const Vector3& velocity) final { _velocity = velocity; }
 
-    const Vector3& acceleration() const { return _acceleration; }
-    void acceleration(const Vector3& acceleration) { _acceleration = acceleration; }
+    virtual const Vector3& acceleration() const final { return _acceleration; }
+    virtual void acceleration(const Vector3& acceleration) final { _acceleration = acceleration; }
 
-    float mass() const { return _mass; }
+    virtual float mass() const final { return _mass; }
 
-    float scale() const { return _scale; }
-    void scale(float scale) { _scale = scale; }
+    virtual float scale() const final { return _scale; }
+    virtual void scale(float scale) final { _scale = scale; }
 
-    AABB absolute_bounds() const { return _position + _bounds; }
-    const AABB& relative_bounds() const { return _bounds; }
+    virtual AABB absolute_bounds() const final { return _position + _bounds; }
+    virtual const AABB& relative_bounds() const final { return _bounds; }
 
-    void simulate();
+    virtual void simulate() final;
 
-    virtual std::string str() const;
+    std::string str() const;
 
 protected:
     Physical();
 
     // NOTE: relative to the physical's position
-    void bounds(const AABB& bounds) { _bounds = bounds; }
+    virtual void bounds(const AABB& bounds) final { _bounds = bounds; }
 
     virtual bool on_simulate(double dt) { return true; }
 

@@ -22,6 +22,8 @@ public:
     static Vector* create_array(size_t count, MemoryAllocator& allocator);
     static void destroy_array(Vector* const vectors, size_t count, MemoryAllocator* const allocator);
 
+    static Vector random(float length=1.0f);
+
 public:
     Vector() { _value[0] = _value[1] = _value[2] = _value[3] = 0.0f; }
 
@@ -146,6 +148,8 @@ public:
 #endif
     }
 
+    Vector& set_length(float len) { return (*this) *= (len / length()); }
+
     Vector& normalize() { return (*this) *= invsqrt(length_squared()); }
     Vector normalized() const { return (*this) * invsqrt(length_squared()); }
 
@@ -213,6 +217,16 @@ public:
 
     /*bool operator==(float rhs) const { return length() == rhs; }
     bool operator!=(float rhs) const { return !(*this == rhs); }*/
+
+    // returns true if at least one component in this vector
+    // is less than the same component in rhs
+    bool operator<(const Vector& rhs) const {
+        return x() == rhs.x()
+                ? y() == rhs.y()
+                  ? z() < rhs.z()
+                  : y() < rhs.y()
+                : x() < rhs.x();
+    }
 
     Vector operator+(const Vector& rhs) const
     {

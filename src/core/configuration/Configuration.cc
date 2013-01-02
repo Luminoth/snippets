@@ -350,7 +350,7 @@ public:
         return exists(energonsoftware::test_conf());
     }
 
-    virtual void validate() const throw(energonsoftware::ConfigurationError)
+    virtual void validate() const throw(energonsoftware::ConfigurationError) override
     {
         Configuration::validate();
 
@@ -360,7 +360,7 @@ public:
     }
 
 private:
-    virtual void on_save()
+    virtual void on_save() override
     {
         LOG_DEBUG("TestConfiguration::on_save()\n");
     }

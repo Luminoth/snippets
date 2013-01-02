@@ -14,14 +14,14 @@ public:
     virtual ~SystemAllocator() throw();
 
 public:
-    virtual size_t total() const { return _size; }
-    virtual size_t used() const { return _used; }
-    virtual size_t unused() const { return _size - _used; }
+    virtual size_t total() const override { return _size; }
+    virtual size_t used() const override { return _used; }
+    virtual size_t unused() const override { return _size - _used; }
 
-    virtual void* allocate(size_t bytes);
-    virtual void release(void* ptr);
+    virtual void* allocate(size_t bytes) override;
+    virtual void release(void* ptr) override;
 
-    virtual void reset() { _used = 0; }
+    virtual void reset() override { _used = 0; }
 
 private:
     friend class MemoryAllocator;

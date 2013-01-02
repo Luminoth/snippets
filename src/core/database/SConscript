@@ -6,6 +6,4 @@ Import([ "env" ])
 
 obj = env.Object(env.Glob("*.cc"))
 
-obj.extend(SConscript(os.path.join("partition", "SConscript"), exports=[ "env" ]))
-
 Return("obj")

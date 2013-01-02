@@ -17,14 +17,14 @@ public:
     virtual ~StackAllocator() throw();
 
 public:
-    virtual size_t total() const { return _size; }
-    virtual size_t used() const { return _marker; }
-    virtual size_t unused() const { return _size - _marker; }
+    virtual size_t total() const override { return _size; }
+    virtual size_t used() const override { return _marker; }
+    virtual size_t unused() const override { return _size - _marker; }
 
-    virtual void* allocate(size_t bytes);
-    virtual void release(void* ptr);
+    virtual void* allocate(size_t bytes) override;
+    virtual void release(void* ptr) override;
 
-    virtual void reset() { _marker = 0; }
+    virtual void reset() override { _marker = 0; }
 
 private:
     friend class MemoryAllocator;

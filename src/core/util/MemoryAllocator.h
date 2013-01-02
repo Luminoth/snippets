@@ -60,10 +60,10 @@ public:
     virtual size_t used() const = 0;
     virtual size_t unused() const = 0;
 
-    unsigned int allocation_count() const { return _allocation_count; }
+    virtual unsigned int allocation_count() const final { return _allocation_count; }
     // TODO: this is unreliable for now because we don't know deletion bytes
     // if we can sort out a good way to handle that, re-enable this
-    //size_t allocation_bytes() const { return _allocation_bytes; }
+    //virtual size_t allocation_bytes() const final { return _allocation_bytes; }
 
     // NOTE: all of the allocation() and release() overrides
     // must lock the allocator with a boost::lock_guard
@@ -72,20 +72,20 @@ public:
     // NOTE: overriding classes *must* maintain
     // allocation statistics inside of this
     virtual void* allocate(size_t bytes) = 0;
-    //virtual void* allocate_array(size_t bytes);
+    //virtual void* allocate_array(size_t bytes) final;
 
     // release unaligned memory
     // NOTE: depending on the implementation, this may do nothing
     virtual void release(void* ptr) = 0;
-    //virtual void release_array(void* ptr);
+    //virtual void release_array(void* ptr) final;
 
     // allocate/release aligned memory
     // NOTE: alignment must be a power of 2 greater than 1,
     // and must be used consistenty across these methods
-    void* allocate(size_t bytes, size_t alignment);
-    //void* allocate_array(size_t bytes, size_t alignment);
-    void release(void* ptr, size_t alignment);
-    //void release_array(void* ptr, size_t alignment);
+    virtual void* allocate(size_t bytes, size_t alignment) final;
+    //virtual void* allocate_array(size_t bytes, size_t alignment) final;
+    virtual void release(void* ptr, size_t alignment) final;
+    //virtual void release_array(void* ptr, size_t alignment) final;
 
     // resets (but does not free memory) any internal state
     virtual void reset() = 0;

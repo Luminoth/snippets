@@ -1,15 +1,15 @@
 #if !defined __BOUNDINGVOLUME_H__
 #define __BOUNDINGVOLUME_H__
 
-#include "src/core/math/Intersectable.h"
 #include "src/core/math/Vector.h"
+#include "Intersectable.h"
 
 namespace energonsoftware {
 
-class BoundingVolume /*: public Intersectable*/
+class BoundingVolume : public Intersectable
 {
 public:
-    BoundingVolume() {}
+    BoundingVolume() : Intersectable() {}
     virtual ~BoundingVolume() throw() {}
 
 public:
