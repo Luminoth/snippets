@@ -15,6 +15,13 @@ public:
     typedef std::list<Subtree> Subtrees;
 
 public:
+    static void destroy(TreePartition* const partition, MemoryAllocator* const allocator)
+    {
+        partition->~TreePartition();
+        operator delete(partition, 16, *allocator);
+    }
+
+public:
     virtual ~TreePartition() throw()
     {
     }
@@ -22,20 +29,20 @@ public:
 protected:
     template<typename Y, typename V> friend class PartitionFactory;
 
-    TreePartition(const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned, unsigned int depth)
+    TreePartition(MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned, unsigned int depth)
         : Partition<T, B>(data, container, pruned), _depth(depth), _count(0)
     {
         if(_depth >= 1 && Partition<T, B>::size() > 1) {
-            on_build_subtrees();
+            on_build_subtrees(allocator);
         }
         _count = Partition<T, B>::_data.size();
     }
 
-    TreePartition(const std::list<std::shared_ptr<T>>& data, unsigned int depth)
+    TreePartition(MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, unsigned int depth)
         : Partition<T, B>(data), _depth(depth), _count(0)
     {
         if(_depth >= 1 && Partition<T, B>::size() > 1) {
-            on_build_subtrees();
+            on_build_subtrees(allocator);
         }
         _count = Partition<T, B>::_data.size();
     }
@@ -141,7 +148,7 @@ protected:
     }
 
     // override this
-    virtual void on_build_subtrees()
+    virtual void on_build_subtrees(MemoryAllocator* const allocator)
     {
         std::deque<std::shared_ptr<T>> data;
         for(typename std::list<std::shared_ptr<T>>::const_iterator it=TreePartition<T, B>::_data.begin();
@@ -161,10 +168,12 @@ protected:
 
         // subtrees always calculate their container
         std::list<std::shared_ptr<T>> subtree(data.begin(), data.begin() + median);
-        _subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(new TreePartition(subtree, depth() - 1)));
+        _subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(new(16, *allocator) TreePartition(allocator, subtree, depth() - 1),
+            boost::bind(&TreePartition<T, B>::destroy, _1, allocator)));
 
         subtree = std::list<std::shared_ptr<T>>(data.begin() + median, data.end());
-        _subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(new TreePartition(subtree, depth() - 1)));
+        _subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(new(16, *allocator) TreePartition(allocator, subtree, depth() - 1),
+            boost::bind(&TreePartition<T, B>::destroy, _1, allocator)));
     }
 
 protected:

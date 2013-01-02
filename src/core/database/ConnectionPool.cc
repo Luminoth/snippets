@@ -23,8 +23,8 @@ void ConnectionPool::cleanup() throw()
 {
     boost::lock_guard<boost::recursive_mutex> guard(*this);
 
-    for(DatabaseConnection* const connection : _pool) {
-        delete connection;
+    for(auto& connection : _pool) {
+        connection.reset();
     }
 }
 
@@ -44,7 +44,7 @@ DatabaseConnection& ConnectionPool::acquire(bool block) throw(ConnectionPoolErro
         throw ConnectionPoolError("Pool is empty!");
     }
 
-    DatabaseConnection* const connection = _pool.front();
+    std::shared_ptr<DatabaseConnection> connection(_pool.front());
     _pool.pop_front();
 
     try {
@@ -57,21 +57,21 @@ DatabaseConnection& ConnectionPool::acquire(bool block) throw(ConnectionPoolErro
     return *connection;
 }
 
-void ConnectionPool::release(DatabaseConnection& connection)
+void ConnectionPool::release(std::shared_ptr<DatabaseConnection> connection)
 {
     boost::lock_guard<boost::recursive_mutex> guard(*this);
 
-    LOG_DEBUG("releasing (" << connection.id() << "), assuming disconnected\n");
-    for(const DatabaseConnection* const conn : _pool) {
-        if((*conn) == connection) {
+    LOG_DEBUG("releasing (" << connection->id() << "), assuming disconnected\n");
+    for(auto& conn : _pool) {
+        if((*conn) == (*connection)) {
             // connection already in pool
             return;
         }
     }
-    _pool.push_back(&connection);
+    _pool.push_back(connection);
 }
 
-void ConnectionPool::push_connection(DatabaseConnection* connection)
+void ConnectionPool::push_connection(std::shared_ptr<DatabaseConnection> connection)
 {
     boost::lock_guard<boost::recursive_mutex> guard(*this);
     _pool.push_back(connection);

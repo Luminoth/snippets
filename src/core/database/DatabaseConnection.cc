@@ -8,8 +8,9 @@ namespace energonsoftware {
 
 Logger& DatabaseConnection::logger(Logger::instance("energonsoftware.core.database.DatabaseConnection"));
 
-DatabaseConnection::DatabaseConnection(int64_t id, const DatabaseConfiguration& config, ConnectionPool* pool) throw(DatabaseConnectionError)
-    : boost::recursive_mutex(), _id(id), _connected(false), _config(config), _pool(pool)
+DatabaseConnection::DatabaseConnection(int64_t id, const DatabaseConfiguration& config, std::shared_ptr<ConnectionPool> pool) throw(DatabaseConnectionError)
+    : boost::recursive_mutex(), std::enable_shared_from_this<DatabaseConnection>(),
+        _id(id), _connected(false), _config(config), _pool(pool)
 {
     std::string vendor(this->config().database_vendor());
     _host = this->config().database_hostname();
@@ -51,7 +52,7 @@ void DatabaseConnection::disconnect() throw(DatabaseConnectionError)
     }
 
     _connected = false;
-    if(_pool) _pool->release(*this);
+    if(_pool) _pool->release(shared_from_this());
 
     on_disconnect();
 }

@@ -22,6 +22,13 @@ protected:
 template<typename T, typename B>
 class Partition
 {
+public:
+    static void destroy(Partition* const partition, MemoryAllocator* const allocator)
+    {
+        partition->~Partition();
+        operator delete(partition, 16, *allocator);
+    }
+
 private:
     static Logger& logger;
 

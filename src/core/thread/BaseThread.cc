@@ -10,12 +10,12 @@ namespace energonsoftware {
 Logger& BaseThread::logger(Logger::instance("energonsoftware.core.thread.BaseThread"));
 
 BaseThread::BaseThread(ThreadPool* pool)
-    : _pool(pool), _quit(false), _thread(nullptr), _own_thread(false)
+    : _pool(pool), _quit(false), _own_thread(false)
 {
 }
 
 BaseThread::BaseThread(const std::string& name)
-    : _pool(nullptr), _name(name), _quit(false), _thread(nullptr), _own_thread(false)
+    : _pool(nullptr), _name(name), _quit(false), _own_thread(false)
 {
 }
 
@@ -43,8 +43,7 @@ void BaseThread::start()
     _quit = false;
     _own_thread = true;
 
-    // TODO: use a MemoryAllocator!
-    _thread = new boost::thread(boost::bind(&BaseThread::run, this));
+    _thread.reset(new boost::thread(boost::bind(&BaseThread::run, this)));
 }
 
 void BaseThread::stop()
@@ -55,13 +54,12 @@ void BaseThread::stop()
         _thread->join();
         LOG_DEBUG("Success!\n");
 
-        delete _thread;
-        _thread = nullptr;
+        _thread.reset();
         _own_thread = false;
     }
 }
 
-boost::thread* BaseThread::release()
+std::shared_ptr<boost::thread> BaseThread::release()
 {
     _own_thread = false;
     return _thread;
@@ -71,7 +69,7 @@ std::string BaseThread::str() const
 {
     std::stringstream ss;
     ss << "Thread ";
-    if(_thread != nullptr) {
+    if(_thread) {
         ss << _thread->get_id();
     } else {
         ss << "none";
@@ -79,7 +77,7 @@ std::string BaseThread::str() const
     ss << " Info:\n";
 
     ss << "Name: " << name() << "\n"
-        << "Has thread: " << to_string(_thread != nullptr) << "\n"
+        << "Has thread: " << to_string(static_cast<bool>(_thread)) << "\n"
         << "Owns thread: " << to_string(_own_thread) << "\n"
         << "Has pool: " << to_string(_pool != nullptr) << "\n"
         << "Should quit: " << to_string(_quit);

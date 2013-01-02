@@ -28,18 +28,21 @@ void ThreadPool::start(const ThreadFactory& factory)
 
     LOG_INFO("Initializing " << _size << " threads...\n");
     for(size_t i=0; i<_size; ++i) {
-        BaseThread* thread = factory.new_thread(this);
+        std::shared_ptr<BaseThread> thread(factory.new_thread(this));
         thread->start();
-        _threads.add_thread(thread->release());
+
+        std::shared_ptr<boost::thread> native(thread->release());
+        _thread_group.add_thread(native.get());
+        _threads.push_back(native);
     }
     _running = true;
 }
 
-void ThreadPool::push_work(BaseJob* job)
+void ThreadPool::push_work(std::shared_ptr<BaseJob> job)
 {
     boost::lock_guard<boost::recursive_mutex> guard(*this);
 
-    _work.push(std::shared_ptr<BaseJob>(job));
+    _work.push(job);
 }
 
 bool ThreadPool::has_work()
@@ -64,8 +67,8 @@ void ThreadPool::stop()
 
     if(running()) {
         LOG_INFO("Waiting for " << _size << " threads to finish...\n");
-        _threads.interrupt_all();
-        _threads.join_all();
+        _thread_group.interrupt_all();
+        _thread_group.join_all();
         LOG_DEBUG("Finished!\n");
     }
     _running = false;

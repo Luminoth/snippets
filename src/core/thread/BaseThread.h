@@ -30,7 +30,7 @@ public:
     virtual bool should_quit() const final { return _quit; }
 
     // releases ownership of the thread (used by the thread pool)
-    virtual boost::thread* release() final;
+    virtual std::shared_ptr<boost::thread> release() final;
 
     std::string str() const;
 
@@ -52,7 +52,7 @@ private:
     std::string _name;
     bool _quit;
 
-    boost::thread* _thread;
+    std::shared_ptr<boost::thread> _thread;
     bool _own_thread;
 
 private:
@@ -68,7 +68,7 @@ public:
     virtual ~ThreadFactory() throw();
 
 public:
-    virtual BaseThread* new_thread(ThreadPool* pool=nullptr) const throw() = 0;
+    virtual std::shared_ptr<BaseThread> new_thread(ThreadPool* pool=nullptr) const throw() = 0;
 };
 
 }

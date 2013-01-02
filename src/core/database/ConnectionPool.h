@@ -8,7 +8,7 @@ namespace energonsoftware {
 class ConnectionPoolError : public DatabaseError
 {
 public:
-    explicit ConnectionPoolError(const std::string& what) throw() : DatabaseError(what) { }
+    explicit ConnectionPoolError(const std::string& what) throw() : DatabaseError(what) {}
     virtual ~ConnectionPoolError() throw() {}
 };
 
@@ -28,7 +28,7 @@ public:
 
     // releases a connection back to the pool
     // NOTE: this assumes the connection has been disconnected
-    void release(DatabaseConnection& connection);
+    void release(std::shared_ptr<DatabaseConnection> connection);
 
     size_t size() { return _size; }
 
@@ -36,15 +36,14 @@ private:
     void cleanup() throw();
 
 private:
-    std::deque<DatabaseConnection*> _pool;
+    std::deque<std::shared_ptr<DatabaseConnection>> _pool;
     size_t _size;
 
 private:
     friend class DatabaseConnectionFactory;
     explicit ConnectionPool(size_t size) throw(ConnectionPoolError);
 
-    // NOTE: connection must have been created with new
-    void push_connection(DatabaseConnection* connection);
+    void push_connection(std::shared_ptr<DatabaseConnection> connection);
 
 private:
     ConnectionPool();

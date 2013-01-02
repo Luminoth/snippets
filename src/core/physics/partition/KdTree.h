@@ -35,6 +35,13 @@ template<typename T, typename B, size_t Dim>
 class KdTree : public TreePartition<T, B>
 {
 public:
+    static void destroy(KdTree* const partition, MemoryAllocator* const allocator)
+    {
+        partition->~KdTree();
+        operator delete(partition, 16, *allocator);
+    }
+
+public:
     virtual ~KdTree() throw()
     {
     }
@@ -42,13 +49,13 @@ public:
 protected:
     template<typename Y, typename V> friend class PartitionFactory;
 
-    KdTree(const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned, unsigned int depth)
-        : TreePartition<T, B>(data, container, pruned, depth)
+    KdTree(MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned, unsigned int depth)
+        : TreePartition<T, B>(allocator, data, container, pruned, depth)
     {
     }
 
-    KdTree(const std::list<std::shared_ptr<T>>& data, unsigned int depth)
-        : TreePartition<T, B>(data, depth)
+    KdTree(MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, unsigned int depth)
+        : TreePartition<T, B>(allocator, data, depth)
     {
     }
 
@@ -56,7 +63,7 @@ public:
     virtual size_t dimensions() const final { return Dim; }
 
 private:
-    virtual void on_build_subtrees() override
+    virtual void on_build_subtrees(MemoryAllocator* const allocator) override
     {
         // sort the points
         unsigned int axis = TreePartition<T, B>::depth() % dimensions();
@@ -74,11 +81,13 @@ private:
         // subtrees always calculate their container
         std::list<std::shared_ptr<T>> subtree(data.begin(), data.begin() + median);
         TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
-            new KdTree<T, B, Dim>(subtree, TreePartition<T, B>::depth() - 1)));
+            new(16, *allocator) KdTree<T, B, Dim>(allocator, subtree, TreePartition<T, B>::depth() - 1),
+            boost::bind(&KdTree<T, B, Dim>::destroy, _1, allocator)));
 
         subtree = std::list<std::shared_ptr<T>>(data.begin() + median + 1, data.end());
         TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
-            new KdTree<T, B, Dim>(subtree, TreePartition<T, B>::depth() - 1)));
+            new(16, *allocator) KdTree<T, B, Dim>(allocator, subtree, TreePartition<T, B>::depth() - 1),
+            boost::bind(&KdTree<T, B, Dim>::destroy, _1, allocator)));
     }
 
 private:
@@ -90,6 +99,13 @@ template<typename T, typename B>
 class KdTree3 : public KdTree<T, B, 3>
 {
 public:
+    static void destroy(KdTree3* const partition, MemoryAllocator* const allocator)
+    {
+        partition->~KdTree3();
+        operator delete(partition, 16, *allocator);
+    }
+
+public:
     virtual ~KdTree3() throw()
     {
     }
@@ -97,13 +113,13 @@ public:
 private:
     template<typename Y, typename V> friend class PartitionFactory;
 
-    KdTree3(const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned, unsigned int depth)
-        : KdTree<T, B, 3>(data, container, pruned, depth)
+    KdTree3(MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned, unsigned int depth)
+        : KdTree<T, B, 3>(allocator, data, container, pruned, depth)
     {
     }
 
-    KdTree3(const std::list<std::shared_ptr<T>>& data, unsigned int depth)
-        : KdTree<T, B, 3>(data, depth)
+    KdTree3(MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, unsigned int depth)
+        : KdTree<T, B, 3>(allocator, data, depth)
     {
     }
 

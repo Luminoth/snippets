@@ -10,6 +10,13 @@ template<typename T, typename B>
 class SphereTree : public TreePartition<T, B>
 {
 public:
+    static void destroy(SphereTree* const partition, MemoryAllocator* const allocator)
+    {
+        partition->~SphereTree();
+        operator delete(partition, 16, *allocator);
+    }
+
+public:
     virtual ~SphereTree() throw()
     {
     }
@@ -17,22 +24,18 @@ public:
 private:
     template<typename Y, typename V> friend class PartitionFactory;
 
-    SphereTree(const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned, unsigned int depth)
-        : TreePartition<T, B>(data, container, pruned, depth)
+    SphereTree(MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned, unsigned int depth)
+        : TreePartition<T, B>(allocator, data, container, pruned, depth)
     {
     }
 
-    SphereTree(const std::list<std::shared_ptr<T>>& data, unsigned int depth)
-        : TreePartition<T, B>(data, depth)
+    SphereTree(MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, unsigned int depth)
+        : TreePartition<T, B>(allocator, data, depth)
     {
     }
-
-public:
-    /*virtual std::shared_ptr<TreePartition<T, B>>& left() final { return _subtrees[0]; }
-    virtual std::shared_ptr<TreePartition<T, B>>& right() final { return _subtrees[1]; }*/
 
 private:
-    virtual void on_build_subtrees() override
+    virtual void on_build_subtrees(MemoryAllocator* const allocator) override
     {
         std::list<std::shared_ptr<T>> left;
         std::list<std::shared_ptr<T>> right;
@@ -61,12 +64,14 @@ private:
         // subtrees should always calculate their container
         if(left.size() > 0) {
             TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
-                new SphereTree(left, TreePartition<T, B>::depth() - 1)));
+                new(16, *allocator) SphereTree(allocator, left, TreePartition<T, B>::depth() - 1),
+                boost::bind(&SphereTree<T, B>::destroy, _1, allocator)));
         }
 
         if(right.size() > 0) {
             TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
-                new SphereTree(right, TreePartition<T, B>::depth() - 1)));
+                new(16, *allocator) SphereTree(allocator, right, TreePartition<T, B>::depth() - 1),
+                boost::bind(&SphereTree<T, B>::destroy, _1, allocator)));
         }
     }
 

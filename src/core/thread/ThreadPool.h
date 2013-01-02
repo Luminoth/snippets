@@ -13,7 +13,6 @@ struct base_job_less : public std::binary_function<std::shared_ptr<BaseJob>, std
     { return lhs->priority() < rhs->priority(); }
 };
 
-// NOTE: this *must not* be used with jobs created with a MemoryAllocator!
 class ThreadPool : public boost::recursive_mutex
 {
 private:
@@ -28,9 +27,7 @@ public:
     void start(const ThreadFactory& factory);
 
     // adds work to the pool
-    // NOTE: job must have been declared with new and the pool takes ownership of it
-    // TODO: this is *not* compatible with the allocator system!
-    void push_work(BaseJob* job);
+    void push_work(std::shared_ptr<BaseJob> job);
 
     bool has_work();
 
@@ -44,7 +41,8 @@ public:
 
 private:
     size_t _size;
-    boost::thread_group _threads;
+    boost::thread_group _thread_group;
+    std::list<std::shared_ptr<boost::thread>> _threads;
     bool _running;
     std::priority_queue<std::shared_ptr<BaseJob>, std::deque<std::shared_ptr<BaseJob>>, base_job_less > _work;
 

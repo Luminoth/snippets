@@ -43,13 +43,13 @@ const DatabaseKey INVALID_DATABASE_KEY = 0;
 class ConnectionPool;
 class DatabaseConfiguration;
 
-class DatabaseConnection : public boost::recursive_mutex
+class DatabaseConnection : public boost::recursive_mutex, public std::enable_shared_from_this<DatabaseConnection>
 {
 private:
     static Logger& logger;
 
 public:
-    DatabaseConnection(int64_t id, const DatabaseConfiguration& config, ConnectionPool* pool=nullptr) throw(DatabaseConnectionError);
+    DatabaseConnection(int64_t id, const DatabaseConfiguration& config, std::shared_ptr<ConnectionPool> pool=std::shared_ptr<ConnectionPool>()) throw(DatabaseConnectionError);
     virtual ~DatabaseConnection() throw();
 
 public:
@@ -112,7 +112,7 @@ private:
     int64_t _id;
     bool _connected;
     const DatabaseConfiguration& _config;
-    ConnectionPool* _pool;
+    std::shared_ptr<ConnectionPool> _pool;
 
 private:
     DatabaseConnection();
