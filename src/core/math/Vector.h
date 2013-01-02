@@ -69,7 +69,11 @@ public:
     }
 
 #if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
-    explicit Vector(const std::initializer_list<int> v);
+    explicit Vector(const std::initializer_list<int>& v)
+    {
+        assert(v.size() <= 4);
+        std::copy(v.begin(), v.end(), _value);
+    }
 #endif
 
     // NOTE: v must have at least 4 floats
@@ -83,7 +87,11 @@ public:
     }
 
 #if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
-    explicit Vector(const std::initializer_list<float> v);
+    explicit Vector(const std::initializer_list<float>& v)
+    {
+        assert(v.size() <= 4);
+        std::copy(v.begin(), v.end(), _value);
+    }
 #endif
 
     virtual ~Vector() throw() {}

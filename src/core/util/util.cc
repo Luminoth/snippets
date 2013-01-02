@@ -223,7 +223,7 @@ bool blowfish_decrypt(const unsigned char* key, const unsigned char* input, size
 
 std::string md5_digest_password(const std::string& username, const std::string& realm, const std::string& password)
 {
-    std::string key(username + ":" + realm + ":" + password);
+    const std::string key(username + ":" + realm + ":" + password);
 
     char digest[(MD5_DIGEST_LENGTH << 1) + 1];
     md5sum_hex(reinterpret_cast<const unsigned char*>(key.c_str()), key.length(), digest);
@@ -414,7 +414,7 @@ public:
         static const std::string expected("c5fc01593740fd9ab9fb6b4f5dccc369");
         char output[(MD5_DIGEST_LENGTH * 2) + 1];
 
-        energonsoftware::md5sum_file(filename, output);
+        CPPUNIT_ASSERT(energonsoftware::md5sum_file(filename, output));
         CPPUNIT_ASSERT_EQUAL(expected, std::string(output));
     }
 
@@ -425,13 +425,13 @@ public:
 
         size_t ilen = 0;
         unsigned char encoded[1024];
-        energonsoftware::blowfish_encrypt(key, reinterpret_cast<const unsigned char*>(data.c_str()), data.length(), encoded, ilen);
+        CPPUNIT_ASSERT(energonsoftware::blowfish_encrypt(key, reinterpret_cast<const unsigned char*>(data.c_str()), data.length(), encoded, ilen));
 
         // TODO: check the encrypted copy
 
         size_t olen = 0;
         unsigned char decoded[1024];
-        energonsoftware::blowfish_decrypt(key, encoded, ilen, decoded, olen);
+        CPPUNIT_ASSERT(energonsoftware::blowfish_decrypt(key, encoded, ilen, decoded, olen));
         CPPUNIT_ASSERT_EQUAL(data, std::string(reinterpret_cast<char*>(decoded), olen));
     }
 

@@ -99,17 +99,15 @@ ccdefs.append("BINDIR=\\\"%s\\\"" % bin_dir)
 ccdefs.append("CONFDIR=\\\"%s\\\"" % conf_dir)
 ccdefs.append("DATADIR=\\\"%s\\\"" % data_dir)
 
-#ccflags.extend([ "-fprofile-arcs", "-ftest-coverage" ])
 ccdefs.append(WITH_UNIT_TESTS)
-ldflags.append("-ldl")
-#libs.append("gcov")
+ccflags.extend([ "--coverage" ])
+ldflags.extend([ "-ldl", "--coverage" ])
 
 profile = int(ARGUMENTS.get("profile", 0))
 if profile:
-    ccflags.extend([ "-pg" ]) #, "-fprofile-arcs" ])
+    ccflags.extend([ "-pg" ])
     ccdefs.append(WITH_PROFILE)
     ldflags.append("-pg")
-    #libs.append("gcov")
     build_dir = os.path.join(build_dir, "profile")
 
     core_lib += "-profile"

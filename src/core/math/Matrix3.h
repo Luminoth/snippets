@@ -21,7 +21,11 @@ public:
     explicit Matrix3(const float* const matrix) { std::memcpy(_m, matrix, 9 * sizeof(float)); }
 
 #if !defined _MSC_VER || (defined _MSC_VER && _MSC_VER > 1700)
-    explicit Matrix3(const std::initializer_list<float> matrix);
+    explicit Matrix3(const std::initializer_list<float>& matrix)
+    {
+        assert(9 == matrix.size());
+        std::copy(matrix.begin(), matrix.end(), _m);
+    }
 #endif
 
     virtual ~Matrix3() throw() {}
