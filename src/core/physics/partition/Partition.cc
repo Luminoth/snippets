@@ -172,7 +172,7 @@ public:
             std::shared_ptr<energonsoftware::Partition<TrialPartitionable, energonsoftware::BoundingSphere>> partition(
                 energonsoftware::PartitionFactory<TrialPartitionable, energonsoftware::BoundingSphere>::new_partition(type, _allocator.get(), data, depth));
 
-            energonsoftware::BoundingSphere obj(energonsoftware::Point3(0.0f, 0.0f, 0.0f), 1.0f);
+            energonsoftware::BoundingSphere obj(energonsoftware::Point3(0.0f, 0.0f, 0.0f), 1000.0f);
             std::list<std::shared_ptr<TrialPartitionable>> collided;
             partition->collide(obj, collided);
             CPPUNIT_ASSERT_MESSAGE(type, collided.size() > 0);
