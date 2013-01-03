@@ -38,17 +38,18 @@ For objects that don't require a destructor call, allocator.release() may be cal
 
 namespace energonsoftware {
 
-enum class AllocatorType
-{
-    Stack,
-    System
-};
-
 class MemoryAllocator
 {
 public:
+    enum class Type
+    {
+        Stack,
+        System
+    };
+
+public:
     // size is in bytes
-    static std::shared_ptr<MemoryAllocator> new_allocator(AllocatorType type, size_t size);
+    static std::shared_ptr<MemoryAllocator> new_allocator(Type type, size_t size);
 
 public:
     virtual ~MemoryAllocator() throw();
@@ -167,7 +168,7 @@ CPPUNIT_TEST(test_allocate_object_aligned);
 class MemoryAllocatorTest : public CppUnit::TestFixture
 {
 public:
-    explicit MemoryAllocatorTest(energonsoftware::AllocatorType type);
+    explicit MemoryAllocatorTest(energonsoftware::MemoryAllocator::Type type);
     virtual ~MemoryAllocatorTest() throw() {}
 
 public:
@@ -184,7 +185,7 @@ private:
     void check_buffer(char* buffer);
 
 private:
-    energonsoftware::AllocatorType _type;
+    energonsoftware::MemoryAllocator::Type _type;
     std::shared_ptr<energonsoftware::MemoryAllocator> _allocator;
 
 private:

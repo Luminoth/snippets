@@ -72,7 +72,7 @@ std::string BoundingSphere::str() const
 
 }
 
-#ifdef WITH_UNIT_TESTS
+#if defined WITH_UNIT_TESTS
 #include "src/test/UnitTest.h"
 
 class BoundingSphereTest : public CppUnit::TestFixture

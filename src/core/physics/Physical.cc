@@ -105,7 +105,7 @@ std::string Physical::str() const
 
 }
 
-#ifdef WITH_UNIT_TESTS
+#if defined WITH_UNIT_TESTS
 #include "src/test/UnitTest.h"
 
 class TestPhysical : public energonsoftware::Physical

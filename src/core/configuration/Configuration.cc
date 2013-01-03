@@ -261,7 +261,7 @@ uint32_t Configuration::logging_type() const
     return type;
 }
 
-Logger::LogLevel Configuration::logging_level() const
+Logger::Level Configuration::logging_level() const
 {
     return Logger::level(get("logging", "level"));
 }

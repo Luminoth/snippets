@@ -17,7 +17,7 @@
 int main(int argc, char* argv[])
 {
     std::cout << "Initializing logging..." << std::endl;
-    energonsoftware::Logger::configure(energonsoftware::Logger::LogLevel::Debug);
+    energonsoftware::Logger::configure(energonsoftware::Logger::Level::Debug);
 
     energonsoftware::Logger& logger(energonsoftware::Logger::instance("energonsoftware.test"));
     LOG_INFO("Initializing tests...\n");

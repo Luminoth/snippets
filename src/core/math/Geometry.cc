@@ -442,7 +442,7 @@ std::string Geometry::str() const
 
 }
 
-#ifdef WITH_UNIT_TESTS
+#if defined WITH_UNIT_TESTS
 #include "src/test/UnitTest.h"
 
 class GeometryTest : public CppUnit::TestFixture
@@ -468,7 +468,7 @@ public:
 public:
     void test_allocate_vertex()
     {
-        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 50 * 1024));
+        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 50 * 1024));
         std::shared_ptr<energonsoftware::Vertex> v1(new(16, *allocator) energonsoftware::Vertex(),
             std::bind(energonsoftware::Vertex::destroy, std::placeholders::_1, allocator.get()));
         check_vertex_defaults(*v1);
@@ -491,7 +491,7 @@ public:
 
     void test_allocate_triangle()
     {
-        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 50 * 1024));
+        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 50 * 1024));
         std::shared_ptr<energonsoftware::Triangle> t1(new(16, *allocator) energonsoftware::Triangle(),
             std::bind(energonsoftware::Triangle::destroy, std::placeholders::_1, allocator.get()));
         check_triangle_defaults(*t1);
@@ -510,7 +510,7 @@ public:
 
     void test_allocate_weight()
     {
-        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 50 * 1024));
+        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 50 * 1024));
         std::shared_ptr<energonsoftware::Weight> w1(new(16, *allocator) energonsoftware::Weight(),
             std::bind(energonsoftware::Weight::destroy, std::placeholders::_1, allocator.get()));
         check_weight_defaults(*w1);
@@ -540,7 +540,7 @@ public:
     void test_vertex_create()
     {
         static const size_t COUNT = 100;
-        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 50 * 1024));
+        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 50 * 1024));
         std::shared_ptr<energonsoftware::Geometry> g(new(*allocator) energonsoftware::Geometry(COUNT, *allocator),
             std::bind(energonsoftware::Geometry::destroy, std::placeholders::_1, allocator.get()));
 
@@ -554,7 +554,7 @@ public:
     void test_triangle_create()
     {
         static const size_t COUNT = 100;
-        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 50 * 1024));
+        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 50 * 1024));
         // vertex_count here is actually ignored
         std::shared_ptr<energonsoftware::Geometry> g(new(*allocator) energonsoftware::Geometry(COUNT, 0, *allocator),
             std::bind(energonsoftware::Geometry::destroy, std::placeholders::_1, allocator.get()));

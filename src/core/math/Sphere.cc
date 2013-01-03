@@ -14,7 +14,7 @@ Sphere::~Sphere() throw()
 
 }
 
-#ifdef WITH_UNIT_TESTS
+#if defined WITH_UNIT_TESTS
 #include "src/test/UnitTest.h"
 
 class SphereTest : public CppUnit::TestFixture

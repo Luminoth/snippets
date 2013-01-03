@@ -119,7 +119,7 @@ std::string Matrix4::str() const
 
 }
 
-#ifdef WITH_UNIT_TESTS
+#if defined WITH_UNIT_TESTS
 #include "src/test/UnitTest.h"
 
 class Matrix4Test : public CppUnit::TestFixture
@@ -313,7 +313,7 @@ public:
 
     void test_allocation()
     {
-        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 10 * 1024));
+        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 10 * 1024));
         std::shared_ptr<energonsoftware::Matrix4> m1(new(16, *allocator) energonsoftware::Matrix4(),
             std::bind(energonsoftware::Matrix4::destroy, std::placeholders::_1, allocator.get()));
         CPPUNIT_ASSERT(m1);

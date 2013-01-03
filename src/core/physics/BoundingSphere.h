@@ -1,4 +1,4 @@
-#ifndef __BOUNDINGSPHERE_H__
+#if !defined __BOUNDINGSPHERE_H__
 #define __BOUNDINGSPHERE_H__
 
 #include "src/core/math/Sphere.h"

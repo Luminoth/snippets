@@ -8,13 +8,13 @@ namespace energonsoftware {
 #define ARRAY_OFFSET 0x10
 //#define ARRAY_OFFSET 0x00
 
-std::shared_ptr<MemoryAllocator> MemoryAllocator::new_allocator(AllocatorType type, size_t size)
+std::shared_ptr<MemoryAllocator> MemoryAllocator::new_allocator(Type type, size_t size)
 {
     switch(type)
     {
-    case AllocatorType::Stack:
+    case Type::Stack:
         return std::shared_ptr<MemoryAllocator>(new StackAllocator(size));
-    case AllocatorType::System:
+    case Type::System:
         return std::shared_ptr<MemoryAllocator>(new SystemAllocator(size));
     }
     return std::shared_ptr<MemoryAllocator>();
@@ -192,7 +192,7 @@ const int TestObject::DATA = 100;
 const float TestObject::MOAR_DATA = 150.35f;
 const std::string TestObject::BUFFER("object test buffer");
 
-MemoryAllocatorTest::MemoryAllocatorTest(energonsoftware::AllocatorType type)
+MemoryAllocatorTest::MemoryAllocatorTest(energonsoftware::MemoryAllocator::Type type)
     : _type(type)
 {
 }

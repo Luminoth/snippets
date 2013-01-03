@@ -133,7 +133,7 @@ public:
     virtual void register_listener(const std::string& section, const std::string& option, ConfigListener& listener) final;
 
     virtual uint32_t logging_type() const final;
-    virtual Logger::LogLevel logging_level() const final;
+    virtual Logger::Level logging_level() const final;
     virtual const boost::filesystem::path logging_filename() const final { return get("logging", "filename"); }
 
     virtual iterator begin() final { return _map.begin(); }

@@ -60,7 +60,7 @@ public:
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    StackAllocatorTest() : MemoryAllocatorTest(energonsoftware::AllocatorType::Stack) {}
+    StackAllocatorTest() : MemoryAllocatorTest(energonsoftware::MemoryAllocator::Type::Stack) {}
     virtual ~StackAllocatorTest() throw() {}
 
 public:
@@ -74,7 +74,7 @@ public:
 #endif
 
         CPPUNIT_ASSERT_THROW(std::shared_ptr<energonsoftware::MemoryAllocator> allocator(
-            energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::Stack, size)), std::bad_alloc);
+            energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::Stack, size)), std::bad_alloc);
     }
 };
 

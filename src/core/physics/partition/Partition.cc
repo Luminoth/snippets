@@ -69,7 +69,7 @@ public:
 public:
     void setUp()
     {
-        _allocator = energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 100 * 1024 * 1024);
+        _allocator = energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 100 * 1024 * 1024);
 
         _partition_types.push_back("flat");
         _partition_types.push_back("tree");

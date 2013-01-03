@@ -12,7 +12,7 @@ Plane::Plane(const Point3& p1, const Point3& p2, const Point3& p3)
 
 }
 
-#ifdef WITH_UNIT_TESTS
+#if defined WITH_UNIT_TESTS
 #include "src/test/UnitTest.h"
 
 class PlaneTest : public CppUnit::TestFixture

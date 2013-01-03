@@ -155,7 +155,7 @@ TypeName& operator=(TypeName&) = delete
 #endif
 
 #if defined WIN32
-    #ifndef HAVE_SSIZE_T
+    #if !defined HAVE_SSIZE_T
         typedef long ssize_t;
     #endif
     typedef long pid_t;

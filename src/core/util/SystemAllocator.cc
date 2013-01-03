@@ -59,7 +59,7 @@ public:
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    SystemAllocatorTest() : MemoryAllocatorTest(energonsoftware::AllocatorType::System) {}
+    SystemAllocatorTest() : MemoryAllocatorTest(energonsoftware::MemoryAllocator::Type::System) {}
     virtual ~SystemAllocatorTest() throw() {}
 
 public:
@@ -73,7 +73,7 @@ public:
 #endif
 
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(
-            energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, size));
+            energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, size));
         // have to use size-1 here because of the allocation < size assertion in allocate()
         CPPUNIT_ASSERT_THROW(allocator->allocate(size-1), std::bad_alloc);
     }

@@ -135,7 +135,7 @@ std::string Quaternion::str() const
 
 }
 
-#ifdef WITH_UNIT_TESTS
+#if defined WITH_UNIT_TESTS
 #include "src/test/UnitTest.h"
 
 class QuaternionTest : public CppUnit::TestFixture

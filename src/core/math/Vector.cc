@@ -49,7 +49,7 @@ std::string Vector::str() const
 
 }
 
-#ifdef WITH_UNIT_TESTS
+#if defined WITH_UNIT_TESTS
 #include "src/test/UnitTest.h"
 
 class VectorTest : public CppUnit::TestFixture
@@ -87,7 +87,7 @@ public:
 public:
     void test_allocate()
     {
-        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 10 * 1024));
+        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 10 * 1024));
         std::shared_ptr<energonsoftware::Vector> v1(new(16, *allocator) energonsoftware::Vector(10.0f, 123.123f, 25.75f),
             std::bind(energonsoftware::Vector::destroy, std::placeholders::_1, allocator.get()));
         CPPUNIT_ASSERT(v1);
