@@ -1,6 +1,6 @@
 #include "src/pch.h"
 #include "src/core/common.h"
-#include "src/core/util/string_util.h"
+#include "src/core/text/string_util.h"
 #include "BaseJob.h"
 #include "BaseThread.h"
 #include "ThreadPool.h"

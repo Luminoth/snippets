@@ -1,7 +1,7 @@
 #include "src/pch.h"
 #include <fstream>
 #include <iostream>
-#include "src/core/util/string_util.h"
+#include "src/core/text/string_util.h"
 #include "src/core/util/util.h"
 #include "Configuration.h"
 
