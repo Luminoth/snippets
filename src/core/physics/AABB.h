@@ -43,7 +43,7 @@ public:
     std::string str() const;
 
 public:
-    friend AABB operator+(const Point3& lhs, const AABB& rhs) { return AABB(lhs + rhs._minimum, lhs + rhs._maximum); }
+    friend AABB operator+(const Position& lhs, const AABB& rhs) { return AABB(lhs + rhs._minimum, lhs + rhs._maximum); }
 
 private:
     void calculate_center();

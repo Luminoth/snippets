@@ -35,6 +35,9 @@ public:
 
     virtual std::string str() const override;
 
+public:
+    friend BoundingSphere operator+(const Position& lhs, const BoundingSphere& rhs) { return BoundingSphere(lhs + rhs._sphere); }
+
 protected:
     Sphere _sphere;
 };

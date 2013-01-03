@@ -19,8 +19,8 @@ public:
     }
 
 public:
-    TrialPartitionable(const energonsoftware::Point3& center, float radius, const std::string& name)
-        : Partitionable(), _bounds(center, radius), _position(center), _name(name)
+    TrialPartitionable(const energonsoftware::Position& position, float radius, const std::string& name)
+        : Partitionable(), _position(position), _relative_bounds(energonsoftware::Point3(), radius), _absolute_bounds(position, radius), _name(name)
     {
     }
 
@@ -29,13 +29,14 @@ public:
     }
 
 public:
-    virtual const energonsoftware::BoundingVolume& bounds() const override { return _bounds; }
-    virtual const energonsoftware::Point3& position() const override  { return _position; }
+    virtual const energonsoftware::Position& position() const override { return _position; }
+    virtual const energonsoftware::BoundingVolume& relative_bounds() const override { return _relative_bounds; }
+    virtual const energonsoftware::BoundingVolume& absolute_bounds() const override { return _absolute_bounds; }
     const std::string& name() const { return _name; }
 
 private:
-    energonsoftware::BoundingSphere _bounds;
-    energonsoftware::Point3 _position;
+    energonsoftware::Position _position;
+    energonsoftware::BoundingSphere _relative_bounds, _absolute_bounds;
     std::string _name;
 
 private:
@@ -95,7 +96,7 @@ public:
             std::list<std::shared_ptr<TrialPartitionable>> collided;
             partition->collide(energonsoftware::BoundingSphere(energonsoftware::Point3(1.0f, 0.0f, 0.0f), 1.0f), collided);
 
-            CPPUNIT_ASSERT_EQUAL_MESSAGE(type, (size_t)1, collided.size());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(type, static_cast<size_t>(1), collided.size());
             CPPUNIT_ASSERT_EQUAL_MESSAGE(type, (*data.begin())->name(), (*collided.begin())->name());
         }
     }
@@ -126,26 +127,26 @@ public:
 
             std::list<std::shared_ptr<TrialPartitionable>> collided;
             partition->collide(energonsoftware::BoundingSphere(energonsoftware::Point3(0.0f, 0.0f, 0.0f), 1.0f), collided);
-            CPPUNIT_ASSERT_EQUAL_MESSAGE(type, (size_t)0, collided.size());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(type, static_cast<size_t>(0), collided.size());
 
             collided.clear();
             partition->collide(energonsoftware::BoundingSphere(energonsoftware::Point3(-99.9f, 0.0f, 100.3f), 1.0f), collided);
-            CPPUNIT_ASSERT_EQUAL_MESSAGE(type + ", Pete", (size_t)1, collided.size());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(type + ", Pete", static_cast<size_t>(1), collided.size());
             CPPUNIT_ASSERT_EQUAL_MESSAGE(type, std::string("Pete"), (*collided.begin())->name());
 
             collided.clear();
             partition->collide(energonsoftware::BoundingSphere(energonsoftware::Point3(99.9f, 0.0f, 100.3f), 1.0f), collided);
-            CPPUNIT_ASSERT_EQUAL_MESSAGE(type + ", Adam", (size_t)1, collided.size());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(type + ", Adam", static_cast<size_t>(1), collided.size());
             CPPUNIT_ASSERT_EQUAL_MESSAGE(type, std::string("Adam"), (*collided.begin())->name());
 
             collided.clear();
             partition->collide(energonsoftware::BoundingSphere(energonsoftware::Point3(99.9f, 0.0f, -100.3f), 1.0f), collided);
-            CPPUNIT_ASSERT_EQUAL_MESSAGE(type + ", Mitchell", (size_t)1, collided.size());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(type + ", Mitchell", static_cast<size_t>(1), collided.size());
             CPPUNIT_ASSERT_EQUAL_MESSAGE(type, std::string("Mitchell"), (*collided.begin())->name());
 
             collided.clear();
             partition->collide(energonsoftware::BoundingSphere(energonsoftware::Point3(-99.9f, 0.0f, -100.3f), 1.0f), collided);
-            CPPUNIT_ASSERT_EQUAL_MESSAGE(type + ", Thomas", (size_t)1, collided.size());
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(type + ", Thomas", static_cast<size_t>(1), collided.size());
             CPPUNIT_ASSERT_EQUAL_MESSAGE(type, std::string("Thomas"), (*collided.begin())->name());
         }
     }

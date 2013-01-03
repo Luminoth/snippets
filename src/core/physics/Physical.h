@@ -3,19 +3,20 @@
 
 #include "src/core/math/Quaternion.h"
 #include "src/core/math/Vector.h"
+#include "partition/Partitionable.h"
 #include "AABB.h"
 
 namespace energonsoftware {
 
 class Matrix4;
 
-class Physical
+class Physical : public Partitionable
 {
 public:
     virtual ~Physical() throw();
 
 public:
-    virtual const Position& position() const final { return _position; }
+    virtual const Position& position() const override { return _position; }
     virtual void position(const Position& position) final;
 
     virtual const Direction& view_unrotated() const final { return _view; }
@@ -54,8 +55,8 @@ public:
     virtual float scale() const final { return _scale; }
     virtual void scale(float scale) final { _scale = scale; }
 
-    virtual AABB absolute_bounds() const final { return _position + _bounds; }
-    virtual const AABB& relative_bounds() const final { return _bounds; }
+    virtual const BoundingVolume& relative_bounds() const override { return _relative_bounds; }
+    virtual const BoundingVolume& absolute_bounds() const override { return _absolute_bounds; }
 
     virtual void simulate() final;
 
@@ -64,8 +65,11 @@ public:
 protected:
     Physical();
 
-    // NOTE: relative to the physical's position
-    virtual void bounds(const AABB& bounds) final { _bounds = bounds; }
+    virtual void relateive_bounds(const AABB& bounds) final
+    {
+        _relative_bounds = bounds;
+        _absolute_bounds = position() + _relative_bounds;
+    }
 
     virtual bool on_simulate(double dt) { return true; }
 
@@ -81,7 +85,7 @@ private:
     Vector3 _velocity, _acceleration;
     float _mass;
     float _scale;
-    AABB _bounds;
+    AABB _relative_bounds, _absolute_bounds;
 
     double _last_simulate;
 };

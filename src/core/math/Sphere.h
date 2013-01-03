@@ -21,6 +21,9 @@ public:
     // TODO: if we add distance calculations to this
     // then update the BoundingSphere class to make use of them
 
+public:
+    friend Sphere operator+(const Position& lhs, const Sphere& rhs) { return Sphere(lhs + rhs._center, rhs._radius); }
+
 private:
     Point3 _center;
     float _radius;

@@ -104,7 +104,7 @@ private:
     virtual bool appendable(std::shared_ptr<T> obj, const BoundingVolume& container, std::list<std::shared_ptr<T>>& pruned) const final
     {
         // prune any objects not inside the container
-        if(obj->bounds().intersect(container)) {
+        if(obj->absolute_bounds().intersect(container)) {
             return true;
         }
 
@@ -132,7 +132,7 @@ private:
         float distance = 0.0f;
         std::shared_ptr<T> farthest;
         for(auto obj : _data) {
-            float r = obj->bounds().radius_squared() < 1.0f ? obj->bounds().radius() : obj->bounds().radius_squared();
+            float r = obj->absolute_bounds().radius_squared() < 1.0f ? obj->absolute_bounds().radius() : obj->absolute_bounds().radius_squared();
             float d = obj->position().distance_squared(_center_of_mass) + r;
             if(d > distance) {
                 farthest = obj;
@@ -141,7 +141,7 @@ private:
         }
 
         if(farthest) {
-            distance = farthest->position().distance(_center_of_mass) + farthest->bounds().radius();
+            distance = farthest->position().distance(_center_of_mass) + farthest->absolute_bounds().radius();
             _container = B(_center_of_mass, distance);
         } else {
             // TODO: radius of 1.0f cannot be right
@@ -155,7 +155,7 @@ protected:
     virtual void on_intersect(const Intersectable& obj, std::list<std::shared_ptr<T>>& collided) const
     {
         for(auto d : _data) {
-            if(obj.intersect(d->bounds())) {
+            if(obj.intersect(d->absolute_bounds())) {
                 collided.push_back(d);
             }
         }

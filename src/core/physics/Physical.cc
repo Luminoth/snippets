@@ -7,7 +7,7 @@
 namespace energonsoftware {
 
 Physical::Physical()
-    : _view(0.0f, 0.0f, 1.0f), _up(0.0f, 1.0f, 0.0f),
+    : Partitionable(), _view(0.0f, 0.0f, 1.0f), _up(0.0f, 1.0f, 0.0f),
         _mass(1.0f), _scale(1.0f), _last_simulate(get_time())
 {
 }

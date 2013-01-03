@@ -13,9 +13,9 @@ public:
     virtual ~Partitionable() throw() {}
 
 public:
-    // override these
-    virtual const BoundingVolume& bounds() const = 0;
     virtual const Position& position() const = 0;
+    virtual const BoundingVolume& relative_bounds() const = 0;
+    virtual const BoundingVolume& absolute_bounds() const = 0;
 };
 
 }

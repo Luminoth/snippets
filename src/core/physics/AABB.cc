@@ -87,9 +87,8 @@ float AABB::distance(const Intersectable& other) const
         return distance(dynamic_cast<const BoundingSphere&>(other));
     } else if(typeid(other) == typeid(AABB)) {
         return distance(dynamic_cast<const AABB&>(other));
-    } else {
-        throw std::runtime_error(std::string("BoundingSphere doesn't know how to intersect ") + typeid(other).name());
     }
+    throw std::runtime_error(std::string("BoundingSphere doesn't know how to intersect ") + typeid(other).name());
 }
 
 float AABB::distance_squared(const Point3& p) const
