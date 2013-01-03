@@ -12,6 +12,13 @@
 class TrialPartitionable : public energonsoftware::Partitionable
 {
 public:
+    static void destroy(TrialPartitionable* const partitionable, energonsoftware::MemoryAllocator* const allocator)
+    {
+        partitionable->~TrialPartitionable();
+        operator delete(partitionable, 16, *allocator);
+    }
+
+public:
     TrialPartitionable(const energonsoftware::Point3& center, float radius, const std::string& name)
         : Partitionable(), _bounds(center, radius), _position(center), _name(name)
     {
@@ -61,7 +68,7 @@ public:
 public:
     void setUp()
     {
-        _allocator = energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 10 * 1024);
+        _allocator = energonsoftware::MemoryAllocator::new_allocator(energonsoftware::AllocatorType::System, 100 * 1024 * 1024);
 
         _partition_types.push_back("flat");
         _partition_types.push_back("tree");
@@ -77,7 +84,8 @@ public:
         // create the data set
         std::list<std::shared_ptr<TrialPartitionable>> data;
         data.push_back(std::shared_ptr<TrialPartitionable>(
-            new TrialPartitionable(energonsoftware::Point3(0.0f, 0.0f, 0.0f), 3.0f, "Jonah")));
+            new(16, *_allocator) TrialPartitionable(energonsoftware::Point3(0.0f, 0.0f, 0.0f), 3.0f, "Jonah"),
+            boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
 
         // test each partition type
         for(const std::string& type : _partition_types) {
@@ -99,13 +107,17 @@ public:
         // create the data set
         std::list<std::shared_ptr<TrialPartitionable>> data;
         data.push_back(std::shared_ptr<TrialPartitionable>(
-            new TrialPartitionable(energonsoftware::Point3(100.0f, 0.0f, 100.0f), 1.0f, "Adam")));
+            new(16, *_allocator) TrialPartitionable(energonsoftware::Point3(100.0f, 0.0f, 100.0f), 1.0f, "Adam"),
+            boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
         data.push_back(std::shared_ptr<TrialPartitionable>(
-            new TrialPartitionable(energonsoftware::Point3(-100.0f, 0.0f, 100.0f), 1.0f, "Pete")));
+            new(16, *_allocator) TrialPartitionable(energonsoftware::Point3(-100.0f, 0.0f, 100.0f), 1.0f, "Pete"),
+            boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
         data.push_back(std::shared_ptr<TrialPartitionable>(
-            new TrialPartitionable(energonsoftware::Point3(100.0f, 0.0f, -100.0f), 1.0f, "Mitchell")));
+            new(16, *_allocator) TrialPartitionable(energonsoftware::Point3(100.0f, 0.0f, -100.0f), 1.0f, "Mitchell"),
+            boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
         data.push_back(std::shared_ptr<TrialPartitionable>(
-            new TrialPartitionable(energonsoftware::Point3(-100.0f, 0.0f, -100.0f), 1.0f, "Thomas")));
+            new(16, *_allocator) TrialPartitionable(energonsoftware::Point3(-100.0f, 0.0f, -100.0f), 1.0f, "Thomas"),
+            boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
 
         // test each partition type
         for(const std::string& type : _partition_types) {
@@ -146,12 +158,13 @@ public:
         std::list<std::shared_ptr<TrialPartitionable>> data;
         for(int i=0; i<100000; ++i) {
             data.push_back(std::shared_ptr<TrialPartitionable>(
-                new TrialPartitionable(
+                new(16, *_allocator) TrialPartitionable(
                     energonsoftware::Point3(energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
                         energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
                         energonsoftware::Random::uniform<float>(0.0f, 1000.0f)),
                     energonsoftware::Random::uniform<float>(0.0f, 3.0f),
-                    "G_" + i)));
+                    "G_" + i),
+                boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
         }
 
         // test each partition type
@@ -175,12 +188,13 @@ public:
         std::list<std::shared_ptr<TrialPartitionable>> data;
         for(int i=0; i<dnum; ++i) {
             data.push_back(std::shared_ptr<TrialPartitionable>(
-                new TrialPartitionable(
+                new(16, *_allocator) TrialPartitionable(
                     energonsoftware::Point3(energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
                         energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
                         energonsoftware::Random::uniform<float>(0.0f, 1000.0f)),
                     energonsoftware::Random::uniform<float>(0.0f, 3.0f),
-                    "G_" + i)));
+                    "G_" + i),
+                boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
         }
 
         // create the intersect set
