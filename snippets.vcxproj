@@ -91,6 +91,8 @@
     <ClCompile Include="src\core\configuration\DatabaseConfiguration.cc" />
     <ClCompile Include="src\core\database\ConnectionPool.cc" />
     <ClCompile Include="src\core\database\DatabaseConnection.cc" />
+    <ClCompile Include="src\core\graphics\Bitmap.cc" />
+    <ClCompile Include="src\core\graphics\Texture.cc" />
     <ClCompile Include="src\core\logging\Logger.cc" />
     <ClCompile Include="src\core\math\Geometry.cc" />
     <ClCompile Include="src\core\math\math_util.cc" />
@@ -104,12 +106,13 @@
     <ClCompile Include="src\core\physics\BoundingSphere.cc" />
     <ClCompile Include="src\core\physics\partition\Partition.cc" />
     <ClCompile Include="src\core\physics\Physical.cc" />
+    <ClCompile Include="src\core\text\Lexer.cc" />
+    <ClCompile Include="src\core\text\string_util.cc" />
     <ClCompile Include="src\core\thread\BaseThread.cc" />
     <ClCompile Include="src\core\thread\ThreadPool.cc" />
     <ClCompile Include="src\core\util\fs_util.cc" />
     <ClCompile Include="src\core\util\MemoryAllocator.cc" />
     <ClCompile Include="src\core\util\StackAllocator.cc" />
-    <ClCompile Include="src\core\util\string_util.cc" />
     <ClCompile Include="src\core\util\SystemAllocator.cc" />
     <ClCompile Include="src\core\util\util.cc" />
     <ClCompile Include="src\main.cc" />
@@ -130,6 +133,8 @@
     <ClInclude Include="src\core\database\DatabaseConnection.h" />
     <ClInclude Include="src\core\database\DatabaseError.h" />
     <ClInclude Include="src\core\errors\NotImplementedError.h" />
+    <ClInclude Include="src\core\graphics\Bitmap.h" />
+    <ClInclude Include="src\core\graphics\Texture.h" />
     <ClInclude Include="src\core\logging\Logger.h" />
     <ClInclude Include="src\core\math\Geometry.h" />
     <ClInclude Include="src\core\math\math_util.h" />
@@ -151,6 +156,8 @@
     <ClInclude Include="src\core\physics\partition\SphereTree.h" />
     <ClInclude Include="src\core\physics\partition\TreePartition.h" />
     <ClInclude Include="src\core\physics\Physical.h" />
+    <ClInclude Include="src\core\text\Lexer.h" />
+    <ClInclude Include="src\core\text\string_util.h" />
     <ClInclude Include="src\core\thread\BaseJob.h" />
     <ClInclude Include="src\core\thread\BaseThread.h" />
     <ClInclude Include="src\core\thread\ThreadPool.h" />
@@ -158,7 +165,6 @@
     <ClInclude Include="src\core\util\MemoryAllocator.h" />
     <ClInclude Include="src\core\util\Random.h" />
     <ClInclude Include="src\core\util\StackAllocator.h" />
-    <ClInclude Include="src\core\util\string_util.h" />
     <ClInclude Include="src\core\util\SystemAllocator.h" />
     <ClInclude Include="src\core\util\util.h" />
     <ClInclude Include="src\pch.h" />

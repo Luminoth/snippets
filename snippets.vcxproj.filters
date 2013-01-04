@@ -42,6 +42,12 @@
     <Filter Include="Source Files\core\physics\partition">
       <UniqueIdentifier>{55d6ef88-19aa-43be-a785-f5a0d3d11919}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\core\text">
+      <UniqueIdentifier>{a3ba8471-64e6-4d76-9bd0-66107b03c56e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\graphics">
+      <UniqueIdentifier>{e11ab049-6e23-4348-81eb-1662a89b44ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\common.cc">
@@ -63,9 +69,6 @@
       <Filter>Source Files\core\math</Filter>
     </ClCompile>
     <ClCompile Include="src\core\util\fs_util.cc">
-      <Filter>Source Files\core\util</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\util\string_util.cc">
       <Filter>Source Files\core\util</Filter>
     </ClCompile>
     <ClCompile Include="src\core\util\util.cc">
@@ -131,6 +134,18 @@
     <ClCompile Include="src\core\physics\partition\Partition.cc">
       <Filter>Source Files\core\physics\partition</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\graphics\Bitmap.cc">
+      <Filter>Source Files\core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\graphics\Texture.cc">
+      <Filter>Source Files\core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\text\Lexer.cc">
+      <Filter>Source Files\core\text</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\text\string_util.cc">
+      <Filter>Source Files\core\text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\common.h">
@@ -155,9 +170,6 @@
       <Filter>Source Files\core\math</Filter>
     </ClInclude>
     <ClInclude Include="src\core\util\fs_util.h">
-      <Filter>Source Files\core\util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\util\string_util.h">
       <Filter>Source Files\core\util</Filter>
     </ClInclude>
     <ClInclude Include="src\core\util\util.h">
@@ -258,6 +270,18 @@
     </ClInclude>
     <ClInclude Include="src\core\physics\partition\TreePartition.h">
       <Filter>Source Files\core\physics\partition</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\graphics\Bitmap.h">
+      <Filter>Source Files\core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\graphics\Texture.h">
+      <Filter>Source Files\core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\text\Lexer.h">
+      <Filter>Source Files\core\text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\text\string_util.h">
+      <Filter>Source Files\core\text</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
