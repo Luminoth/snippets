@@ -26,7 +26,7 @@ Arrays of objects must be allocated specially:
         std::bind(&Object::destroy_array, std::placeholders::_1, count, &allocator));
     Object::assign_array(objects1.get(), count);
 
-    boost::shared_array<Object> objects2(reinterpret_cast<Object*>(allocator.allocate(sizeof(Object) * count, alignment)),
+    boost::shared_array<Object> objects2(reinterpret_cast<Object*>(allocator.allocate_aligned(sizeof(Object) * count, alignment)),
         std::bind(&Object::destroy_array, std::placeholders::_1, count, alignment, &allocator));
     Object::assign_array(objects2.get(), count);
 
@@ -83,10 +83,10 @@ public:
     // allocate/release aligned memory
     // NOTE: alignment must be a power of 2 greater than 1,
     // and must be used consistenty across these methods
-    virtual void* allocate(size_t bytes, size_t alignment) final;
-    //virtual void* allocate_array(size_t bytes, size_t alignment) final;
-    virtual void release(void* ptr, size_t alignment) final;
-    //virtual void release_array(void* ptr, size_t alignment) final;
+    virtual void* allocate_aligned(size_t bytes, size_t alignment) final;
+    //virtual void* allocate_array_aligned(size_t bytes, size_t alignment) final;
+    virtual void release_aligned(void* ptr, size_t alignment) final;
+    //virtual void release_array_aligned(void* ptr, size_t alignment) final;
 
     // resets (but does not free memory) any internal state
     virtual void reset() = 0;
@@ -133,24 +133,24 @@ inline void operator delete[](void* mem, energonsoftware::MemoryAllocator& alloc
 // aligned operators
 inline void* operator new(size_t bytes, size_t alignment, energonsoftware::MemoryAllocator& allocator)
 {
-    return allocator.allocate(bytes, alignment);
+    return allocator.allocate_aligned(bytes, alignment);
 }
 
 inline void operator delete(void* mem, size_t alignment, energonsoftware::MemoryAllocator& allocator)
 {
-    allocator.release(mem, alignment);
+    allocator.release_aligned(mem, alignment);
 }
 
 inline void* operator new[](size_t bytes, size_t alignment, energonsoftware::MemoryAllocator& allocator)
 {
     //return allocator.allocate_array(bytes, alignment);
-    return allocator.allocate(bytes, alignment);
+    return allocator.allocate_aligned(bytes, alignment);
 }
 
 inline void operator delete[](void* mem, size_t alignment, energonsoftware::MemoryAllocator& allocator)
 {
     //allocator.release_array(mem, alignment);
-    allocator.release(mem, alignment);
+    allocator.release_aligned(mem, alignment);
 }
 
 #if defined WITH_UNIT_TESTS

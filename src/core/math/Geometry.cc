@@ -11,7 +11,7 @@ void Vertex::destroy(Vertex* const vertex, MemoryAllocator* const allocator)
 
 Vertex* Vertex::create_array(size_t count, MemoryAllocator& allocator)
 {
-    Vertex* vertices = reinterpret_cast<Vertex*>(allocator.allocate(sizeof(Vertex) * count, 16));
+    Vertex* vertices = reinterpret_cast<Vertex*>(allocator.allocate_aligned(sizeof(Vertex) * count, 16));
 
     Vertex *vertex = vertices, *end = vertices + count;
     while(vertex != end) {
@@ -51,7 +51,7 @@ void Triangle::destroy(Triangle* const triangle, MemoryAllocator* const allocato
 
 Triangle* Triangle::create_array(size_t count, MemoryAllocator& allocator)
 {
-    Triangle* triangles = reinterpret_cast<Triangle*>(allocator.allocate(sizeof(Triangle) * count, 16));
+    Triangle* triangles = reinterpret_cast<Triangle*>(allocator.allocate_aligned(sizeof(Triangle) * count, 16));
 
     Triangle *triangle = triangles, *end = triangles + count;
     while(triangle != end) {
@@ -84,7 +84,7 @@ void Weight::destroy(Weight* const weight, MemoryAllocator* const allocator)
 
 Weight* Weight::create_array(size_t count, MemoryAllocator& allocator)
 {
-    Weight* weights = reinterpret_cast<Weight*>(allocator.allocate(sizeof(Weight) * count, 16));
+    Weight* weights = reinterpret_cast<Weight*>(allocator.allocate_aligned(sizeof(Weight) * count, 16));
 
     Weight *weight = weights, *end = weights + count;
     while(weight != end) {
@@ -117,7 +117,7 @@ Weight::Weight()
 
 Edge* Edge::create_array(size_t count, MemoryAllocator& allocator)
 {
-    Edge* edges = reinterpret_cast<Edge*>(allocator.allocate(sizeof(Edge) * count, 16));
+    Edge* edges = reinterpret_cast<Edge*>(allocator.allocate_aligned(sizeof(Edge) * count, 16));
 
     Edge *edge = edges, *end = edges + count;
     while(edge != end) {
@@ -152,11 +152,11 @@ std::string Edge::str() const
 void compute_tangents(boost::shared_array<Triangle> triangles, size_t triangle_count, boost::shared_array<Vertex> vertices, size_t vertex_count, MemoryAllocator& allocator, bool smooth)
 {
     boost::shared_array<Vector3> narray(Vector3::create_array(vertex_count, allocator),
-        boost::bind(&Vector::destroy_array, _1, vertex_count, &allocator));
+        std::bind(&Vector::destroy_array, std::placeholders::_1, vertex_count, &allocator));
     boost::shared_array<Vector3> tarray(Vector3::create_array(vertex_count, allocator),
-        boost::bind(&Vector::destroy_array, _1, vertex_count, &allocator));
+        std::bind(&Vector::destroy_array, std::placeholders::_1, vertex_count, &allocator));
     boost::shared_array<Vector3> btarray(Vector3::create_array(vertex_count, allocator),
-        boost::bind(&Vector::destroy_array, _1, vertex_count, &allocator));
+        std::bind(&Vector::destroy_array, std::placeholders::_1, vertex_count, &allocator));
 
     // calculate the vertex normals and tangents (sum of each face normal/tangent)
     // Mathematics for 3D Game Programming and Computer Graphics, section 7.8.3
@@ -260,18 +260,18 @@ void Geometry::allocate_buffers(size_t vertex_count, MemoryAllocator& allocator)
     _vertex_count = vertex_count;
 
     _vertex_buffer_size = _vertex_count * 3;
-    _vertex_buffer.reset(new(allocator) float[_vertex_buffer_size], boost::bind(&MemoryAllocator::release, &allocator, _1));
+    _vertex_buffer.reset(new(allocator) float[_vertex_buffer_size], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
 
     _normal_buffer_size = _vertex_count * 3;
-    _normal_buffer.reset(new(allocator) float[_normal_buffer_size], boost::bind(&MemoryAllocator::release, &allocator, _1));
-    _normal_line_buffer.reset(new(allocator) float[_vertex_count * 2 * 3], boost::bind(&MemoryAllocator::release, &allocator, _1));
+    _normal_buffer.reset(new(allocator) float[_normal_buffer_size], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
+    _normal_line_buffer.reset(new(allocator) float[_vertex_count * 2 * 3], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
 
     _tangent_buffer_size = _vertex_count * 4;
-    _tangent_buffer.reset(new(allocator) float[_tangent_buffer_size], boost::bind(&MemoryAllocator::release, &allocator, _1));
-    _tangent_line_buffer.reset(new(allocator) float[_vertex_count * 2 * 3], boost::bind(&MemoryAllocator::release, &allocator, _1));
+    _tangent_buffer.reset(new(allocator) float[_tangent_buffer_size], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
+    _tangent_line_buffer.reset(new(allocator) float[_vertex_count * 2 * 3], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
 
     _texture_buffer_size = _vertex_count * 2;
-    _texture_buffer.reset(new(allocator) float[_texture_buffer_size], boost::bind(&MemoryAllocator::release, &allocator, _1));
+    _texture_buffer.reset(new(allocator) float[_texture_buffer_size], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
 }
 
 void Geometry::allocate_buffers(size_t triangle_count, size_t vertex_count, MemoryAllocator& allocator)
@@ -281,18 +281,18 @@ void Geometry::allocate_buffers(size_t triangle_count, size_t vertex_count, Memo
     _vertex_count = triangle_count * 3;
 
     _vertex_buffer_size = _vertex_count * 3;
-    _vertex_buffer.reset(new(allocator) float[_vertex_buffer_size], boost::bind(&MemoryAllocator::release, &allocator, _1));
+    _vertex_buffer.reset(new(allocator) float[_vertex_buffer_size], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
 
     _normal_buffer_size = _vertex_count * 3;
-    _normal_buffer.reset(new(allocator) float[_normal_buffer_size], boost::bind(&MemoryAllocator::release, &allocator, _1));
-    _normal_line_buffer.reset(new(allocator) float[_vertex_count * 2 * 3], boost::bind(&MemoryAllocator::release, &allocator, _1));
+    _normal_buffer.reset(new(allocator) float[_normal_buffer_size], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
+    _normal_line_buffer.reset(new(allocator) float[_vertex_count * 2 * 3], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
 
     _tangent_buffer_size = _vertex_count * 4;
-    _tangent_buffer.reset(new(allocator) float[_tangent_buffer_size], boost::bind(&MemoryAllocator::release, &allocator, _1));
-    _tangent_line_buffer.reset(new(allocator) float[_vertex_count * 2 * 3], boost::bind(&MemoryAllocator::release, &allocator, _1));
+    _tangent_buffer.reset(new(allocator) float[_tangent_buffer_size], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
+    _tangent_line_buffer.reset(new(allocator) float[_vertex_count * 2 * 3], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
 
     _texture_buffer_size = _vertex_count * 2;
-    _texture_buffer.reset(new(allocator) float[_tangent_buffer_size], boost::bind(&MemoryAllocator::release, &allocator, _1));
+    _texture_buffer.reset(new(allocator) float[_tangent_buffer_size], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
 }
 
 void Geometry::copy_vertices(const Vertex* const vertices, size_t vertex_count, size_t start)

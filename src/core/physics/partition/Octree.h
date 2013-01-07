@@ -57,7 +57,7 @@ private:
             if(it->size() > 0) {
                 TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
                     new(16, *allocator) Octree(allocator, *it, TreePartition<T, B>::depth() - 1),
-                    boost::bind(&Octree<T, B>::destroy, _1, allocator)));
+                    std::bind(&Octree<T, B>::destroy, std::placeholders::_1, allocator)));
             }
         }
     }

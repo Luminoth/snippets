@@ -82,12 +82,12 @@ private:
         std::list<std::shared_ptr<T>> subtree(data.begin(), data.begin() + median);
         TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
             new(16, *allocator) KdTree<T, B, Dim>(allocator, subtree, TreePartition<T, B>::depth() - 1),
-            boost::bind(&KdTree<T, B, Dim>::destroy, _1, allocator)));
+            std::bind(&KdTree<T, B, Dim>::destroy, std::placeholders::_1, allocator)));
 
         subtree = std::list<std::shared_ptr<T>>(data.begin() + median + 1, data.end());
         TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
             new(16, *allocator) KdTree<T, B, Dim>(allocator, subtree, TreePartition<T, B>::depth() - 1),
-            boost::bind(&KdTree<T, B, Dim>::destroy, _1, allocator)));
+            std::bind(&KdTree<T, B, Dim>::destroy, std::placeholders::_1, allocator)));
     }
 
 private:

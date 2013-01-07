@@ -9,22 +9,22 @@
 #include "Partitionable.h"
 #include "PartitionFactory.h"
 
-class TrialPartitionable : public energonsoftware::Partitionable
+class TestPartitionable : public energonsoftware::Partitionable
 {
 public:
-    static void destroy(TrialPartitionable* const partitionable, energonsoftware::MemoryAllocator* const allocator)
+    static void destroy(TestPartitionable* const partitionable, energonsoftware::MemoryAllocator* const allocator)
     {
-        partitionable->~TrialPartitionable();
+        partitionable->~TestPartitionable();
         operator delete(partitionable, 16, *allocator);
     }
 
 public:
-    TrialPartitionable(const energonsoftware::Position& position, float radius, const std::string& name)
+    TestPartitionable(const energonsoftware::Position& position, float radius, const std::string& name)
         : Partitionable(), _position(position), _relative_bounds(energonsoftware::Point3(), radius), _absolute_bounds(position, radius), _name(name)
     {
     }
 
-    virtual ~TrialPartitionable() throw()
+    virtual ~TestPartitionable() throw()
     {
     }
 
@@ -40,7 +40,8 @@ private:
     std::string _name;
 
 private:
-    TrialPartitionable();
+    TestPartitionable();
+    DISALLOW_COPY_AND_ASSIGN(TestPartitionable);
 };
 
 bool ResultCmp(const std::pair<std::string, energonsoftware::Point3>& lhs, const std::pair<std::string, energonsoftware::Point3>& rhs)
@@ -83,17 +84,17 @@ public:
         unsigned int depth = 5;
 
         // create the data set
-        std::list<std::shared_ptr<TrialPartitionable>> data;
-        data.push_back(std::shared_ptr<TrialPartitionable>(
-            new(16, *_allocator) TrialPartitionable(energonsoftware::Point3(0.0f, 0.0f, 0.0f), 3.0f, "Jonah"),
-            boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
+        std::list<std::shared_ptr<TestPartitionable>> data;
+        data.push_back(std::shared_ptr<TestPartitionable>(
+            new(16, *_allocator) TestPartitionable(energonsoftware::Point3(0.0f, 0.0f, 0.0f), 3.0f, "Jonah"),
+            std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
 
         // test each partition type
         for(const std::string& type : _partition_types) {
-            std::shared_ptr<energonsoftware::Partition<TrialPartitionable, energonsoftware::BoundingSphere>> partition(
-                energonsoftware::PartitionFactory<TrialPartitionable, energonsoftware::BoundingSphere>::new_partition(type, _allocator.get(), data, depth));
+            std::shared_ptr<energonsoftware::Partition<TestPartitionable, energonsoftware::BoundingSphere>> partition(
+                energonsoftware::PartitionFactory<TestPartitionable, energonsoftware::BoundingSphere>::new_partition(type, _allocator.get(), data, depth));
 
-            std::list<std::shared_ptr<TrialPartitionable>> collided;
+            std::list<std::shared_ptr<TestPartitionable>> collided;
             partition->collide(energonsoftware::BoundingSphere(energonsoftware::Point3(1.0f, 0.0f, 0.0f), 1.0f), collided);
 
             CPPUNIT_ASSERT_EQUAL_MESSAGE(type, static_cast<size_t>(1), collided.size());
@@ -106,26 +107,26 @@ public:
         unsigned int depth = 10;
 
         // create the data set
-        std::list<std::shared_ptr<TrialPartitionable>> data;
-        data.push_back(std::shared_ptr<TrialPartitionable>(
-            new(16, *_allocator) TrialPartitionable(energonsoftware::Point3(100.0f, 0.0f, 100.0f), 1.0f, "Adam"),
-            boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
-        data.push_back(std::shared_ptr<TrialPartitionable>(
-            new(16, *_allocator) TrialPartitionable(energonsoftware::Point3(-100.0f, 0.0f, 100.0f), 1.0f, "Pete"),
-            boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
-        data.push_back(std::shared_ptr<TrialPartitionable>(
-            new(16, *_allocator) TrialPartitionable(energonsoftware::Point3(100.0f, 0.0f, -100.0f), 1.0f, "Mitchell"),
-            boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
-        data.push_back(std::shared_ptr<TrialPartitionable>(
-            new(16, *_allocator) TrialPartitionable(energonsoftware::Point3(-100.0f, 0.0f, -100.0f), 1.0f, "Thomas"),
-            boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
+        std::list<std::shared_ptr<TestPartitionable>> data;
+        data.push_back(std::shared_ptr<TestPartitionable>(
+            new(16, *_allocator) TestPartitionable(energonsoftware::Point3(100.0f, 0.0f, 100.0f), 1.0f, "Adam"),
+            std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
+        data.push_back(std::shared_ptr<TestPartitionable>(
+            new(16, *_allocator) TestPartitionable(energonsoftware::Point3(-100.0f, 0.0f, 100.0f), 1.0f, "Pete"),
+            std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
+        data.push_back(std::shared_ptr<TestPartitionable>(
+            new(16, *_allocator) TestPartitionable(energonsoftware::Point3(100.0f, 0.0f, -100.0f), 1.0f, "Mitchell"),
+            std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
+        data.push_back(std::shared_ptr<TestPartitionable>(
+            new(16, *_allocator) TestPartitionable(energonsoftware::Point3(-100.0f, 0.0f, -100.0f), 1.0f, "Thomas"),
+            std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
 
         // test each partition type
         for(const std::string& type : _partition_types) {
-            std::shared_ptr<energonsoftware::Partition<TrialPartitionable, energonsoftware::BoundingSphere>> partition(
-                energonsoftware::PartitionFactory<TrialPartitionable, energonsoftware::BoundingSphere>::new_partition(type, _allocator.get(), data, depth));
+            std::shared_ptr<energonsoftware::Partition<TestPartitionable, energonsoftware::BoundingSphere>> partition(
+                energonsoftware::PartitionFactory<TestPartitionable, energonsoftware::BoundingSphere>::new_partition(type, _allocator.get(), data, depth));
 
-            std::list<std::shared_ptr<TrialPartitionable>> collided;
+            std::list<std::shared_ptr<TestPartitionable>> collided;
             partition->collide(energonsoftware::BoundingSphere(energonsoftware::Point3(0.0f, 0.0f, 0.0f), 1.0f), collided);
             CPPUNIT_ASSERT_EQUAL_MESSAGE(type, static_cast<size_t>(0), collided.size());
 
@@ -156,25 +157,25 @@ public:
         unsigned int depth = 10;
 
         // create the data set
-        std::list<std::shared_ptr<TrialPartitionable>> data;
+        std::list<std::shared_ptr<TestPartitionable>> data;
         for(int i=0; i<100000; ++i) {
-            data.push_back(std::shared_ptr<TrialPartitionable>(
-                new(16, *_allocator) TrialPartitionable(
+            data.push_back(std::shared_ptr<TestPartitionable>(
+                new(16, *_allocator) TestPartitionable(
                     energonsoftware::Point3(energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
                         energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
                         energonsoftware::Random::uniform<float>(0.0f, 1000.0f)),
                     energonsoftware::Random::uniform<float>(0.0f, 3.0f),
                     "G_" + i),
-                boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
+                std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
         }
 
         // test each partition type
         for(const std::string& type : _partition_types) {
-            std::shared_ptr<energonsoftware::Partition<TrialPartitionable, energonsoftware::BoundingSphere>> partition(
-                energonsoftware::PartitionFactory<TrialPartitionable, energonsoftware::BoundingSphere>::new_partition(type, _allocator.get(), data, depth));
+            std::shared_ptr<energonsoftware::Partition<TestPartitionable, energonsoftware::BoundingSphere>> partition(
+                energonsoftware::PartitionFactory<TestPartitionable, energonsoftware::BoundingSphere>::new_partition(type, _allocator.get(), data, depth));
 
             energonsoftware::BoundingSphere obj(energonsoftware::Point3(0.0f, 0.0f, 0.0f), 1000.0f);
-            std::list<std::shared_ptr<TrialPartitionable>> collided;
+            std::list<std::shared_ptr<TestPartitionable>> collided;
             partition->collide(obj, collided);
             CPPUNIT_ASSERT_MESSAGE(type, collided.size() > 0);
         }
@@ -186,16 +187,16 @@ public:
         int dnum = 6000, cnum = 400;
 
         // create the data set
-        std::list<std::shared_ptr<TrialPartitionable>> data;
+        std::list<std::shared_ptr<TestPartitionable>> data;
         for(int i=0; i<dnum; ++i) {
-            data.push_back(std::shared_ptr<TrialPartitionable>(
-                new(16, *_allocator) TrialPartitionable(
+            data.push_back(std::shared_ptr<TestPartitionable>(
+                new(16, *_allocator) TestPartitionable(
                     energonsoftware::Point3(energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
                         energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
                         energonsoftware::Random::uniform<float>(0.0f, 1000.0f)),
                     energonsoftware::Random::uniform<float>(0.0f, 3.0f),
                     "G_" + i),
-                boost::bind(&TrialPartitionable::destroy, _1, _allocator.get())));
+                std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
         }
 
         // create the intersect set
@@ -219,14 +220,14 @@ public:
             LOG_INFO("Starting speed test for type " << type << "...\n");
 
             double start = energonsoftware::get_time();
-            std::shared_ptr<energonsoftware::Partition<TrialPartitionable, energonsoftware::BoundingSphere>> partition(
-                energonsoftware::PartitionFactory<TrialPartitionable, energonsoftware::BoundingSphere>::new_partition(type, _allocator.get(), data, depth));
+            std::shared_ptr<energonsoftware::Partition<TestPartitionable, energonsoftware::BoundingSphere>> partition(
+                energonsoftware::PartitionFactory<TestPartitionable, energonsoftware::BoundingSphere>::new_partition(type, _allocator.get(), data, depth));
             double cons = energonsoftware::get_time();
             LOG_INFO("Contructed in " << cons - start << " seconds\n");
 
             start = energonsoftware::get_time();
             for(int m=0; m<cnum; ++m) {
-                std::list<std::shared_ptr<TrialPartitionable>> collided;
+                std::list<std::shared_ptr<TestPartitionable>> collided;
                 partition->collide(energonsoftware::BoundingSphere(cents[m], 1.0f), collided);
                 if(collided.size() > 0) {
                     std::list<std::pair<std::string, energonsoftware::Point3>> res;

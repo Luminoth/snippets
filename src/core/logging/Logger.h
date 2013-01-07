@@ -109,8 +109,8 @@ public:
     // configures for stdout, no file
     static void configure(Level level);
 
-    static bool config_stdout() { return (_logger_type & LoggerTypeStdout) == LoggerTypeStdout; }
-    static bool config_file() { return (_logger_type & LoggerTypeFile) == LoggerTypeFile; }
+    static bool config_stdout() { return LoggerTypeStdout == (_logger_type & LoggerTypeStdout); }
+    static bool config_file() { return LoggerTypeFile == (_logger_type & LoggerTypeFile); }
     //static bool config_level() { return _logger_level; }
 
     static void set_log_level(Level level) { _logger_level = level; }

@@ -43,7 +43,7 @@ void BaseThread::start()
     _quit = false;
     _own_thread = true;
 
-    _thread.reset(new boost::thread(boost::bind(&BaseThread::run, this)));
+    _thread.reset(new boost::thread(std::bind(&BaseThread::run, this)));
 }
 
 void BaseThread::stop()

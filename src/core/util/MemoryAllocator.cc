@@ -43,7 +43,7 @@ void MemoryAllocator::release_array(void* ptr)
     release(reinterpret_cast<void*>(reinterpret_cast<size_t>(ptr) - ARRAY_OFFSET));
 }*/
 
-void* MemoryAllocator::allocate(size_t bytes, size_t alignment)
+void* MemoryAllocator::allocate_aligned(size_t bytes, size_t alignment)
 {
     // Game Engine Architecture 5.2.1.3
     assert(alignment > 1);
@@ -73,14 +73,14 @@ void* MemoryAllocator::allocate(size_t bytes, size_t alignment)
     return reinterpret_cast<void*>(aligned);
 }
 
-/*void* MemoryAllocator::allocate_array(size_t bytes, size_t alignment)
+/*void* MemoryAllocator::allocate_array_aligned(size_t bytes, size_t alignment)
 {
     // need to allocate a little extra for systems
     // that store the size of the array in memory
-    return allocate(bytes + ARRAY_OFFSET, alignment);
+    return allocate_aligned(bytes + ARRAY_OFFSET, alignment);
 }*/
 
-void MemoryAllocator::release(void* ptr, size_t alignement)
+void MemoryAllocator::release_aligned(void* ptr, size_t alignement)
 {
     // Game Engine Architecture 5.2.1.3
     size_t aligned = reinterpret_cast<size_t>(ptr);
@@ -90,11 +90,11 @@ void MemoryAllocator::release(void* ptr, size_t alignement)
     release(reinterpret_cast<void*>(address));
 }
 
-/*void MemoryAllocator::release_array(void* ptr, size_t alignment)
+/*void MemoryAllocator::release_array_aligned(void* ptr, size_t alignment)
 {
     // for systems that store the size of the array
     // in memory, we need to back up over that to release
-    release(reinterpret_cast<void*>(reinterpret_cast<size_t>(ptr) - ARRAY_OFFSET), alignment);
+    release_aligned(reinterpret_cast<void*>(reinterpret_cast<size_t>(ptr) - ARRAY_OFFSET), alignment);
 }*/
 
 }
@@ -130,7 +130,7 @@ public:
 
     static TestObject* create_array_aligned(size_t count, size_t alignment, energonsoftware::MemoryAllocator& allocator)
     {
-        TestObject* objs = reinterpret_cast<TestObject*>(allocator.allocate(sizeof(TestObject) * count, alignment));
+        TestObject* objs = reinterpret_cast<TestObject*>(allocator.allocate_aligned(sizeof(TestObject) * count, alignment));
 
         TestObject *obj = objs, *end = objs + count;
         while(obj != end) {

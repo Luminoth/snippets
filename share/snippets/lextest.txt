@@ -1,0 +1,14 @@
+// this is a comment
+# so is this
+/*
+and this here is a multi-line comment
+*/
+
+version 3.23;
+
+testlex()
+{
+    test;
+	"strings require these thingies";
+  12345;
+}

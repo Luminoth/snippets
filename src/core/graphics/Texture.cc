@@ -32,7 +32,7 @@ void Texture::allocate(MemoryAllocator& allocator, size_t size)
 {
     release();
 
-    _pixels.reset(new(allocator) unsigned char[size], boost::bind(&MemoryAllocator::release, &allocator, _1));
+    _pixels.reset(new(allocator) unsigned char[size], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
 }
 
 void Texture::release()

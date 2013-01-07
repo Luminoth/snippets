@@ -13,22 +13,26 @@ public:
         CLOSE_PAREN,
         OPEN_BRACE,
         CLOSE_BRACE,
+        SEMICOLON,
+        HASH,
 
         // end of file
         END,
 
         // scan error
         LEX_ERROR,
-
-        // custom tokens must start after LEX_ERROR
     };
 
-private:
-    static std::unordered_map<std::string, int> keyword_map;
-
 protected:
-    // NOTE: this does not check for keyword overwrite
-    static void set_keyword(const std::string& keyword, int token);
+    enum CommentTypeMask
+    {
+        CommentTypeNone = 0,
+        CommentTypeC = 1,
+        CommentTypeCpp = 3,
+        CommentTypeHash = 4,
+
+        CommentTypeAll = 0xffff
+    };
 
 public:
     virtual ~Lexer() throw();
@@ -38,6 +42,9 @@ public:
 
     virtual int position() const final { return _current; }
     virtual size_t length() const final { return _data.length(); }
+
+    virtual void data(const std::string& data) final { _data = data; }
+
     virtual void clear() final { _current = 0; _data.erase(); }
     virtual void reset() final { _current = 0; }
 
@@ -53,15 +60,28 @@ public:
     // swallows the rest of the current line
     virtual void advance_line() final;
 
-private:
-    void skip_comments();
+protected:
+    virtual void configure_comments(uint32_t type) final { _comment_config = type; }
 
-    char advance();
-    int lex();
-    bool check_keyword(int token);
-    int keyword();
+    // NOTE: this does NOT check for overwrite
+    virtual void set_keyword(const std::string& keyword, int token) final;
+
+    virtual bool c_comments() const final { return CommentTypeC == (_comment_config & CommentTypeC); }
+    virtual bool cpp_comments() const final { return CommentTypeCpp == (_comment_config & CommentTypeCpp); }
+    virtual bool hash_comments() const final { return CommentTypeHash == (_comment_config & CommentTypeHash); }
+
+    virtual void skip_comments() final;
+
+    virtual char advance() final;
+    virtual void rewind() final { _current--; }
+    virtual int lex() final;
+    virtual bool check_keyword(int token) final;
+    virtual int keyword() final;
 
 private:
+    std::unordered_map<std::string, int> _keyword_map;
+    uint32_t _comment_config;
+
     std::string _data;
     int _current;
 

@@ -19,19 +19,19 @@ public:
         std::string scratch(boost::algorithm::to_lower_copy(type));
         if(scratch == "octree") {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Octree<T, B>(allocator, data, container, pruned, depth),
-                boost::bind(&Octree<T, B>::destroy, _1, allocator));
+                std::bind(&Octree<T, B>::destroy, std::placeholders::_1, allocator));
         } else if(scratch == "spheretree") {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) SphereTree<T, B>(allocator, data, container, pruned, depth),
-                boost::bind(&SphereTree<T, B>::destroy, _1, allocator));
+                std::bind(&SphereTree<T, B>::destroy, std::placeholders::_1, allocator));
         } else if(scratch == "kdtree3") {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) KdTree3<T, B>(allocator, data, container, pruned, depth),
-                boost::bind(&KdTree3<T, B>::destroy, _1, allocator));
+                std::bind(&KdTree3<T, B>::destroy, std::placeholders::_1, allocator));
         } else if(scratch == "tree") {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) TreePartition<T, B>(allocator, data, container, pruned, depth),
-                boost::bind(&TreePartition<T, B>::destroy, _1, allocator));
+                std::bind(&TreePartition<T, B>::destroy, std::placeholders::_1, allocator));
         } else if(scratch == "flat") {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Partition<T, B>(data, container, pruned),
-                boost::bind(&Partition<T, B>::destroy, _1, allocator));
+                std::bind(&Partition<T, B>::destroy, std::placeholders::_1, allocator));
         }
         throw PartitionError("Unknown partition type: " + type);
     }
@@ -47,19 +47,19 @@ public:
         std::string scratch(boost::algorithm::to_lower_copy(type));
         if(scratch == "octree") {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Octree<T, B>(allocator, data, depth),
-                boost::bind(&Octree<T, B>::destroy, _1, allocator));
+                std::bind(&Octree<T, B>::destroy, std::placeholders::_1, allocator));
         } else if(scratch == "spheretree") {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) SphereTree<T, B>(allocator, data, depth),
-                boost::bind(&SphereTree<T, B>::destroy, _1, allocator));
+                std::bind(&SphereTree<T, B>::destroy, std::placeholders::_1, allocator));
         } else if(scratch == "kdtree3") {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) KdTree3<T, B>(allocator, data, depth),
-                boost::bind(&KdTree3<T, B>::destroy, _1, allocator));
+                std::bind(&KdTree3<T, B>::destroy, std::placeholders::_1, allocator));
         } else if(scratch == "tree") {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) TreePartition<T, B>(allocator, data, depth),
-                boost::bind(&TreePartition<T, B>::destroy, _1, allocator));
+                std::bind(&TreePartition<T, B>::destroy, std::placeholders::_1, allocator));
         } else if(scratch == "flat") {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Partition<T, B>(data),
-                boost::bind(&Partition<T, B>::destroy, _1, allocator));
+                std::bind(&Partition<T, B>::destroy, std::placeholders::_1, allocator));
         }
         throw PartitionError("Unknown partition type: " + type);
     }

@@ -65,13 +65,13 @@ private:
         if(left.size() > 0) {
             TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
                 new(16, *allocator) SphereTree(allocator, left, TreePartition<T, B>::depth() - 1),
-                boost::bind(&SphereTree<T, B>::destroy, _1, allocator)));
+                std::bind(&SphereTree<T, B>::destroy, std::placeholders::_1, allocator)));
         }
 
         if(right.size() > 0) {
             TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
                 new(16, *allocator) SphereTree(allocator, right, TreePartition<T, B>::depth() - 1),
-                boost::bind(&SphereTree<T, B>::destroy, _1, allocator)));
+                std::bind(&SphereTree<T, B>::destroy, std::placeholders::_1, allocator)));
         }
     }
 

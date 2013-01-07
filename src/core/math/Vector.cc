@@ -12,7 +12,7 @@ void Vector::destroy(Vector* const vector, MemoryAllocator* const allocator)
 
 Vector* Vector::create_array(size_t count, MemoryAllocator& allocator)
 {
-    Vector* vectors = reinterpret_cast<Vector*>(allocator.allocate(sizeof(Vector) * count, 16));
+    Vector* vectors = reinterpret_cast<Vector*>(allocator.allocate_aligned(sizeof(Vector) * count, 16));
 
     Vector *vector = vectors, *end = vectors + count;
     while(vector != end) {

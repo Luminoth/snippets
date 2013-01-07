@@ -169,11 +169,11 @@ protected:
         // subtrees always calculate their container
         std::list<std::shared_ptr<T>> subtree(data.begin(), data.begin() + median);
         _subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(new(16, *allocator) TreePartition(allocator, subtree, depth() - 1),
-            boost::bind(&TreePartition<T, B>::destroy, _1, allocator)));
+            std::bind(&TreePartition<T, B>::destroy, std::placeholders::_1, allocator)));
 
         subtree = std::list<std::shared_ptr<T>>(data.begin() + median, data.end());
         _subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(new(16, *allocator) TreePartition(allocator, subtree, depth() - 1),
-            boost::bind(&TreePartition<T, B>::destroy, _1, allocator)));
+            std::bind(&TreePartition<T, B>::destroy, std::placeholders::_1, allocator)));
     }
 
 protected:
