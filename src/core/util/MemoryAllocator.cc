@@ -102,63 +102,6 @@ void MemoryAllocator::release_aligned(void* ptr, size_t alignement)
 #if defined WITH_UNIT_TESTS
 class TestObject
 {
-public:
-    static void destroy(TestObject* const obj, energonsoftware::MemoryAllocator* const allocator)
-    {
-        obj->~TestObject();
-        operator delete(obj, *allocator);
-    }
-
-    static void destroy_aligned(TestObject* const obj, size_t alignment, energonsoftware::MemoryAllocator* const allocator)
-    {
-        obj->~TestObject();
-        operator delete(obj, alignment, *allocator);
-    }
-
-    static TestObject* create_array(size_t count, energonsoftware::MemoryAllocator& allocator)
-    {
-        TestObject* objs = reinterpret_cast<TestObject*>(allocator.allocate(sizeof(TestObject) * count));
-
-        TestObject *obj = objs, *end = objs + count;
-        while(obj != end) {
-            new(obj) TestObject();
-            obj++;
-        }
-
-        return objs;
-    }
-
-    static TestObject* create_array_aligned(size_t count, size_t alignment, energonsoftware::MemoryAllocator& allocator)
-    {
-        TestObject* objs = reinterpret_cast<TestObject*>(allocator.allocate_aligned(sizeof(TestObject) * count, alignment));
-
-        TestObject *obj = objs, *end = objs + count;
-        while(obj != end) {
-            new(obj) TestObject();
-            obj++;
-        }
-
-        return objs;
-    }
-
-    static void destroy_array(TestObject* const objs, size_t count, energonsoftware::MemoryAllocator* const allocator)
-    {
-        TestObject* obj = objs + count;
-        while(obj > objs) {
-            (--obj)->~TestObject();
-        }
-        operator delete[](objs, *allocator);
-    }
-
-    static void destroy_array_aligned(TestObject* const objs, size_t count, size_t alignment, energonsoftware::MemoryAllocator* const allocator)
-    {
-        TestObject* obj = objs + count;
-        while(obj > objs) {
-            (--obj)->~TestObject();
-        }
-        operator delete[](objs, alignment, *allocator);
-    }
-
 private:
     static const int DATA;
     static const float MOAR_DATA;
@@ -168,19 +111,31 @@ public:
     TestObject()
         : _data(DATA), _moar_data(MOAR_DATA)
     {
-        ZeroMemory(_buffer, MAX_BUFFER);
-        std::memcpy(_buffer, BUFFER.c_str(), BUFFER.length());
     }
 
     virtual ~TestObject() throw() {}
 
 public:
+    void do_stuff()
+    {
+        ZeroMemory(_buffer, MAX_BUFFER);
+        std::memcpy(_buffer, BUFFER.c_str(), BUFFER.length());
+
+        on_do_stuff();
+    }
+
     void check_data()
     {
         CPPUNIT_ASSERT_EQUAL(DATA, _data);
         CPPUNIT_ASSERT_DOUBLES_EQUAL(MOAR_DATA, _moar_data, 0.0001f);
         CPPUNIT_ASSERT_EQUAL(0, std::strncmp(_buffer, BUFFER.c_str(), BUFFER.length()));
+
+        on_check_data();
     }
+
+protected:
+    virtual void on_do_stuff() = 0;
+    virtual void on_check_data() const = 0;
 
 private:
     int _data;
@@ -191,6 +146,87 @@ private:
 const int TestObject::DATA = 100;
 const float TestObject::MOAR_DATA = 150.35f;
 const std::string TestObject::BUFFER("object test buffer");
+
+class DerivedObject : public TestObject
+{
+public:
+    static void destroy(DerivedObject* const obj, energonsoftware::MemoryAllocator* const allocator)
+    {
+        obj->~DerivedObject();
+        operator delete(obj, *allocator);
+    }
+
+    static void destroy_aligned(DerivedObject* const obj, size_t alignment, energonsoftware::MemoryAllocator* const allocator)
+    {
+        obj->~DerivedObject();
+        operator delete(obj, alignment, *allocator);
+    }
+
+    static DerivedObject* create_array(size_t count, energonsoftware::MemoryAllocator& allocator)
+    {
+        DerivedObject* objs = reinterpret_cast<DerivedObject*>(allocator.allocate(sizeof(DerivedObject) * count));
+
+        DerivedObject *obj = objs, *end = objs + count;
+        while(obj != end) {
+            new(obj) DerivedObject();
+            obj++;
+        }
+
+        return objs;
+    }
+
+    static DerivedObject* create_array_aligned(size_t count, size_t alignment, energonsoftware::MemoryAllocator& allocator)
+    {
+        DerivedObject* objs = reinterpret_cast<DerivedObject*>(allocator.allocate_aligned(sizeof(DerivedObject) * count, alignment));
+
+        DerivedObject *obj = objs, *end = objs + count;
+        while(obj != end) {
+            new(obj) DerivedObject();
+            obj++;
+        }
+
+        return objs;
+    }
+
+    static void destroy_array(DerivedObject* const objs, size_t count, energonsoftware::MemoryAllocator* const allocator)
+    {
+        DerivedObject* obj = objs + count;
+        while(obj > objs) {
+            (--obj)->~DerivedObject();
+        }
+        operator delete[](objs, *allocator);
+    }
+
+    static void destroy_array_aligned(DerivedObject* const objs, size_t count, size_t alignment, energonsoftware::MemoryAllocator* const allocator)
+    {
+        DerivedObject* obj = objs + count;
+        while(obj > objs) {
+            (--obj)->~DerivedObject();
+        }
+        operator delete[](objs, alignment, *allocator);
+    }
+public:
+    DerivedObject()
+        : TestObject(), _did_stuff(false)
+    {
+    }
+
+    virtual ~DerivedObject() throw() {}
+
+private:
+    virtual void on_do_stuff() override
+    {
+        _did_stuff = true;
+    }
+
+    virtual void on_check_data() const override
+    {
+        CPPUNIT_ASSERT(_did_stuff);
+    }
+
+private:
+    bool _did_stuff;
+};
 
 MemoryAllocatorTest::MemoryAllocatorTest(energonsoftware::MemoryAllocator::Type type)
     : _type(type)
@@ -256,12 +292,13 @@ void MemoryAllocatorTest::test_allocate()
 
 void MemoryAllocatorTest::test_allocate_object()
 {
-    std::shared_ptr<TestObject> obj(new(*_allocator) TestObject(),
-        std::bind(&TestObject::destroy, std::placeholders::_1, _allocator.get()));
+    std::shared_ptr<TestObject> obj(new(*_allocator) DerivedObject(),
+        std::bind(&DerivedObject::destroy, std::placeholders::_1, _allocator.get()));
     CPPUNIT_ASSERT(obj);
+    obj->do_stuff();
     obj->check_data();
     CPPUNIT_ASSERT_EQUAL(1U, _allocator->allocation_count());
-    //CPPUNIT_ASSERT_EQUAL(sizeof(TestObject), _allocator->allocation_bytes());
+    //CPPUNIT_ASSERT_EQUAL(sizeof(DerivedObject), _allocator->allocation_bytes());
 
     obj.reset();
     CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_count());
@@ -269,14 +306,16 @@ void MemoryAllocatorTest::test_allocate_object()
 
     static const int OBJ_COUNT = 100;
 
-    boost::shared_array<TestObject> objs(TestObject::create_array(OBJ_COUNT, *_allocator),
-        std::bind(&TestObject::destroy_array, std::placeholders::_1, OBJ_COUNT, _allocator.get()));
+    // TODO: not sure why this has to be an array of DerivedObjects and not TestObjects
+    boost::shared_array<DerivedObject> objs(DerivedObject::create_array(OBJ_COUNT, *_allocator),
+        std::bind(&DerivedObject::destroy_array, std::placeholders::_1, OBJ_COUNT, _allocator.get()));
     CPPUNIT_ASSERT(objs);
     for(int i=0; i<OBJ_COUNT; ++i) {
+        objs[i].do_stuff();
         objs[i].check_data();
     }
     CPPUNIT_ASSERT_EQUAL(1U, _allocator->allocation_count());
-    //CPPUNIT_ASSERT_EQUAL(OBJ_COUNT * sizeof(TestObject), _allocator->allocation_bytes());
+    //CPPUNIT_ASSERT_EQUAL(OBJ_COUNT * sizeof(DerivedObject), _allocator->allocation_bytes());
 
     objs.reset();
     CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_count());
@@ -310,10 +349,11 @@ void MemoryAllocatorTest::test_allocate_object_aligned()
 {
     static const size_t alignment = 4;
 
-    std::shared_ptr<TestObject> obj(new(alignment, *_allocator) TestObject(),
-        std::bind(&TestObject::destroy_aligned, std::placeholders::_1, alignment, _allocator.get()));
+    std::shared_ptr<TestObject> obj(new(alignment, *_allocator) DerivedObject(),
+        std::bind(&DerivedObject::destroy_aligned, std::placeholders::_1, alignment, _allocator.get()));
     CPPUNIT_ASSERT(obj);
     CPPUNIT_ASSERT(0 == (reinterpret_cast<size_t>(obj.get()) % alignment));
+    obj->do_stuff();
     obj->check_data();
 
     obj.reset();
@@ -322,11 +362,13 @@ void MemoryAllocatorTest::test_allocate_object_aligned()
 
     static const int OBJ_COUNT = 100;
 
-    boost::shared_array<TestObject> objs(TestObject::create_array_aligned(OBJ_COUNT, alignment, *_allocator),
-        std::bind(&TestObject::destroy_array_aligned, std::placeholders::_1, OBJ_COUNT, alignment, _allocator.get()));
+    // TODO: not sure why this has to be an array of DerivedObjects and not TestObjects
+    boost::shared_array<DerivedObject> objs(DerivedObject::create_array_aligned(OBJ_COUNT, alignment, *_allocator),
+        std::bind(&DerivedObject::destroy_array_aligned, std::placeholders::_1, OBJ_COUNT, alignment, _allocator.get()));
     CPPUNIT_ASSERT(objs);
     CPPUNIT_ASSERT(0 == (reinterpret_cast<size_t>(objs.get()) % alignment));
     for(int i=0; i<OBJ_COUNT; ++i) {
+        objs[i].do_stuff();
         objs[i].check_data();
     }
 
