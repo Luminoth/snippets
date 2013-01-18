@@ -63,10 +63,18 @@ class Logger final
 {
 private:
     typedef std::unordered_map<std::string, std::shared_ptr<Logger>> LoggerMap;
-    struct ThreadSafeLoggerMap
+    class ThreadSafeLoggerMap
     {
+    public:
+        ThreadSafeLoggerMap() : mutex(), loggers() { }
+        virtual ~ThreadSafeLoggerMap() throw() { }
+
+    public:
         boost::recursive_mutex mutex;
         LoggerMap loggers;
+
+    private:
+        DISALLOW_COPY_AND_ASSIGN(ThreadSafeLoggerMap);
     };
 
 public:

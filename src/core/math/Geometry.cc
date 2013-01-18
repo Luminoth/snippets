@@ -32,7 +32,8 @@ void Vertex::destroy_array(Vertex* const vertices, size_t count, MemoryAllocator
 }
 
 Vertex::Vertex()
-    : index(-1), weight_start(0), weight_count(0)
+    : index(-1), position(), normal(), tangent(), bitangent(), texture_coords(),
+        weight_start(0), weight_count(0)
 {
 }
 
@@ -72,7 +73,8 @@ void Triangle::destroy_array(Triangle* const triangles, size_t count, MemoryAllo
 }
 
 Triangle::Triangle()
-    : index(-1), v1(-1), v2(-1), v3(-1)
+    : index(-1), v1(-1), v2(-1), v3(-1),
+        normal()
 {
 }
 
@@ -105,7 +107,8 @@ void Weight::destroy_array(Weight* const weights, size_t count, MemoryAllocator*
 }
 
 Weight::Weight()
-    : index(-1), joint(-1), weight(0.0f)
+    : index(-1), joint(-1), weight(0.0f),
+        position(), normal(), tangent(), bitangent()
 {
 }
 
@@ -224,26 +227,46 @@ void Geometry::destroy(Geometry* const geometry, MemoryAllocator* const allocato
 }
 
 Geometry::Geometry(size_t vertex_count, MemoryAllocator& allocator)
-    : _vertex_count(0), _vertex_buffer_size(0), _normal_buffer_size(0), _tangent_buffer_size(0), _texture_buffer_size(0)
+    : _mutex(), _vertex_count(0),
+        _vertex_buffer_size(0), _vertex_buffer(),
+        _normal_buffer_size(0), _normal_buffer(),
+        _tangent_buffer_size(0), _tangent_buffer(),
+        _texture_buffer_size(0), _texture_buffer(),
+        _normal_line_buffer(), _tangent_line_buffer()
 {
     allocate_buffers(vertex_count, allocator);
 }
 
 Geometry::Geometry(const Vertex* const vertices, size_t vertex_count, MemoryAllocator& allocator)
-    : _vertex_count(0), _vertex_buffer_size(0), _normal_buffer_size(0), _tangent_buffer_size(0), _texture_buffer_size(0)
+    : _mutex(), _vertex_count(0),
+        _vertex_buffer_size(0), _vertex_buffer(),
+        _normal_buffer_size(0), _normal_buffer(),
+        _tangent_buffer_size(0), _tangent_buffer(),
+        _texture_buffer_size(0), _texture_buffer(),
+        _normal_line_buffer(), _tangent_line_buffer()
 {
     allocate_buffers(vertex_count, allocator);
     copy_vertices(vertices, vertex_count, 0);
 }
 
 Geometry::Geometry(size_t triangle_count, size_t vertex_count, MemoryAllocator& allocator)
-    : _vertex_count(0), _vertex_buffer_size(0), _normal_buffer_size(0), _tangent_buffer_size(0), _texture_buffer_size(0)
+    : _mutex(), _vertex_count(0),
+        _vertex_buffer_size(0), _vertex_buffer(),
+        _normal_buffer_size(0), _normal_buffer(),
+        _tangent_buffer_size(0), _tangent_buffer(),
+        _texture_buffer_size(0), _texture_buffer(),
+        _normal_line_buffer(), _tangent_line_buffer()
 {
     allocate_buffers(triangle_count, vertex_count, allocator);
 }
 
 Geometry::Geometry(const Triangle* const triangles, size_t triangle_count, const Vertex* const vertices, size_t vertex_count, MemoryAllocator& allocator)
-    : _vertex_count(0), _vertex_buffer_size(0), _normal_buffer_size(0), _tangent_buffer_size(0), _texture_buffer_size(0)
+    : _mutex(), _vertex_count(0),
+        _vertex_buffer_size(0), _vertex_buffer(),
+        _normal_buffer_size(0), _normal_buffer(),
+        _tangent_buffer_size(0), _tangent_buffer(),
+        _texture_buffer_size(0), _texture_buffer(),
+        _normal_line_buffer(), _tangent_line_buffer()
 {
     allocate_buffers(triangle_count, vertex_count, allocator);
     copy_triangles(triangles, triangle_count, vertices, vertex_count, 0);

@@ -17,12 +17,13 @@ public:
 public:
     // multiplication identity quaternion
     Quaternion()
-        : _scalar(1.0f)
+        : _scalar(1.0f), _vector()
     {
     }
 
     // computes the scalar based on the vector value
     explicit Quaternion(const Vector3& vector)
+        : _scalar(1.0f), _vector()
     {
         _vector = vector;
         compute_scalar();

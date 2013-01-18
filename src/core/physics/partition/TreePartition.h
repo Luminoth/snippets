@@ -30,7 +30,7 @@ protected:
     template<typename Y, typename V> friend class PartitionFactory;
 
     TreePartition(MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned, unsigned int depth)
-        : Partition<T, B>(data, container, pruned), _depth(depth), _count(0)
+        : Partition<T, B>(data, container, pruned), _subtrees(), _depth(depth), _count(0)
     {
         if(_depth >= 1 && Partition<T, B>::size() > 1) {
             on_build_subtrees(allocator);
@@ -39,7 +39,7 @@ protected:
     }
 
     TreePartition(MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, unsigned int depth)
-        : Partition<T, B>(data), _depth(depth), _count(0)
+        : Partition<T, B>(data), _subtrees(), _depth(depth), _count(0)
     {
         if(_depth >= 1 && Partition<T, B>::size() > 1) {
             on_build_subtrees(allocator);

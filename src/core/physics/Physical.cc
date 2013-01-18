@@ -7,8 +7,11 @@
 namespace energonsoftware {
 
 Physical::Physical()
-    : Partitionable(), _view(0.0f, 0.0f, 1.0f), _up(0.0f, 1.0f, 0.0f),
-        _mass(1.0f), _scale(1.0f), _last_simulate(get_time())
+    : Partitionable(), _mutex(),
+        _position(), _view(0.0f, 0.0f, 1.0f), _up(0.0f, 1.0f, 0.0f), _orientation(),
+        _velocity(), _acceleration(), _mass(1.0f), _scale(1.0f),
+        _relative_bounds(), _absolute_bounds(),
+        _last_simulate(get_time())
 {
 }
 

@@ -8,7 +8,7 @@
 namespace energonsoftware {
 
 Configuration::Configuration()
-    : _dirty(false)
+    : _sections(), _map(), _listeners(), _header(), _dirty(false)
 {
     set_default("logging", "level", "info");
     set_default("logging", "stdout", "true");

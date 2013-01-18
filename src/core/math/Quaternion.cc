@@ -17,6 +17,7 @@ Quaternion Quaternion::new_axis(float angle, const Vector3& axis)
 }
 
 Quaternion::Quaternion(const Matrix4& matrix)
+    : _scalar(1.0f), _vector()
 {
     // Game Engine Architecture, section 4.4
     const float trace = matrix[0] + matrix[5] + matrix[10];

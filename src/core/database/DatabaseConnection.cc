@@ -10,7 +10,7 @@ Logger& DatabaseConnection::logger(Logger::instance("energonsoftware.core.databa
 
 DatabaseConnection::DatabaseConnection(int64_t id, const DatabaseConfiguration& config, std::shared_ptr<ConnectionPool> pool) throw(DatabaseConnectionError)
     : boost::recursive_mutex(), std::enable_shared_from_this<DatabaseConnection>(),
-        _id(id), _connected(false), _config(config), _pool(pool)
+        _host(), _port(0), _id(id), _connected(false), _config(config), _pool(pool)
 {
     std::string vendor(this->config().database_vendor());
     _host = this->config().database_hostname();

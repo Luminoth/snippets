@@ -42,7 +42,7 @@ WITH_UNIT_TESTS = "WITH_UNIT_TESTS"
 WITH_PROFILE = "WITH_PROFILE"
 
 ### BASE DIRECTORIES ###
-src_name = "snippets"   # TODO: find a new name for this...
+src_name = "snippets"
 src_dir = "src"
 base_build_dir = "build"
 build_dir = base_build_dir
@@ -55,24 +55,30 @@ data_dir = os.path.join("share", src_name)
 ccflags = [
     "-std=c++11",
     "-msse3",
+    "-pedantic",
     "-Wall",
     "-Wextra",
+    "-Weffc++",
     "-Woverloaded-virtual",
-    "-Wno-unused-parameter",
-    "-Wnon-virtual-dtor",
-    "-Wno-missing-field-initializers",
-    "-Wno-unknown-pragmas",
-    "-pipe",
-    "-fno-strict-aliasing",
+    "-Wformat=2",
 #    "-Wold-style-cast",
-#    "-Weffc++",
 #    "-Wshadow",
+    "-pipe",
+    "-fstack-protector",        # TODO: this is probably redundant to -fstack-protector-all
+    "-fstack-protector-all",
+    "-fstack-check",
+
+    # these warnings aren't too critical
+    # and can be very spammy (thanks boost!)
+    "-Wno-unused-parameter",
+    "-Wno-unknown-pragmas",
+    "-Wno-non-virtual-dtor",    # TODO: why is this ignored?
 ]
 ccpath = [
     os.getcwd(),
     "/opt/local/include",       # osx darwin ports
 ]
-ccdefs = [ USE_SSE, USE_OPENSSL, WITH_CRYPTO ]
+ccdefs = [ USE_SSE, USE_OPENSSL, WITH_CRYPTO, "_FORTIFY_SOURCE=2" ]
 ldflags = []
 ldpath = [
     os.path.join(os.getcwd(), lib_dir),
@@ -119,14 +125,10 @@ efence = int(ARGUMENTS.get("efence", 0))
 if int(ARGUMENTS.get("release", 0)):
     ccflags.extend([
         "-O3",
-        "-finline-functions",
         "-ffast-math",
         "-fno-unsafe-math-optimizations",
         "-fno-common",
         "-funroll-loops",
-        "-fstack-protector-all",
-        "-fstack-check",
-        "-Wstack-protector",
         #"-fomit-frame-pointer",
         #"-Winline",
     ])

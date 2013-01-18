@@ -34,6 +34,7 @@ public:
 
 private:
     void cleanup() throw();
+    void push_connection(std::shared_ptr<DatabaseConnection> connection);
 
 private:
     std::deque<std::shared_ptr<DatabaseConnection>> _pool;
@@ -43,9 +44,6 @@ private:
     friend class DatabaseConnectionFactory;
     explicit ConnectionPool(size_t size) throw(ConnectionPoolError);
 
-    void push_connection(std::shared_ptr<DatabaseConnection> connection);
-
-private:
     ConnectionPool();
     DISALLOW_COPY_AND_ASSIGN(ConnectionPool);
 };

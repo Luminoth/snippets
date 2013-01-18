@@ -21,7 +21,7 @@ std::shared_ptr<MemoryAllocator> MemoryAllocator::new_allocator(Type type, size_
 }
 
 MemoryAllocator::MemoryAllocator()
-    : _allocation_count(0), _allocation_bytes(0)
+    : _mutex(), _allocation_count(0), _allocation_bytes(0)
 {
 }
 
@@ -229,7 +229,7 @@ private:
 };
 
 MemoryAllocatorTest::MemoryAllocatorTest(energonsoftware::MemoryAllocator::Type type)
-    : _type(type)
+    : _type(type), _allocator()
 {
 }
 

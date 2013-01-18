@@ -1,6 +1,7 @@
 #include "src/pch.h"
 #include <iostream>
 #include <iomanip>
+#include <errno.h>
 #include <fcntl.h>
 #if defined USE_OPENSSL
     #include <openssl/bio.h>
@@ -10,8 +11,6 @@
 #include "src/core/math/math_util.h"
 #include "fs_util.h"
 #include "util.h"
-
-_CRTIMP extern int errno;
 
 namespace energonsoftware {
 

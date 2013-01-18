@@ -10,12 +10,12 @@ namespace energonsoftware {
 Logger& BaseThread::logger(Logger::instance("energonsoftware.core.thread.BaseThread"));
 
 BaseThread::BaseThread(ThreadPool* pool)
-    : _pool(pool), _quit(false), _own_thread(false)
+    : _pool(pool), _name(), _quit(false), _thread(), _own_thread(false)
 {
 }
 
 BaseThread::BaseThread(const std::string& name)
-    : _pool(nullptr), _name(name), _quit(false), _own_thread(false)
+    : _pool(nullptr), _name(name), _quit(false), _thread(), _own_thread(false)
 {
 }
 

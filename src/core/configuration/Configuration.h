@@ -53,7 +53,7 @@ private:
         bool readonly;
 
         ConfigOption(const std::string& n=std::string(), const std::string& dv=std::string())
-            : name(n), default_value(dv), help(n), readonly(false)
+            : name(n), default_value(dv), value(), help(n), readonly(false)
         {
         }
 

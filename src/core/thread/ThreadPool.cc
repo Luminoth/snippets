@@ -7,7 +7,7 @@ namespace energonsoftware {
 Logger& ThreadPool::logger(Logger::instance("energonsoftware.core.thread.ThreadPool"));
 
 ThreadPool::ThreadPool(size_t size)
-    : boost::recursive_mutex(), _size(size), _running(false)
+    : boost::recursive_mutex(), _size(size), _thread_group(), _threads(), _running(false), _work()
 {
 }
 

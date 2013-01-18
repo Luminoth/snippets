@@ -4,6 +4,7 @@
 namespace energonsoftware {
 
 Texture::Texture()
+    : _pixels()
 {
 }
 

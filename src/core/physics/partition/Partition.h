@@ -41,7 +41,7 @@ protected:
     template<typename Y, typename V> friend class PartitionFactory;
 
     Partition(const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned)
-        : _container(container)
+        : _data(), _size(0), _center_of_mass(), _container(container)
     {
         for(auto obj : data) {
             if(appendable(obj, _container, pruned)) {
@@ -59,11 +59,8 @@ protected:
     }
 
     explicit Partition(const std::list<std::shared_ptr<T>>& data)
-        : _data(data)
+        : _data(data), _size(data.size()), _center_of_mass(), _container()
     {
-        // store the actual size
-        _size = _data.size();
-
         // find the center of mass
         if(_size > 0) {
             calculate_center();

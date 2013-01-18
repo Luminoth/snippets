@@ -5,12 +5,12 @@
 namespace energonsoftware {
 
 Lexer::Lexer()
-    : _comment_config(CommentTypeNone), _current(0)
+    : _keyword_map(), _comment_config(CommentTypeNone), _data(), _current(0)
 {
 }
 
 Lexer::Lexer(const std::string& data)
-    : _comment_config(CommentTypeNone), _data(data), _current(0)
+    : _keyword_map(), _comment_config(CommentTypeNone), _data(data), _current(0)
 {
 }
 
@@ -157,7 +157,8 @@ void Lexer::set_keyword(const std::string& keyword, int token)
 
 char Lexer::advance()
 {
-    char ret = _current < _data.length() ? _data[_current] : '\0';
+    // TODO: we should do a good check on _data.length() before blindly casting it to an int
+    char ret = _current < static_cast<int>(_data.length()) ? _data[_current] : '\0';
     _current++;
     return ret;
 }
@@ -320,7 +321,7 @@ public:
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    LexerTest() : CppUnit::TestFixture() {}
+    LexerTest() : CppUnit::TestFixture(), _lexer() {}
     virtual ~LexerTest() throw() {}
 
 public:

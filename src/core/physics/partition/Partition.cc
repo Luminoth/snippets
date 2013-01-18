@@ -64,7 +64,7 @@ private:
     static energonsoftware::Logger& logger;
 
 public:
-    PartitionTest() : CppUnit::TestFixture() {}
+    PartitionTest() : CppUnit::TestFixture(), _partition_types(), _allocator() {}
     virtual ~PartitionTest() throw() {}
 
 public:

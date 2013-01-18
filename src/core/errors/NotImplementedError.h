@@ -7,10 +7,7 @@ class NotImplementedError : public std::exception
 {
 public:
     explicit NotImplementedError(const std::string& function) throw()
-    {
-        _what = "Function not implemented: " + function + "()";
-    }
-
+        : _what("Function not implemented: " + function + "()") { }
     virtual ~NotImplementedError() throw() {}
     virtual const char* what() const throw() { return _what.c_str(); }
 

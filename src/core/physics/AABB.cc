@@ -8,19 +8,22 @@ namespace energonsoftware {
 AABB::AABB()
     : BoundingVolume(),
         _minimum(FLT_MAX, FLT_MAX, FLT_MAX),
-        _maximum(-FLT_MAX, -FLT_MAX, -FLT_MAX)
+        _maximum(-FLT_MAX, -FLT_MAX, -FLT_MAX),
+        _center(), _radius(1.0f)
 {
     calculate_center();
 }
 
 AABB::AABB(const Point3& minimum, const Point3& maximum)
-    : BoundingVolume(), _minimum(minimum), _maximum(maximum)
+    : BoundingVolume(), _minimum(minimum), _maximum(maximum),
+        _center(), _radius(1.0f)
 {
     calculate_center();
 }
 
 AABB::AABB(const Point3& center, float radius)
-    : BoundingVolume(), _center(center), _radius(radius)
+    : BoundingVolume(), _minimum(), _maximum(),
+        _center(center), _radius(radius)
 {
     Vector3 rv(radius, radius, radius);
     _minimum = Point3(center - rv);

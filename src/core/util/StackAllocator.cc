@@ -6,7 +6,7 @@ namespace energonsoftware {
 Logger& StackAllocator::logger(Logger::instance("energonsoftware.core.util.StackAllocator"));
 
 StackAllocator::StackAllocator(size_t size)
-    : MemoryAllocator(), _size(size), _marker(0)
+    : MemoryAllocator(), _pool(), _size(size), _marker(0)
 {
     _pool.reset(new unsigned char[_size]);
     //LOG_DEBUG("Pool at " << reinterpret_cast<void*>(_pool.get()) << "\n");

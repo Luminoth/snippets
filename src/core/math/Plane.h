@@ -10,7 +10,7 @@ class Plane
 public:
     // NOTE: this creates an invalid plane
     // because the normal is set to (0, 0, 0)
-    Plane() /*: _plane(0.0f, 0.0f, 1.0f, 0.0f)*/ { }
+    Plane() : _plane(/*0.0f, 0.0f, 1.0f, 0.0f*/) { }
 
     // this normalizes N
     Plane(const Normal3& n, float d) : _plane(n.normalized(), d) { }

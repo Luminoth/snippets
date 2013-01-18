@@ -119,7 +119,6 @@ TypeName& operator=(TypeName&) = delete
 #else
     #define stdext __gnu_cxx
     #define __declspec(t)
-    #define _CRTIMP
 
     #define ALIGN(s) __attribute__((aligned(s)))
 #endif

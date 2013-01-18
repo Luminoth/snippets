@@ -7,7 +7,7 @@ namespace energonsoftware {
 Logger& ConnectionPool::logger(Logger::instance("energonsoftware.core.database.ConnectionPool"));
 
 ConnectionPool::ConnectionPool(size_t size) throw(ConnectionPoolError)
-    : boost::recursive_mutex(), _size(size)
+    : boost::recursive_mutex(), _pool(), _size(size)
 {
 }
 
@@ -17,15 +17,6 @@ ConnectionPool::~ConnectionPool() throw()
         LOG_WARNING("Connection pool is missing resources!\n");
     }
     cleanup();
-}
-
-void ConnectionPool::cleanup() throw()
-{
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
-
-    for(auto& connection : _pool) {
-        connection.reset();
-    }
 }
 
 DatabaseConnection& ConnectionPool::acquire(bool block) throw(ConnectionPoolError)
@@ -69,6 +60,15 @@ void ConnectionPool::release(std::shared_ptr<DatabaseConnection> connection)
         }
     }
     _pool.push_back(connection);
+}
+
+void ConnectionPool::cleanup() throw()
+{
+    boost::lock_guard<boost::recursive_mutex> guard(*this);
+
+    for(auto& connection : _pool) {
+        connection.reset();
+    }
 }
 
 void ConnectionPool::push_connection(std::shared_ptr<DatabaseConnection> connection)
