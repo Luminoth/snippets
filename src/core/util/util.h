@@ -137,14 +137,6 @@ inline unsigned int reverse_bits(unsigned int b)
     return t | (b & 1);
 }
 
-#if defined __MATHUTIL_H__
-// finds the first set bit
-inline unsigned int find_first_set(unsigned int i)
-{
-    return ilog2(i & -i);
-}
-#endif
-
 // converts a value
 // to a string of bits
 inline void value_to_bits(const unsigned int value, char* bits, size_t len)

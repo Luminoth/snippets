@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
     }
 
     std::cout << "Press any key to continue..." << std::endl;
-    getch();
+    _getch();
 
     return result.wasSuccessful() ? 0 : 1;
 }

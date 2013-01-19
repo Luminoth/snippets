@@ -35,7 +35,13 @@ std::string last_std_error() throw()
 
 std::string last_std_error(int error) throw()
 {
+#if defined WIN32
+    char buf[1024];
+    strerror_s(buf, 1024, error);
+    return buf;
+#else
     return std::strerror(error);
+#endif
 }
 
 std::string last_error() throw()
@@ -54,8 +60,9 @@ std::string last_error(int error) throw()
     FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
         nullptr, error, 0, buffer, 512, nullptr);
 
+    size_t ret = 0;
     char ba[1024] = { 0 };
-    wcstombs(ba, buffer, 1024);
+    wcstombs_s(&ret, ba, 1024, buffer, 1024);
     return std::string(ba);
 #else
     return last_std_error(error);
@@ -368,6 +375,7 @@ public:
         CPPUNIT_TEST(test_md5_digest_password);
 #endif
         CPPUNIT_TEST(test_bin2hex);
+        CPPUNIT_TEST(test_power_of_2);
     CPPUNIT_TEST_SUITE_END();
 
 public:
