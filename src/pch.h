@@ -147,6 +147,7 @@ TypeName& operator=(TypeName&) = delete
     #define localtime localtime_r
     //#define rand rand_r
     #define strtok strtok_r
+    #define _getch getch
 
     // TODO: memalign is obsoleted by posix_memalign
     #define _aligned_malloc(s, b) memalign(b, s)
