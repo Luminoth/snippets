@@ -11,4 +11,5 @@ General
 ----
 cppunit 1.12.1 - http://sourceforge.net/apps/mediawiki/cppunit/index.php?title=Main_Page
 boost 1.52.0 - http://www.boost.org/
+libpng ??? - http://www.libpng.org/
 openssl ??? - http://www.openssl.org/

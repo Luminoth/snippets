@@ -5,6 +5,7 @@
 *.psess
 *.vspx
 *.vcxproj.user
+*.swp
 .sconf_temp/
 .sconsign.dblite
 build/

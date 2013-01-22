@@ -203,6 +203,7 @@ def CheckCommonConfiguration(env, check_libs):
 
         if check_libs:
             CheckLibOrExit(conf, "curses")
+            CheckLibOrExit(conf, "png")
             CheckLibOrExit(conf, "pthread")
             CheckLibOrExit(conf, "ssl")
             CheckLibOrExit(conf, "crypto")
