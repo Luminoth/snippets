@@ -392,6 +392,8 @@ public:
         CPPUNIT_TEST(test_save);
         CPPUNIT_TEST(test_load);
         CPPUNIT_TEST(test_validate);
+        CPPUNIT_TEST(test_get);
+        CPPUNIT_TEST(test_lookup);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -427,6 +429,20 @@ public:
 
         config.set("test", "test_int", "twenty five");
         CPPUNIT_ASSERT_THROW(config.validate(), energonsoftware::ConfigurationError);
+    }
+
+    void test_get()
+    {
+        TestConfiguration& config(TestConfiguration::instance());
+        CPPUNIT_ASSERT("25" == config.get("test", "test_int"));
+        CPPUNIT_ASSERT("" == config.get("test", "test_invalid"));
+    }
+
+    void test_lookup()
+    {
+        TestConfiguration& config(TestConfiguration::instance());
+        CPPUNIT_ASSERT("25" == config.lookup("test", "test_int"));
+        CPPUNIT_ASSERT_THROW(config.lookup("test", "test_invalid"), energonsoftware::NoSuchConfigOptionError);
     }
 };
 energonsoftware::Logger& ConfigurationTest::logger(energonsoftware::Logger::instance("energonsoftware.core.configuration.ConfigurationTest"));

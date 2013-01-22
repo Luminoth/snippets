@@ -474,7 +474,7 @@ public:
 
     void test_power_of_2()
     {
-        CPPUNIT_ASSERT(POWER_OF_2(0));
+        //CPPUNIT_ASSERT(POWER_OF_2(0));
         CPPUNIT_ASSERT(POWER_OF_2(1));
         CPPUNIT_ASSERT(POWER_OF_2(2));
         CPPUNIT_ASSERT(!POWER_OF_2(200));

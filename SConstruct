@@ -3,6 +3,7 @@
 import os
 import sys
 
+BOOST_VERSION = "1.49"
 EnsureSConsVersion(2, 1)
 
 # checks boost version
@@ -55,7 +56,7 @@ data_dir = os.path.join("share", src_name)
 ccflags = [
     "-std=c++11",
     "-msse3",
-    "-pedantic",
+    "-pedantic-errors",
     "-Wall",
     "-Wextra",
     "-Weffc++",
@@ -88,14 +89,23 @@ libs = []
 
 ### TARGETS ###
 core_lib = "%s-core" % src_name
+engine_lib = "%s-engine" % src_name
 
 tests_app = src_name
 
 ### META TARGETS ###
-build_meta_targets = []
+build_meta_targets = [ "unittest" ]
 
 if int(ARGUMENTS.get("ctags", 0)):
     build_meta_targets.append("ctags")
+elif int(ARGUMENTS.get("coreonly", 0)):
+    pass
+elif int(ARGUMENTS.get("testcheckin", 0)):
+    build_meta_targets.append("unittest")
+    build_meta_targets.append("runtests")
+else:
+    if int(ARGUMENTS.get("unittest", 0)):
+        build_meta_targets.append("unittest")
 
 ### ARGUMENTS ###
 install_dir = ARGUMENTS.get("installdir", "")
@@ -105,9 +115,15 @@ ccdefs.append("BINDIR=\\\"%s\\\"" % bin_dir)
 ccdefs.append("CONFDIR=\\\"%s\\\"" % conf_dir)
 ccdefs.append("DATADIR=\\\"%s\\\"" % data_dir)
 
-ccdefs.append(WITH_UNIT_TESTS)
-ccflags.extend([ "--coverage" ])
-ldflags.extend([ "-ldl", "--coverage" ])
+if "unittest" in build_meta_targets:
+    ccdefs.append(WITH_UNIT_TESTS)
+    ccflags.extend([ "--coverage" ]) #ccflags.extend([ "-fprofile-arcs", "-ftest-coverage" ])
+    ldflags.append("-ldl")
+    ldflags.append("--coverage") #libs.append("gcov")
+    build_dir = os.path.join(build_dir, "test")
+
+    core_lib += "-test"
+    engine_lib += "-test"
 
 profile = int(ARGUMENTS.get("profile", 0))
 if profile:
@@ -117,6 +133,7 @@ if profile:
     build_dir = os.path.join(build_dir, "profile")
 
     core_lib += "-profile"
+    engine_lib += "-profile"
 
     tests_app += "-profile"
 
@@ -157,6 +174,7 @@ else:
 
     # append -debug to our targets
     core_lib += "-debug"
+    engine_lib += "-debug"
 
     tests_app += "-debug"
 
@@ -176,8 +194,8 @@ def CheckCommonConfiguration(env, check_libs):
 
     conf = Configure(env, custom_tests=custom_tests)
     if not conf.env.GetOption("clean"):
-        if not conf.CheckBoost("1.40"):
-            print("Boost version >= 1.40 required!")
+        if not conf.CheckBoost(BOOST_VERSION):
+            print("Boost version >= %s required!" % BOOST_VERSION)
             Exit(1)
 
         if conf.CheckCHeader("valgrind/callgrind.h") or conf.CheckCHeader("callgrind.h"):
@@ -194,10 +212,22 @@ def CheckCommonConfiguration(env, check_libs):
             CheckLibOrExit(conf, "boost_system")
             CheckLibOrExit(conf, "boost_thread")
 
-            CheckLibOrExit(conf, "cppunit")
+            if "unittest" in build_meta_targets:
+                CheckLibOrExit(conf, "cppunit")
 
             if efence:
                 CheckLibOrExit(conf, "efence")
+
+    return conf
+
+# checks for engine libraries
+def CheckEngineConfiguration(env, check_libs):
+    #check_libs = True   # bleh :(
+
+    conf = CheckCommonConfiguration(env, check_libs)
+    if not conf.env.GetOption("clean"):
+        if check_libs:
+            pass
 
     return conf
 
@@ -207,6 +237,11 @@ def GenerateCommonEnv(app_name=""):
 
     if app_name:
         env.MergeFlags({ "CPPDEFINES": [ "-DAPPNAME=\\\"%s\\\"" % app_name ] })
+
+    return env
+
+def GenerateEngineEnv(include_libs, app_name=""):
+    env = GenerateCommonEnv(app_name)
 
     return env
 
@@ -226,6 +261,21 @@ def BuildCore():
     Clean(lib, base_build_dir)
     Clean(lib, lib_dir)
 
+
+def BuildEngine():
+    print("Building engine library...")
+
+    env = GenerateEngineEnv(False)
+    conf = CheckEngineConfiguration(env, False)
+    env = conf.Finish()
+
+    obj = SConscript(os.path.join(src_dir, "engine", "SConscript"), exports=[ "env" ],
+        variant_dir=os.path.join(build_dir, "engine"), duplicate=0)
+    lib = env.StaticLibrary(os.path.join(lib_dir, engine_lib), obj)
+
+    Clean(lib, base_build_dir)
+    Clean(lib, lib_dir)
+
 def BuildTests():
     print("Building tests...")
 
@@ -239,17 +289,19 @@ def BuildTests():
         # hey guess what, this doesn't work. thanks a lot apple
         env.MergeFlags({ "LINKFLAGS": [
             "-Wl,-all_load",
+            "-l%s" % engine_lib,
             "-l%s" % core_lib,
             "-Wl,-noall_load"
         ] })
     elif "linux" in sys.platform:
         env.MergeFlags({ "LINKFLAGS": [
             "-Wl,-whole-archive",
+            "-l%s" % engine_lib,
             "-l%s" % core_lib,
             "-Wl,-no-whole-archive"
         ] })
     else:
-        env.MergeFlags({ "LIBS": [ core_lib ] })
+        env.MergeFlags({ "LIBS": [ engine_lib, core_lib ] })
 
     obj = SConscript(os.path.join(src_dir, "test", "SConscript"), exports=[ "env" ],
         variant_dir=os.path.join(build_dir, "test"), duplicate=0)
@@ -257,6 +309,7 @@ def BuildTests():
 
     # have to add libraries as dependencies by hand on linux
     if sys.platform == "darwin" or "linux" in sys.platform:
+        Depends(app, os.path.join(lib_dir, "lib%s.a" % engine_lib))
         Depends(app, os.path.join(lib_dir, "lib%s.a" % core_lib))
 
     Clean(app, base_build_dir)
@@ -273,10 +326,17 @@ def BuildTests():
 
         print("TODO: make this work")
 
-# create th
+# create tags
 if "ctags" in build_meta_targets:
     os.system("ctags -R")
     sys.exit(0)
 
+# everything requires core
 BuildCore()
-BuildTests()
+
+if "unittest" in build_meta_targets:
+    # build everything that's not an app
+    BuildEngine()
+    BuildTests()
+else:
+    BuildEngine()

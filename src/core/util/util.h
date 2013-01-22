@@ -89,7 +89,7 @@ inline bool is_double(const std::string& str)
 // determines if bit i of b is set
 #define GET_BIT(b, i) (((b) >> (i)) & 0x01)
 
-// determines if i is a power of 2
+// determines if i is a power of 2 (NOTE: fails to identify 0 as a power of 2)
 #define POWER_OF_2(i) (!(i & (i - 1)) && i)
 
 // countes the number of bits

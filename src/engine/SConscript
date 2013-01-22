@@ -1,0 +1,11 @@
+#! /usr/bin/env python
+
+import os
+
+Import([ "env" ])
+
+obj = env.Object(env.Glob("*.cc"))
+
+obj.extend(SConscript(os.path.join("ui", "SConscript"), exports=[ "env" ]))
+
+Return("obj")

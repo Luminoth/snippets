@@ -17,19 +17,19 @@ public:
     static std::shared_ptr<Partition<T, B>> new_partition(const std::string& type, MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, const B& container, std::list<std::shared_ptr<T>>& pruned, unsigned int depth=0) throw(PartitionError)
     {
         std::string scratch(boost::algorithm::to_lower_copy(type));
-        if(scratch == "octree") {
+        if("octree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Octree<T, B>(allocator, data, container, pruned, depth),
                 std::bind(&Octree<T, B>::destroy, std::placeholders::_1, allocator));
-        } else if(scratch == "spheretree") {
+        } else if("spheretree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) SphereTree<T, B>(allocator, data, container, pruned, depth),
                 std::bind(&SphereTree<T, B>::destroy, std::placeholders::_1, allocator));
-        } else if(scratch == "kdtree3") {
+        } else if("kdtree3" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) KdTree3<T, B>(allocator, data, container, pruned, depth),
                 std::bind(&KdTree3<T, B>::destroy, std::placeholders::_1, allocator));
-        } else if(scratch == "tree") {
+        } else if("tree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) TreePartition<T, B>(allocator, data, container, pruned, depth),
                 std::bind(&TreePartition<T, B>::destroy, std::placeholders::_1, allocator));
-        } else if(scratch == "flat") {
+        } else if("flat" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Partition<T, B>(data, container, pruned),
                 std::bind(&Partition<T, B>::destroy, std::placeholders::_1, allocator));
         }
@@ -45,19 +45,19 @@ public:
     static std::shared_ptr<Partition<T, B>> new_partition(const std::string& type, MemoryAllocator* const allocator, const std::list<std::shared_ptr<T>>& data, unsigned int depth=0) throw(PartitionError)
     {
         std::string scratch(boost::algorithm::to_lower_copy(type));
-        if(scratch == "octree") {
+        if("octree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Octree<T, B>(allocator, data, depth),
                 std::bind(&Octree<T, B>::destroy, std::placeholders::_1, allocator));
-        } else if(scratch == "spheretree") {
+        } else if("spheretree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) SphereTree<T, B>(allocator, data, depth),
                 std::bind(&SphereTree<T, B>::destroy, std::placeholders::_1, allocator));
-        } else if(scratch == "kdtree3") {
+        } else if("kdtree3" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) KdTree3<T, B>(allocator, data, depth),
                 std::bind(&KdTree3<T, B>::destroy, std::placeholders::_1, allocator));
-        } else if(scratch == "tree") {
+        } else if("tree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) TreePartition<T, B>(allocator, data, depth),
                 std::bind(&TreePartition<T, B>::destroy, std::placeholders::_1, allocator));
-        } else if(scratch == "flat") {
+        } else if("flat" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Partition<T, B>(data),
                 std::bind(&Partition<T, B>::destroy, std::placeholders::_1, allocator));
         }

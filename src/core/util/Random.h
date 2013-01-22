@@ -9,10 +9,10 @@
 namespace energonsoftware {
 namespace Random {
 
-/*inline void seed(unsigned int s=std::time(nullptr))
+inline void seed(unsigned int s=std::time(nullptr))
 {
     std::srand(s);
-}*/
+}
 
 inline float base()
 {
