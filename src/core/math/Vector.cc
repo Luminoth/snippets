@@ -299,10 +299,10 @@ public:
     {
         static const energonsoftware::Vector v1(1.0f, 2.0f, 3.0f, 4.0f);
         energonsoftware::Vector v2(v1 + v1);
-        CPPUNIT_ASSERT(v2.x() == 2.0f * v1.x());
-        CPPUNIT_ASSERT(v2.y() == 2.0f * v1.y());
-        CPPUNIT_ASSERT(v2.z() == 2.0f * v1.z());
-        CPPUNIT_ASSERT(v2.w() == 2.0f * v1.w());
+        CPPUNIT_ASSERT_EQUAL(2.0f * v1.x(), v2.x());
+        CPPUNIT_ASSERT_EQUAL(2.0f * v1.y(), v2.y());
+        CPPUNIT_ASSERT_EQUAL(2.0f * v1.z(), v2.z());
+        CPPUNIT_ASSERT_EQUAL(2.0f * v1.w(), v2.w());
 
 // TODO: test +=
     }
@@ -319,10 +319,10 @@ public:
     {
         static const energonsoftware::Vector v1(1.0f, 2.0f, 3.0f, 4.0f);
         energonsoftware::Vector v2(2.0f * v1);
-        CPPUNIT_ASSERT(v2.x() == 2.0f * v1.x());
-        CPPUNIT_ASSERT(v2.y() == 2.0f * v1.y());
-        CPPUNIT_ASSERT(v2.z() == 2.0f * v1.z());
-        CPPUNIT_ASSERT(v2.w() == 2.0f * v1.w());
+        CPPUNIT_ASSERT_EQUAL(2.0f * v1.x(), v2.x());
+        CPPUNIT_ASSERT_EQUAL(2.0f * v1.y(), v2.y());
+        CPPUNIT_ASSERT_EQUAL(2.0f * v1.z(), v2.z());
+        CPPUNIT_ASSERT_EQUAL(2.0f * v1.w(), v2.w());
 
 // TODO: test *=
     }
@@ -331,10 +331,10 @@ public:
     {
         static const energonsoftware::Vector v1(1.0f, 2.0f, 3.0f, 4.0f);
         energonsoftware::Vector v2(v1 / 2.0f);
-        CPPUNIT_ASSERT(v2.x() == v1.x() / 2.0f);
-        CPPUNIT_ASSERT(v2.y() == v1.y() / 2.0f);
-        CPPUNIT_ASSERT(v2.z() == v1.z() / 2.0f);
-        CPPUNIT_ASSERT(v2.w() == v1.w() / 2.0f);
+        CPPUNIT_ASSERT_EQUAL(v1.x() / 2.0f, v2.x());
+        CPPUNIT_ASSERT_EQUAL(v1.y() / 2.0f, v2.y());
+        CPPUNIT_ASSERT_EQUAL(v1.z() / 2.0f, v2.z());
+        CPPUNIT_ASSERT_EQUAL(v1.w() / 2.0f, v2.w());
 
 // TODO: test /=
     }
@@ -344,10 +344,10 @@ public:
     {
         static const energonsoftware::Vector v1(1.0f, 2.0f, 3.0f, 4.0f);
         energonsoftware::Vector v2(-v1);
-        CPPUNIT_ASSERT(v2.x() == -v1.x());
-        CPPUNIT_ASSERT(v2.y() == -v1.y());
-        CPPUNIT_ASSERT(v2.z() == -v1.z());
-        CPPUNIT_ASSERT(v2.w() == -v1.w());
+        CPPUNIT_ASSERT_EQUAL(-v1.x(), v2.x());
+        CPPUNIT_ASSERT_EQUAL(-v1.y(), v2.y());
+        CPPUNIT_ASSERT_EQUAL(-v1.z(), v2.z());
+        CPPUNIT_ASSERT_EQUAL(-v1.w(), v2.w());
     }
 
     void test_dot()
@@ -366,8 +366,7 @@ public:
 
         static const energonsoftware::Vector v1(1.0f, 0.0f, 0.0f);
         static const energonsoftware::Vector v2(0.0f, 1.0f, 0.0f);
-        //CPPUNIT_ASSERT_EQUAL(expected, v1 ^ v2);
-        CPPUNIT_ASSERT(expected == (v1 ^ v2));
+        CPPUNIT_ASSERT_EQUAL(expected, v1 ^ v2);
 // TODO: test ^=
     }
 };

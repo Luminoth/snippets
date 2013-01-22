@@ -434,14 +434,14 @@ public:
     void test_get()
     {
         TestConfiguration& config(TestConfiguration::instance());
-        CPPUNIT_ASSERT("25" == config.get("test", "test_int"));
-        CPPUNIT_ASSERT("" == config.get("test", "test_invalid"));
+        CPPUNIT_ASSERT_EQUAL(std::string("25"), config.get("test", "test_int"));
+        CPPUNIT_ASSERT_EQUAL(std::string(), config.get("test", "test_invalid"));
     }
 
     void test_lookup()
     {
         TestConfiguration& config(TestConfiguration::instance());
-        CPPUNIT_ASSERT("25" == config.lookup("test", "test_int"));
+        CPPUNIT_ASSERT_EQUAL(std::string("25"), config.lookup("test", "test_int"));
         CPPUNIT_ASSERT_THROW(config.lookup("test", "test_invalid"), energonsoftware::NoSuchConfigOptionError);
     }
 };

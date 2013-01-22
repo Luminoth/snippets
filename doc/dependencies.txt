@@ -9,7 +9,8 @@ Visual Studio 2012 Update 1
 
 General
 ----
-cppunit 1.12.1 - http://sourceforge.net/apps/mediawiki/cppunit/index.php?title=Main_Page
 boost 1.52.0 - http://www.boost.org/
+cppunit 1.12.1 - http://sourceforge.net/apps/mediawiki/cppunit/index.php?title=Main_Page
+xerces-c++ - http://xerces.apache.org/xerces-c/
 libpng ??? - http://www.libpng.org/
 openssl ??? - http://www.openssl.org/

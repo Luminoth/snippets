@@ -207,6 +207,7 @@ def CheckCommonConfiguration(env, check_libs):
             CheckLibOrExit(conf, "pthread")
             CheckLibOrExit(conf, "ssl")
             CheckLibOrExit(conf, "crypto")
+            CheckLibOrExit(conf, "xerces-c")
 
             CheckLibOrExit(conf, "boost_date_time")
             CheckLibOrExit(conf, "boost_filesystem")

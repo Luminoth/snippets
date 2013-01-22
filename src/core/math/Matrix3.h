@@ -243,4 +243,20 @@ private:
 
 }
 
+#if defined WITH_UNIT_TESTS
+namespace CppUnit {
+
+template<>
+struct assertion_traits<energonsoftware::Matrix3>
+{
+    static bool equal(const energonsoftware::Matrix3& lhs, const energonsoftware::Matrix3& rhs)
+    { return lhs == rhs; }
+
+    static std::string toString(const energonsoftware::Matrix3& m)
+    { return m.str(); }
+};
+
+}
+#endif
+
 #endif

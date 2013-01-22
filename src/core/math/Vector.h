@@ -467,4 +467,20 @@ typedef Vector Size;
 
 }
 
+#if defined WITH_UNIT_TESTS
+namespace CppUnit {
+
+template<>
+struct assertion_traits<energonsoftware::Vector>
+{
+    static bool equal(const energonsoftware::Vector& lhs, const energonsoftware::Vector& rhs)
+    { return lhs == rhs; }
+
+    static std::string toString(const energonsoftware::Vector& v)
+    { return v.str(); }
+};
+
+}
+#endif
+
 #endif

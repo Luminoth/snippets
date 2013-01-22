@@ -193,18 +193,18 @@ public:
         static const energonsoftware::Point3 max2(154.134f, -34.35f, 154.23f);
         static const energonsoftware::Point3 c2(min2 + ((max2 - min2) / 2.0f));
         static const energonsoftware::AABB a2(min2, max2);
-        CPPUNIT_ASSERT(min2 == a2.minimum());
-        CPPUNIT_ASSERT(max2 == a2.maximum());
-        CPPUNIT_ASSERT(c2 == a2.center());
+        CPPUNIT_ASSERT_EQUAL(min2, a2.minimum());
+        CPPUNIT_ASSERT_EQUAL(max2, a2.maximum());
+        CPPUNIT_ASSERT_EQUAL(c2, a2.center());
         CPPUNIT_ASSERT_DOUBLES_EQUAL(c2.distance(min2), a2.radius(), 0.0001f);
         CPPUNIT_ASSERT_DOUBLES_EQUAL(std::pow(c2.distance(min2), 2.0f), a2.radius_squared(), 0.0001f);
 
         static const energonsoftware::Point3 c3(1.0f, -1.0f, 2.0f);
         static const energonsoftware::Vector3 r3(100.0f, 100.0f, 100.0f);
         static const energonsoftware::AABB a3(c3, r3.x());
-        CPPUNIT_ASSERT(energonsoftware::Vector3(c3 - r3) == a3.minimum());
-        CPPUNIT_ASSERT((c3 + r3) == a3.maximum());
-        CPPUNIT_ASSERT(c3 == a3.center());
+        CPPUNIT_ASSERT_EQUAL(c3 - r3, a3.minimum());
+        CPPUNIT_ASSERT_EQUAL(c3 + r3, a3.maximum());
+        CPPUNIT_ASSERT_EQUAL(c3, a3.center());
         CPPUNIT_ASSERT_DOUBLES_EQUAL(r3.x(), a3.radius(), 0.0001f);
         CPPUNIT_ASSERT_DOUBLES_EQUAL(std::pow(r3.x(), 2.0f), a3.radius_squared(), 0.0001f);
     }
@@ -227,7 +227,7 @@ public:
         CPPUNIT_ASSERT_EQUAL(expected_max1.y(), a2.maximum().y());
         CPPUNIT_ASSERT_EQUAL(expected_max1.z(), a2.maximum().z());
         CPPUNIT_ASSERT_EQUAL(0.0f, a2.maximum().w());
-        CPPUNIT_ASSERT(expected_c1 == a2.center());
+        CPPUNIT_ASSERT_EQUAL(expected_c1, a2.center());
         CPPUNIT_ASSERT_DOUBLES_EQUAL(expected_c1.distance(expected_min1), a2.radius(), 0.0001f);
 
         static const energonsoftware::Point3 p3(-1111.03f, 1354.03f, 1235.34f);
@@ -244,7 +244,7 @@ public:
         CPPUNIT_ASSERT_EQUAL(expected_max3.y(), a3.maximum().y());
         CPPUNIT_ASSERT_EQUAL(expected_max3.z(), a3.maximum().z());
         CPPUNIT_ASSERT_EQUAL(0.0f, a3.maximum().w());
-        CPPUNIT_ASSERT(expected_c3 == a3.center());
+        CPPUNIT_ASSERT_EQUAL(expected_c3, a3.center());
         CPPUNIT_ASSERT_DOUBLES_EQUAL(expected_c3.distance(expected_min3), a3.radius(), 0.0001f);
     }
 

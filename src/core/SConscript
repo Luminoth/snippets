@@ -16,5 +16,6 @@ obj.extend(SConscript(os.path.join("physics", "SConscript"), exports=[ "env" ]))
 obj.extend(SConscript(os.path.join("text", "SConscript"), exports=[ "env" ]))
 obj.extend(SConscript(os.path.join("thread", "SConscript"), exports=[ "env" ]))
 obj.extend(SConscript(os.path.join("util", "SConscript"), exports=[ "env" ]))
+obj.extend(SConscript(os.path.join("xml", "SConscript"), exports=[ "env" ]))
 
 Return("obj")

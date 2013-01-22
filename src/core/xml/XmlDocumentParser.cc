@@ -100,7 +100,7 @@ private:
         std::unique_ptr<energonsoftware::XmlDocument> parsed(_parser->document());
         CPPUNIT_ASSERT(parsed);
 
-        LOG_INFO(parsed->document().to_native() << std::endl);
+        LOG_INFO(parsed->document().to_native() << "\n");
         CPPUNIT_ASSERT_EQUAL(document.document(), parsed->document());
     }
 

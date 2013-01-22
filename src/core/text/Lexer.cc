@@ -338,7 +338,7 @@ public:
 
         std::string sscratch;
         CPPUNIT_ASSERT(_lexer.constant(sscratch));
-        CPPUNIT_ASSERT("testlex" == sscratch);
+        CPPUNIT_ASSERT_EQUAL(std::string("testlex"), sscratch);
         CPPUNIT_ASSERT(_lexer.match(energonsoftware::Lexer::OPEN_PAREN));
         CPPUNIT_ASSERT(_lexer.match(energonsoftware::Lexer::CLOSE_PAREN));
 
@@ -348,7 +348,7 @@ public:
         CPPUNIT_ASSERT(_lexer.match(energonsoftware::Lexer::SEMICOLON));
 
         CPPUNIT_ASSERT(_lexer.string_literal(sscratch));
-        CPPUNIT_ASSERT("strings require these thingies" == sscratch);
+        CPPUNIT_ASSERT_EQUAL(std::string("strings require these thingies"), sscratch);
         CPPUNIT_ASSERT(_lexer.match(energonsoftware::Lexer::SEMICOLON));
 
         int iscratch;

@@ -328,7 +328,7 @@ void MemoryAllocatorTest::test_allocate_aligned()
 
     int* value = new(ALIGNMENT, *_allocator) int;
     check_value(value);
-    CPPUNIT_ASSERT(0 == (reinterpret_cast<size_t>(value) % ALIGNMENT));
+    CPPUNIT_ASSERT_EQUAL(0U, reinterpret_cast<size_t>(value) % ALIGNMENT);
 
     operator delete(value, ALIGNMENT, *_allocator);
     value = nullptr;
@@ -337,7 +337,7 @@ void MemoryAllocatorTest::test_allocate_aligned()
 
     char* buffer = new(ALIGNMENT, *_allocator) char[1024];
     check_buffer(buffer);
-    CPPUNIT_ASSERT(0 == (reinterpret_cast<size_t>(buffer) % ALIGNMENT));
+    CPPUNIT_ASSERT_EQUAL(0U, reinterpret_cast<size_t>(buffer) % ALIGNMENT);
 
     operator delete[](buffer, ALIGNMENT, *_allocator);
     buffer = nullptr;
@@ -352,7 +352,7 @@ void MemoryAllocatorTest::test_allocate_object_aligned()
     std::shared_ptr<TestObject> obj(new(alignment, *_allocator) DerivedObject(),
         std::bind(&DerivedObject::destroy_aligned, std::placeholders::_1, alignment, _allocator.get()));
     CPPUNIT_ASSERT(obj);
-    CPPUNIT_ASSERT(0 == (reinterpret_cast<size_t>(obj.get()) % alignment));
+    CPPUNIT_ASSERT_EQUAL(0U, reinterpret_cast<size_t>(obj.get()) % alignment);
     obj->do_stuff();
     obj->check_data();
 
@@ -366,7 +366,7 @@ void MemoryAllocatorTest::test_allocate_object_aligned()
     boost::shared_array<DerivedObject> objs(DerivedObject::create_array_aligned(OBJ_COUNT, alignment, *_allocator),
         std::bind(&DerivedObject::destroy_array_aligned, std::placeholders::_1, OBJ_COUNT, alignment, _allocator.get()));
     CPPUNIT_ASSERT(objs);
-    CPPUNIT_ASSERT(0 == (reinterpret_cast<size_t>(objs.get()) % alignment));
+    CPPUNIT_ASSERT_EQUAL(0U, reinterpret_cast<size_t>(objs.get()) % alignment);
     for(int i=0; i<OBJ_COUNT; ++i) {
         objs[i].do_stuff();
         objs[i].check_data();
