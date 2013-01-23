@@ -39,12 +39,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -59,7 +59,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>userenv.lib;cppunitd.lib;libboost_system-vc110-mt-gd-1_52.lib;libboost_thread-vc110-mt-gd-1_52.lib;libboost_date_time-vc110-mt-gd-1_52.lib;libboost_filesystem-vc110-mt-gd-1_52.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>userenv.lib;libpng15.lib;xerces-c_3.lib;cppunitd.lib;libboost_system-vc110-mt-gd-1_52.lib;libboost_thread-vc110-mt-gd-1_52.lib;libboost_date_time-vc110-mt-gd-1_52.lib;libboost_filesystem-vc110-mt-gd-1_52.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
@@ -80,7 +80,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>userenv.lib;cppunit.lib;libboost_system-vc110-mt-1_52.lib;libboost_thread-vc110-mt-1_52.lib;libboost_date_time-vc110-mt-1_52.lib;libboost_filesystem-vc110-mt-1_52.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>userenv.lib;libpng15.lib;xerces-c_3.lib;cppunit.lib;libboost_system-vc110-mt-1_52.lib;libboost_thread-vc110-mt-1_52.lib;libboost_date_time-vc110-mt-1_52.lib;libboost_filesystem-vc110-mt-1_52.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>false</Profile>
     </Link>
   </ItemDefinitionGroup>
@@ -94,6 +94,8 @@
     <ClCompile Include="src\core\database\ConnectionPool.cc" />
     <ClCompile Include="src\core\database\DatabaseConnection.cc" />
     <ClCompile Include="src\core\graphics\Bitmap.cc" />
+    <ClCompile Include="src\core\graphics\PNG.cc" />
+    <ClCompile Include="src\core\graphics\Targa.cc" />
     <ClCompile Include="src\core\graphics\Texture.cc" />
     <ClCompile Include="src\core\logging\Logger.cc" />
     <ClCompile Include="src\core\math\Geometry.cc" />
@@ -114,9 +116,19 @@
     <ClCompile Include="src\core\thread\ThreadPool.cc" />
     <ClCompile Include="src\core\util\fs_util.cc" />
     <ClCompile Include="src\core\util\MemoryAllocator.cc" />
+    <ClCompile Include="src\core\util\Packer.cc" />
+    <ClCompile Include="src\core\util\Serialization.cc" />
     <ClCompile Include="src\core\util\StackAllocator.cc" />
     <ClCompile Include="src\core\util\SystemAllocator.cc" />
     <ClCompile Include="src\core\util\util.cc" />
+    <ClCompile Include="src\core\xml\XmlContentHandler.cc" />
+    <ClCompile Include="src\core\xml\XmlDocument.cc" />
+    <ClCompile Include="src\core\xml\XmlDocumentParser.cc" />
+    <ClCompile Include="src\core\xml\XmlNode.cc" />
+    <ClCompile Include="src\core\xml\XmlString.cc" />
+    <ClCompile Include="src\core\xml\XmlUtil.cc" />
+    <ClCompile Include="src\engine\ui\InputState.cc" />
+    <ClCompile Include="src\engine\ui\UIController.cc" />
     <ClCompile Include="src\main.cc" />
     <ClCompile Include="src\pch.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -136,6 +148,8 @@
     <ClInclude Include="src\core\database\DatabaseError.h" />
     <ClInclude Include="src\core\errors\NotImplementedError.h" />
     <ClInclude Include="src\core\graphics\Bitmap.h" />
+    <ClInclude Include="src\core\graphics\PNG.h" />
+    <ClInclude Include="src\core\graphics\Targa.h" />
     <ClInclude Include="src\core\graphics\Texture.h" />
     <ClInclude Include="src\core\logging\Logger.h" />
     <ClInclude Include="src\core\math\Geometry.h" />
@@ -165,10 +179,21 @@
     <ClInclude Include="src\core\thread\ThreadPool.h" />
     <ClInclude Include="src\core\util\fs_util.h" />
     <ClInclude Include="src\core\util\MemoryAllocator.h" />
+    <ClInclude Include="src\core\util\Packer.h" />
     <ClInclude Include="src\core\util\Random.h" />
+    <ClInclude Include="src\core\util\Serialization.h" />
     <ClInclude Include="src\core\util\StackAllocator.h" />
     <ClInclude Include="src\core\util\SystemAllocator.h" />
     <ClInclude Include="src\core\util\util.h" />
+    <ClInclude Include="src\core\xml\XmlContentHandler.h" />
+    <ClInclude Include="src\core\xml\XmlDocument.h" />
+    <ClInclude Include="src\core\xml\XmlDocumentParser.h" />
+    <ClInclude Include="src\core\xml\XmlNode.h" />
+    <ClInclude Include="src\core\xml\XmlString.h" />
+    <ClInclude Include="src\core\xml\XmlUtil.h" />
+    <ClInclude Include="src\engine\ui\InputState.h" />
+    <ClInclude Include="src\engine\ui\InputSym.h" />
+    <ClInclude Include="src\engine\ui\UIController.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\targetver.h" />
     <ClInclude Include="src\test\UnitTest.h" />

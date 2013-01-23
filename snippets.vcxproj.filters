@@ -48,6 +48,15 @@
     <Filter Include="Source Files\core\graphics">
       <UniqueIdentifier>{e11ab049-6e23-4348-81eb-1662a89b44ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\engine">
+      <UniqueIdentifier>{98c0108e-5c7a-4c93-8789-761b8b8a5ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\xml">
+      <UniqueIdentifier>{fc1f0960-f00b-4824-abf2-60addbefcb04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\engine\ui">
+      <UniqueIdentifier>{20643443-8baf-4dab-a21c-3e7c4ed3be5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\common.cc">
@@ -145,6 +154,42 @@
     </ClCompile>
     <ClCompile Include="src\core\text\string_util.cc">
       <Filter>Source Files\core\text</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\graphics\PNG.cc">
+      <Filter>Source Files\core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\graphics\Targa.cc">
+      <Filter>Source Files\core\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\Packer.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\Serialization.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\xml\XmlContentHandler.cc">
+      <Filter>Source Files\core\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\xml\XmlDocument.cc">
+      <Filter>Source Files\core\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\xml\XmlDocumentParser.cc">
+      <Filter>Source Files\core\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\xml\XmlNode.cc">
+      <Filter>Source Files\core\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\xml\XmlString.cc">
+      <Filter>Source Files\core\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\xml\XmlUtil.cc">
+      <Filter>Source Files\core\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\InputState.cc">
+      <Filter>Source Files\engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ui\UIController.cc">
+      <Filter>Source Files\engine\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +327,45 @@
     </ClInclude>
     <ClInclude Include="src\core\text\string_util.h">
       <Filter>Source Files\core\text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\graphics\PNG.h">
+      <Filter>Source Files\core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\graphics\Targa.h">
+      <Filter>Source Files\core\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\Packer.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\Serialization.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\xml\XmlContentHandler.h">
+      <Filter>Source Files\core\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\xml\XmlDocument.h">
+      <Filter>Source Files\core\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\xml\XmlDocumentParser.h">
+      <Filter>Source Files\core\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\xml\XmlNode.h">
+      <Filter>Source Files\core\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\xml\XmlString.h">
+      <Filter>Source Files\core\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\xml\XmlUtil.h">
+      <Filter>Source Files\core\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\InputState.h">
+      <Filter>Source Files\engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\InputSym.h">
+      <Filter>Source Files\engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ui\UIController.h">
+      <Filter>Source Files\engine\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

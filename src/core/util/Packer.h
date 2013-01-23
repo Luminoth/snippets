@@ -33,7 +33,7 @@ public:
 
 public:
     template<typename T>
-    /*virtual*/ Packer& pack(const std::list<T>& v, const std::string& name) throw(PackerError) final
+    /*virtual*/ Packer& pack(const std::list<T>& v, const std::string& name) throw(PackerError) /*final*/
     {
         pack(static_cast<uint32_t>(v.size()), name + "_count");
         for(const T& item : v) {
@@ -43,7 +43,7 @@ public:
     }
 
     template<typename T>
-    /*virtual*/ Packer& pack(const std::vector<T>& v, const std::string& name) throw(PackerError) final
+    /*virtual*/ Packer& pack(const std::vector<T>& v, const std::string& name) throw(PackerError) /*final*/
     {
         pack(static_cast<uint32_t>(v.size()), name + "_count");
         for(const T& item : v) {
@@ -53,7 +53,7 @@ public:
     }
 
     template<typename T>
-    /*virtual*/ Packer& pack(const std::deque<T>& v, const std::string& name) throw(PackerError) final
+    /*virtual*/ Packer& pack(const std::deque<T>& v, const std::string& name) throw(PackerError) /*final*/
     {
         pack(static_cast<uint32_t>(v.size()), name + "_count");
         for(const T& item : v) {
@@ -64,7 +64,7 @@ public:
 
 #if 0
     template<typename K, typename V>
-    /*virtual*/ Packer& pack(const std::map<K, V>& v, const std::string& name) throw(PackerError) final
+    /*virtual*/ Packer& pack(const std::map<K, V>& v, const std::string& name) throw(PackerError) /*final*/
     {
         pack(static_cast<uint32_t>(v.size()(, name + "_count");
 
@@ -76,7 +76,7 @@ public:
     }
 
     template<typename K, typename V>
-    /*virtual*/ Packer& pack(const std::unordered_map<K, V>& v, const std::string& name) throw(PackerError) final
+    /*virtual*/ Packer& pack(const std::unordered_map<K, V>& v, const std::string& name) throw(PackerError) /*final*/
     {
         pack(static_cast<uint32_t>(v.size()), name + "_count");
 
@@ -89,7 +89,7 @@ public:
 #endif
 
     template<typename T>
-    /*virtual*/ Packer& pack(const std::shared_ptr<T>& t, const std::string& name) throw(PackerError) final
+    /*virtual*/ Packer& pack(const std::shared_ptr<T>& t, const std::string& name) throw(PackerError) /*final*/
     {
         pack(*t, name);
         return *this;
@@ -135,7 +135,7 @@ public:
     virtual Unpacker& reset(const std::string& obj) final;
 
     template<typename T>
-    /*virtual*/ Unpacker& unpack(std::list<T>& v, const std::string& name) throw(PackerError) final
+    /*virtual*/ Unpacker& unpack(std::list<T>& v, const std::string& name) throw(PackerError) /*final*/
     {
         v.clear();
 
@@ -150,7 +150,7 @@ public:
     }
 
     template<typename T>
-    /*virtual*/ Unpacker& unpack(std::vector<T>& v, const std::string& name) throw(PackerError) final
+    /*virtual*/ Unpacker& unpack(std::vector<T>& v, const std::string& name) throw(PackerError) /*final*/
     {
         v.clear();
 
@@ -165,7 +165,7 @@ public:
     }
 
     template<typename T>
-    /*virtual*/ Unpacker& unpack(std::deque<T>& v, const std::string& name) throw(PackerError) final
+    /*virtual*/ Unpacker& unpack(std::deque<T>& v, const std::string& name) throw(PackerError) /*final*/
     {
         v.clear();
 
@@ -181,7 +181,7 @@ public:
 
 #if 0
     template<typename K, typename V>
-    /*virtual*/ Unpacker& unpack(std::map<K, V>& v, const std::string& name) throw(PackerError) final
+    /*virtual*/ Unpacker& unpack(std::map<K, V>& v, const std::string& name) throw(PackerError) /*final*/
     {
         v.clear();
 
@@ -199,7 +199,7 @@ public:
     }
 
     template<typename K, typename V>
-    /*virtual*/ Unpacker& unpack(std::unordered_map<K, V>& v, const std::string& name) throw(PackerError) final
+    /*virtual*/ Unpacker& unpack(std::unordered_map<K, V>& v, const std::string& name) throw(PackerError) /*final*/
     {
         v.clear();
 
@@ -218,7 +218,7 @@ public:
 #endif
 
     template<typename T>
-    /*virtual*/ Unpacker& unpack(std::shared_ptr<T>& t, const std::string& name) throw(PackerError) final
+    /*virtual*/ Unpacker& unpack(std::shared_ptr<T>& t, const std::string& name) throw(PackerError) /*final*/
     {
         if(!t) { t.reset(new T()); }
         unpack(*t, name);

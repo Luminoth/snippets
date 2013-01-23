@@ -155,8 +155,8 @@ void PNG::unload() throw()
 bool PNG::save(const boost::filesystem::path& filename) const
 {
 // TODO: change to use std::ofstream
-    FILE* fp = fopen(filename.string().c_str(), "wb");
-    if(nullptr == fp) {
+    FILE* fp = nullptr;
+    if(0 != fopen_s(&fp, filename.string().c_str(), "wb")) {
         return false;
     }
 

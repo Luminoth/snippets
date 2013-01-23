@@ -96,9 +96,9 @@ public:
     void test_vector()
     {
         std::vector<float> fv;
-        fv.push_back(9.9);
-        fv.push_back(19.9);
-        fv.push_back(119.9);
+        fv.push_back(9.9f);
+        fv.push_back(19.9f);
+        fv.push_back(119.9f);
 
         std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer("simple"));
         CPPUNIT_ASSERT(static_cast<bool>(packer));
@@ -116,9 +116,9 @@ public:
     void test_list()
     {
         std::list<float> fv;
-        fv.push_back(9.9);
-        fv.push_back(19.9);
-        fv.push_back(119.9);
+        fv.push_back(9.9f);
+        fv.push_back(19.9f);
+        fv.push_back(119.9f);
 
         std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer("simple"));
         CPPUNIT_ASSERT(static_cast<bool>(packer));
@@ -142,9 +142,9 @@ public:
     void test_deque()
     {
         std::deque<float> fv;
-        fv.push_back(9.9);
-        fv.push_back(19.9);
-        fv.push_back(119.9);
+        fv.push_back(9.9f);
+        fv.push_back(19.9f);
+        fv.push_back(119.9f);
 
         std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer("simple"));
         CPPUNIT_ASSERT(static_cast<bool>(packer));
@@ -167,7 +167,7 @@ public:
         packer->pack(p3, "shared_ptr");
 
         std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), "simple"));
-        std::shared_ptr<float> p12(new float(8.88));
+        std::shared_ptr<float> p12(new float(8.88f));
         unpacker->unpack(p12, "shared_ptr");
 
         CPPUNIT_ASSERT_EQUAL(6.0f, *p3);
