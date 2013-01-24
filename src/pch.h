@@ -149,6 +149,8 @@ TypeName& operator=(TypeName&) = delete
     #define strtok strtok_r
     #define _getch getch
 
+    #define strncpy_s(d, n, s, c) strncpy((d), (s), (c))
+
     // TODO: memalign is obsoleted by posix_memalign
     #define _aligned_malloc(s, b) memalign(b, s)
     #define _aligned_free free

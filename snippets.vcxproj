@@ -39,11 +39,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;C:\openssl-1.0.1c\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;$(IncludePath)</IncludePath>
+    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;C:\openssl-1.0.1c\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -53,7 +53,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>src/pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;%(PreprocessorDefinitions);WIN32;WITH_UNIT_TESTS;USE_SSE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_UNICODE;%(PreprocessorDefinitions);WIN32;WITH_UNIT_TESTS;USE_SSE;WITH_CRYPTO;USE_OPENSSL</PreprocessorDefinitions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
@@ -72,7 +72,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>src/pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;%(PreprocessorDefinitions);WIN32;WITH_UNIT_TESTS;USE_SSE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_UNICODE;%(PreprocessorDefinitions);WIN32;WITH_UNIT_TESTS;USE_SSE;WITH_CRYPTO;USE_OPENSSL</PreprocessorDefinitions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
@@ -106,6 +106,7 @@
     <ClCompile Include="src\core\math\Quaternion.cc" />
     <ClCompile Include="src\core\math\Sphere.cc" />
     <ClCompile Include="src\core\math\Vector.cc" />
+    <ClCompile Include="src\core\network\network_util.cc" />
     <ClCompile Include="src\core\physics\AABB.cc" />
     <ClCompile Include="src\core\physics\BoundingSphere.cc" />
     <ClCompile Include="src\core\physics\partition\Partition.cc" />
@@ -114,13 +115,20 @@
     <ClCompile Include="src\core\text\string_util.cc" />
     <ClCompile Include="src\core\thread\BaseThread.cc" />
     <ClCompile Include="src\core\thread\ThreadPool.cc" />
+    <ClCompile Include="src\core\util\BinaryPacker.cc" />
     <ClCompile Include="src\core\util\fs_util.cc" />
     <ClCompile Include="src\core\util\MemoryAllocator.cc" />
+    <ClCompile Include="src\core\util\Nonce.cc" />
     <ClCompile Include="src\core\util\Packer.cc" />
     <ClCompile Include="src\core\util\Serialization.cc" />
+    <ClCompile Include="src\core\util\SessionId.cc" />
+    <ClCompile Include="src\core\util\SimplePacker.cc" />
     <ClCompile Include="src\core\util\StackAllocator.cc" />
     <ClCompile Include="src\core\util\SystemAllocator.cc" />
+    <ClCompile Include="src\core\util\UpdateProperty.cc" />
     <ClCompile Include="src\core\util\util.cc" />
+    <ClCompile Include="src\core\util\Version.cc" />
+    <ClCompile Include="src\core\util\XmlPacker.cc" />
     <ClCompile Include="src\core\xml\XmlContentHandler.cc" />
     <ClCompile Include="src\core\xml\XmlDocument.cc" />
     <ClCompile Include="src\core\xml\XmlDocumentParser.cc" />
@@ -160,6 +168,7 @@
     <ClInclude Include="src\core\math\Quaternion.h" />
     <ClInclude Include="src\core\math\Sphere.h" />
     <ClInclude Include="src\core\math\Vector.h" />
+    <ClInclude Include="src\core\network\network_util.h" />
     <ClInclude Include="src\core\physics\AABB.h" />
     <ClInclude Include="src\core\physics\BoundingSphere.h" />
     <ClInclude Include="src\core\physics\BoundingVolume.h" />
@@ -177,14 +186,20 @@
     <ClInclude Include="src\core\thread\BaseJob.h" />
     <ClInclude Include="src\core\thread\BaseThread.h" />
     <ClInclude Include="src\core\thread\ThreadPool.h" />
+    <ClInclude Include="src\core\util\BinaryPacker.h" />
     <ClInclude Include="src\core\util\fs_util.h" />
     <ClInclude Include="src\core\util\MemoryAllocator.h" />
+    <ClInclude Include="src\core\util\Nonce.h" />
     <ClInclude Include="src\core\util\Packer.h" />
     <ClInclude Include="src\core\util\Random.h" />
     <ClInclude Include="src\core\util\Serialization.h" />
+    <ClInclude Include="src\core\util\SessionId.h" />
+    <ClInclude Include="src\core\util\SimplePacker.h" />
     <ClInclude Include="src\core\util\StackAllocator.h" />
     <ClInclude Include="src\core\util\SystemAllocator.h" />
+    <ClInclude Include="src\core\util\UpdateProperty.h" />
     <ClInclude Include="src\core\util\util.h" />
+    <ClInclude Include="src\core\util\XmlPacker.h" />
     <ClInclude Include="src\core\xml\XmlContentHandler.h" />
     <ClInclude Include="src\core\xml\XmlDocument.h" />
     <ClInclude Include="src\core\xml\XmlDocumentParser.h" />

@@ -66,7 +66,7 @@ public:
     void test_expiry()
     {
         energonsoftware::Nonce nonce("test", 5);
-        sleep(5);
+        usleep(5000);
         CPPUNIT_ASSERT_EQUAL(true, nonce.expired());
     }
 

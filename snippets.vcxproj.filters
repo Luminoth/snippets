@@ -57,6 +57,9 @@
     <Filter Include="Source Files\engine\ui">
       <UniqueIdentifier>{20643443-8baf-4dab-a21c-3e7c4ed3be5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\core\network">
+      <UniqueIdentifier>{deed98db-5c38-42c1-8cf7-4e82726a7184}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\common.cc">
@@ -190,6 +193,30 @@
     </ClCompile>
     <ClCompile Include="src\engine\ui\UIController.cc">
       <Filter>Source Files\engine\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\network_util.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\BinaryPacker.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\Nonce.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\SessionId.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\SimplePacker.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\UpdateProperty.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\Version.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\XmlPacker.cc">
+      <Filter>Source Files\core\util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -366,6 +393,27 @@
     </ClInclude>
     <ClInclude Include="src\engine\ui\UIController.h">
       <Filter>Source Files\engine\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\network_util.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\BinaryPacker.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\Nonce.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\SessionId.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\SimplePacker.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\UpdateProperty.h">
+      <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\util\XmlPacker.h">
+      <Filter>Source Files\core\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

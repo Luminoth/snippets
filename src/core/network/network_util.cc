@@ -60,7 +60,7 @@ static std::string encode_packet(char* input, size_t& ilen, const char* tocode, 
 std::string encode_packet(const char* input, size_t ilen/*, const char* tocode, const char* fromcode*/)
 {
     boost::shared_array<char> scratch(new char[ilen+1]);
-    std::strncpy(scratch.get(), input, ilen);
+    strncpy_s(scratch.get(), ilen, input, ilen);
     scratch.get()[ilen] = 0;
     return encode_packet(scratch.get(), ilen, "UTF-8", "ASCII");
 }
@@ -68,7 +68,7 @@ std::string encode_packet(const char* input, size_t ilen/*, const char* tocode, 
 std::string decode_packet(const char* input, size_t ilen/*, const char* tocode, const char* fromcode*/)
 {
     boost::shared_array<char> scratch(new char[ilen+1]);
-    std::strncpy(scratch.get(), input, ilen);
+    strncpy_s(scratch.get(), ilen, input, ilen);
     scratch.get()[ilen] = 0;
     return encode_packet(scratch.get(), ilen, "ASCII", "UTF-8");
 }

@@ -97,7 +97,7 @@ public:
     void test_expiry()
     {
         energonsoftware::SessionId sessionid("test", 5);
-        sleep(5);
+        usleep(5000);
         CPPUNIT_ASSERT_EQUAL(true, sessionid.expired());
     }
 
