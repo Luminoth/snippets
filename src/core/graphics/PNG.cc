@@ -156,9 +156,16 @@ bool PNG::save(const boost::filesystem::path& filename) const
 {
 // TODO: change to use std::ofstream
     FILE* fp = nullptr;
+#if defined WIN32
     if(0 != fopen_s(&fp, filename.string().c_str(), "wb")) {
         return false;
     }
+#else
+    fp = fopen(filename.string().c_str(), "wb");
+    if(nullptr == fp) {
+        return false;
+    }
+#endif
 
     png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, png_user_error, png_user_warn);
     if(nullptr == png_ptr) {

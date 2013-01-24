@@ -60,7 +60,7 @@ ccflags = [
     "-Wall",
     "-Wextra",
     "-Weffc++",
-    "-Woverloaded-virtual",
+#    "-Woverloaded-virtual",
     "-Wformat=2",
 #    "-Wold-style-cast",
 #    "-Wshadow",

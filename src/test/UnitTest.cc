@@ -6,6 +6,7 @@
 #include <curses.h>
 #endif
 #include "src/core/common.h"
+#include "src/core/util/Random.h"
 #include "UnitTest.h"
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/CompilerOutputter.h>
@@ -16,6 +17,9 @@
 
 int main(int argc, char* argv[])
 {
+    std::cout << "Initializing RNG..." << std::endl;
+    energonsoftware::Random::seed();
+
     std::cout << "Initializing logging..." << std::endl;
     energonsoftware::Logger::configure(energonsoftware::Logger::Level::Debug);
 

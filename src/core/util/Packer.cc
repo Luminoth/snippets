@@ -1,9 +1,9 @@
 #include "src/pch.h"
 #include "Packer.h"
 #include "Serialization.h"
-/*#include "BinaryPacker.h"
+#include "BinaryPacker.h"
 #include "SimplePacker.h"
-#include "XmlPacker.h"*/
+#include "XmlPacker.h"
 
 namespace energonsoftware {
 
@@ -12,13 +12,15 @@ Logger& Packer::logger(Logger::instance("energonsoftware.core.util.Packer"));
 Packer* Packer::new_packer(const std::string& type, const boost::any& data)
 {
     const std::string scratch(boost::algorithm::to_lower_copy(type));
-    /*if(scratch == "simple") {
+    if(scratch == "simple") {
         return new SimplePacker();
     } else if(scratch == "binary") {
         return new BinaryPacker();
+    /*} else if(scratch == "protobuf") {
+        return new ProtoBufPacker(boost::any_cast<ProtoBufPackerType>(data));*/
     } else if(scratch == "xml") {
         return new XmlPacker();
-    }*/
+    }
 
     LOG_ERROR("Unknown packer type: " << type << ", returning nullptr\n");
     return nullptr;
@@ -27,7 +29,7 @@ Packer* Packer::new_packer(const std::string& type, const boost::any& data)
 bool Packer::is_valid_type(const std::string& type)
 {
     const std::string scratch(boost::algorithm::to_lower_copy(type));
-    return scratch == "simple" || scratch == "binary" || scratch == "xml";
+    return scratch == "simple" || scratch == "binary" /*|| scratch == "protobuf"*/ || scratch == "xml";
 }
 
 Packer& Packer::pack(const Serializable& v, const std::string& name) throw(PackerError)
@@ -41,13 +43,15 @@ Logger& Unpacker::logger(Logger::instance("energonsoftware.core.util.Unpacker"))
 Unpacker* Unpacker::new_unpacker(const std::string& obj, const std::string& type, const boost::any& data)
 {
     const std::string scratch(boost::algorithm::to_lower_copy(type));
-    /*if(scratch == "simple") {
+    if(scratch == "simple") {
         return new SimpleUnpacker(obj);
     } else if(scratch == "binary") {
         return new BinaryUnpacker(obj);
+    /*} else if(scratch == "protobuf") {
+        return new ProtoBufUnpacker(boost::any_cast<ProtoBufPackerType>(data), obj);*/
     } else if(scratch == "xml") {
         return new XmlUnpacker(obj);
-    }*/
+    }
 
     LOG_ERROR("Unknown packer type: " << type << ", returning nullptr\n");
     return nullptr;
@@ -56,13 +60,15 @@ Unpacker* Unpacker::new_unpacker(const std::string& obj, const std::string& type
 Unpacker* Unpacker::new_unpacker(const unsigned char* obj, size_t len, const std::string& type, const boost::any& data)
 {
     const std::string scratch(boost::algorithm::to_lower_copy(type));
-    /*if(scratch == "simple") {
+    if(scratch == "simple") {
         return new SimpleUnpacker(obj, len);
     } else if(scratch == "binary") {
         return new BinaryUnpacker(obj, len);
+    /*} else if(scratch == "protobuf") {
+        return new ProtoBufUnpacker(boost::any_cast<ProtoBufPackerType>(data), obj, len);*/
     } else if(scratch == "xml") {
         return new XmlUnpacker(obj, len);
-    }*/
+    }
 
     LOG_ERROR("Unknown packer type: " << type << ", returning nullptr\n");
     return nullptr;
@@ -103,8 +109,34 @@ public:
     CPPUNIT_TEST_SUITE(PackerTest);
         CPPUNIT_TEST(test_simple);
         CPPUNIT_TEST(test_binary);
+        //CPPUNIT_TEST(test_protobuf);
         CPPUNIT_TEST(test_xml);
     CPPUNIT_TEST_SUITE_END();
+
+public:
+    PackerTest() : CppUnit::TestFixture() {}
+    virtual ~PackerTest() throw() {}
+
+public:
+    void test_simple()
+    {
+        test_packer("simple");
+    }
+
+    void test_binary()
+    {
+        test_packer("binary");
+    }
+
+    /*void test_protobuf()
+    {
+        test_packer("protobuf", boost::any(mmorpg::ProtoBufPackerTypeTest));
+    }*/
+
+    void test_xml()
+    {
+        test_packer("xml");
+    }
 
 private:
     std::shared_ptr<energonsoftware::Packer> create_packer(const std::string& type, const boost::any& data)
@@ -174,22 +206,6 @@ private:
     {
         std::shared_ptr<energonsoftware::Packer> packer(create_packer(type, data));
         unpack_packer(type, packer->buffer(), data);
-    }
-
-public:
-    void test_simple()
-    {
-        test_packer("simple");
-    }
-
-    void test_binary()
-    {
-        test_packer("binary");
-    }
-
-    void test_xml()
-    {
-        test_packer("xml");
     }
 };
 

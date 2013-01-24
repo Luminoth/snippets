@@ -90,19 +90,7 @@ public:
         : CppUnit::TestFixture(), _parser()
     {
     }
-
-private:
-    void parse(const energonsoftware::XmlDocument& document)
-    {
-        _parser->feed(document.document());
-        CPPUNIT_ASSERT(_parser->complete());
-
-        std::unique_ptr<energonsoftware::XmlDocument> parsed(_parser->document());
-        CPPUNIT_ASSERT(parsed);
-
-        LOG_INFO(parsed->document().to_native() << "\n");
-        CPPUNIT_ASSERT_EQUAL(document.document(), parsed->document());
-    }
+    virtual ~XmlDocumentParserTest() throw() {}
 
 public:
     void setUp()
@@ -214,6 +202,19 @@ public:
         CPPUNIT_ASSERT_THROW(_parser->feed(
             energonsoftware::XmlString("<?xml version='1.0' encoding='utf-8'?><test><inner /><stuff></stuff>test</test>")),
             energonsoftware::XmlDocumentParserError);
+    }
+
+private:
+    void parse(const energonsoftware::XmlDocument& document)
+    {
+        _parser->feed(document.document());
+        CPPUNIT_ASSERT(_parser->complete());
+
+        std::unique_ptr<energonsoftware::XmlDocument> parsed(_parser->document());
+        CPPUNIT_ASSERT(parsed);
+
+        LOG_INFO(parsed->document().to_native() << "\n");
+        CPPUNIT_ASSERT_EQUAL(document.document(), parsed->document());
     }
 
 private:

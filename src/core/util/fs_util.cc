@@ -32,11 +32,7 @@ boost::filesystem::path home_dir()
 
 bool is_hidden(const boost::filesystem::path& path)
 {
-#if BOOST_VERSION >= 104600
     return '.' == boost::trim_left_copy(path.filename().string())[0];
-#else
-    return '.' == boost::trim_left_copy(path.filename())[0];
-#endif
 }
 
 void list_directory(const boost::filesystem::path& path, std::vector<boost::filesystem::path>& files, bool recurse, bool hidden)
