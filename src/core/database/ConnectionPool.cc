@@ -1,4 +1,5 @@
 #include "src/pch.h"
+#include "src/core/common.h"
 #include "ConnectionPool.h"
 #include "DatabaseConnection.h"
 
@@ -25,7 +26,7 @@ DatabaseConnection& ConnectionPool::acquire(bool block) throw(ConnectionPoolErro
 
     // wait for something to be in the pool
     while(block && _pool.empty()) {
-        usleep(1);
+        boost::this_thread::sleep(boost::posix_time::microseconds(thread_sleep_time()));
         //boost::thread::yield();
     }
 

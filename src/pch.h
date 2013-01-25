@@ -129,8 +129,8 @@ TypeName& operator=(TypeName&) = delete
     #define strcasecmp _stricmp
     //#define getcwd _getcwd
     #define chmod _chmod
-    //#define sleep(s) Sleep((s) * 1000)
-    #define usleep(u) do { int m = (u) / 1000; Sleep(m <= 0 ? 1 : m); } while(0)
+    //#define sleep(s) boost::this_thread::sleep(boost::posix_time::seconds(s))     // can't define this because sleep is a name in other places
+    #define usleep(u) boost::this_thread::sleep(boost::posix_time::microseconds(u))
 
     // guess we can't be thread-safe...
     #define asctime_r(t, b) asctime((t))

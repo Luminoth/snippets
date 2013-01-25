@@ -429,6 +429,7 @@ public:
 
         config.set("test", "test_int", "twenty five");
         CPPUNIT_ASSERT_THROW(config.validate(), energonsoftware::ConfigurationError);
+        config.set("test", "test_int", "25");
     }
 
     void test_get()

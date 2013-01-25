@@ -66,8 +66,10 @@ public:
     void test_expiry()
     {
         energonsoftware::Nonce nonce("test", 5);
-        usleep(5000);
-        CPPUNIT_ASSERT_EQUAL(true, nonce.expired());
+        boost::this_thread::sleep(boost::posix_time::seconds(1));
+        CPPUNIT_ASSERT(!nonce.expired());
+        boost::this_thread::sleep(boost::posix_time::seconds(5));
+        CPPUNIT_ASSERT(nonce.expired());
     }
 
     void test_nonce()

@@ -11,8 +11,10 @@ XmlString::XmlString()
 XmlString::XmlString(const char* str)
     : _str()
 {
-    boost::scoped_array<XMLCh> ptr(xercesc::XMLString::transcode(str));
-    _str = ptr.get();
+    XMLCh* scratch = xercesc::XMLString::transcode(str);
+    _str = scratch;
+    xercesc::XMLString::release(&scratch);
+    scratch = nullptr;
 }
 
 XmlString::XmlString(const XMLCh* str)
@@ -26,15 +28,19 @@ XmlString::XmlString(const XMLCh* str)
     std::wstring t(str);
     std::string s(t.begin(), t.end());
 
-    boost::scoped_array<XMLCh> ptr(xercesc::XMLString::transcode(s.c_str()));
-    _str = ptr.get();
+    XMLCh* scratch = xercesc::XMLString::transcode(s.c_str());
+    _str = scratch;
+    xercesc::XMLString::release(&scratch);
+    scratch = nullptr;
 }*/
 
 XmlString::XmlString(const std::string& str)
     : _str()
 {
-    boost::scoped_array<XMLCh> ptr(xercesc::XMLString::transcode(str.c_str()));
-    _str = ptr.get();
+    XMLCh* scratch = xercesc::XMLString::transcode(str.c_str());
+    _str = scratch;
+    xercesc::XMLString::release(&scratch);
+    scratch = nullptr;
 }
 
 XmlString::XmlString(const std::wstring& str)
@@ -54,8 +60,11 @@ XmlString::~XmlString() throw()
 
 std::string XmlString::to_native() const
 {
-    boost::scoped_array<char> ptr(xercesc::XMLString::transcode(c_str()));
-    return std::string(ptr.get());
+    char* scratch = xercesc::XMLString::transcode(c_str());
+    std::string ret(scratch);
+    xercesc::XMLString::release(&scratch);
+    scratch = nullptr;
+    return ret;
 }
 
 std::wstring XmlString::to_wide() const
