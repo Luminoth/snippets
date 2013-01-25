@@ -56,6 +56,7 @@
 #include <ctime>
 #include <stdexcept>
 #include <algorithm>
+#include <array>
 #include <functional>
 #include <iosfwd>
 #include <list>
