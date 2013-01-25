@@ -12,6 +12,8 @@
 #include "fs_util.h"
 #include "util.h"
 
+static energonsoftware::Logger& logger(energonsoftware::Logger::instance("energonsoftware.core.util.util"));
+
 namespace energonsoftware {
 
 /* from http://www.cpp-programming.net/c-tidbits/gettimeofday-function-for-windows/ */

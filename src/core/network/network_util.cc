@@ -1,5 +1,6 @@
 #include "src/pch.h"
 #include <errno.h>
+#include "src/core/util/util.h"
 #include "network_util.h"
 
 static energonsoftware::Logger& logger(energonsoftware::Logger::instance("energonsoftware.core.network.network_util"));
@@ -88,7 +89,7 @@ bool poll_socket_read(SOCKET s)
     timeout.tv_usec = 1;
 
     if(select(s + 1, &fds, nullptr, nullptr, &timeout) == SOCKET_ERROR) {
-        LOG_ERROR("Could not poll socket: " << std::strerror(errno) << "\n");
+        LOG_ERROR("Could not poll socket: " << last_std_error(errno) << "\n");
         return false;
     }
 
