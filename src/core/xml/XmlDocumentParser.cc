@@ -221,7 +221,7 @@ private:
     std::unique_ptr<energonsoftware::XmlDocumentParser> _parser;
 };
 
-energonsoftware::Logger& XmlDocumentParserTest::logger(energonsoftware::Logger::instance("energonsoftware.core.xml.XmlDocumentParser"));
+energonsoftware::Logger& XmlDocumentParserTest::logger(energonsoftware::Logger::instance("energonsoftware.core.xml.XmlDocumentParserTest"));
 
 CPPUNIT_TEST_SUITE_REGISTRATION(XmlDocumentParserTest);
 
