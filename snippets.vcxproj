@@ -106,7 +106,9 @@
     <ClCompile Include="src\core\math\Quaternion.cc" />
     <ClCompile Include="src\core\math\Sphere.cc" />
     <ClCompile Include="src\core\math\Vector.cc" />
+    <ClCompile Include="src\core\messages\BufferedMessage.cc" />
     <ClCompile Include="src\core\network\network_util.cc" />
+    <ClCompile Include="src\core\network\Socket.cc" />
     <ClCompile Include="src\core\physics\AABB.cc" />
     <ClCompile Include="src\core\physics\BoundingSphere.cc" />
     <ClCompile Include="src\core\physics\partition\Partition.cc" />
@@ -168,7 +170,9 @@
     <ClInclude Include="src\core\math\Quaternion.h" />
     <ClInclude Include="src\core\math\Sphere.h" />
     <ClInclude Include="src\core\math\Vector.h" />
+    <ClInclude Include="src\core\messages\BufferedMessage.h" />
     <ClInclude Include="src\core\network\network_util.h" />
+    <ClInclude Include="src\core\network\Socket.h" />
     <ClInclude Include="src\core\physics\AABB.h" />
     <ClInclude Include="src\core\physics\BoundingSphere.h" />
     <ClInclude Include="src\core\physics\BoundingVolume.h" />

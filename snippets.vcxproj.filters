@@ -60,6 +60,9 @@
     <Filter Include="Source Files\core\network">
       <UniqueIdentifier>{deed98db-5c38-42c1-8cf7-4e82726a7184}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\core\messages">
+      <UniqueIdentifier>{6ee9e76d-09d4-4178-a274-f6656b27c979}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\common.cc">
@@ -217,6 +220,12 @@
     </ClCompile>
     <ClCompile Include="src\core\util\XmlPacker.cc">
       <Filter>Source Files\core\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\Socket.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\messages\BufferedMessage.cc">
+      <Filter>Source Files\core\messages</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -414,6 +423,12 @@
     </ClInclude>
     <ClInclude Include="src\core\util\XmlPacker.h">
       <Filter>Source Files\core\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\Socket.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\messages\BufferedMessage.h">
+      <Filter>Source Files\core\messages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

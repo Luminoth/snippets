@@ -148,7 +148,7 @@ size_t Socket::recv(Buffer& buffer, int flags)
     size_t read = 0;
     int rval = 0;
     do {
-        rval = do_recv(buffer.begin() + read, buffer.size() - read, flags);
+        rval = do_recv(&(*(buffer.begin() + read)), buffer.size() - read, flags);
         read += rval;
     } while(rval < 0 && last_socket_error() == SOCKET_WOULDBLOCK && (buffer.size() - read) > 0);
 
@@ -491,7 +491,7 @@ std::pair<size_t, std::shared_ptr<ClientSocket> > ServerSocket::recvfrom(Buffer&
     // NOTE: this doesn't check the buffer size because datagrams don't work like that
     std::pair<size_t, std::shared_ptr<ClientSocket> > rval;
     do {
-        rval = do_recvfrom(buffer.begin(), buffer.size(), flags);
+        rval = do_recvfrom(&(*(buffer.begin())), buffer.size(), flags);
     } while(static_cast<int>(rval.first) < 0 && last_socket_error() == SOCKET_WOULDBLOCK);
 
     return rval;
