@@ -55,7 +55,7 @@ public:
         CPPUNIT_TEST(test_allocate_object);
         CPPUNIT_TEST(test_allocate_aligned);
         CPPUNIT_TEST(test_allocate_object_aligned);
-        CPPUNIT_TEST(test_unreasonable_allocation);
+        CPPUNIT_TEST_EXCEPTION(test_unreasonable_allocation, std::bad_alloc);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -75,7 +75,7 @@ public:
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(
             energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, size));
         // have to use size-1 here because of the allocation < size assertion in allocate()
-        CPPUNIT_ASSERT_THROW(allocator->allocate(size-1), std::bad_alloc);
+        allocator->allocate(size-1);
     }
 };
 

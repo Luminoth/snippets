@@ -56,7 +56,7 @@ public:
         CPPUNIT_TEST(test_allocate_object);
         CPPUNIT_TEST(test_allocate_aligned);
         CPPUNIT_TEST(test_allocate_object_aligned);
-        CPPUNIT_TEST(test_unreasonable_allocation);
+        CPPUNIT_TEST_EXCEPTION(test_unreasonable_allocation, std::bad_alloc);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -73,8 +73,8 @@ public:
         static const size_t size = UINT_MAX - 1;
 #endif
 
-        CPPUNIT_ASSERT_THROW(std::shared_ptr<energonsoftware::MemoryAllocator> allocator(
-            energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::Stack, size)), std::bad_alloc);
+        std::shared_ptr<energonsoftware::MemoryAllocator> allocator(
+            energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::Stack, size));
     }
 };
 

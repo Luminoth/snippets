@@ -3,7 +3,7 @@
 
 namespace energonsoftware {
 
-enum class BufferedMessageType
+enum /*class*/ BufferedMessageType
 {
     // these are handleable
     Xml,

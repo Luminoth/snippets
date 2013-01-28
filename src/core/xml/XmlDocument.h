@@ -5,7 +5,7 @@
 
 namespace energonsoftware {
 
-class XmlDocument final
+class XmlDocument /*final*/
 {
 public:
     explicit XmlDocument(const XmlString& name);
