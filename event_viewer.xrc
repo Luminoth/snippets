@@ -32,7 +32,7 @@
     <object class="wxBoxSizer">
       <orient>wxVERTICAL</orient>
       <object class="sizeritem">
-        <object class="wxNotebook" name="ID_EVENT_NOTEBOOK" subclass="viewer.XRCAuiNotebook"/>
+        <object class="wxNotebook" name="ID_EVENT_NOTEBOOK" subclass="event_viewer.XRCAuiNotebook"/>
         <option>1</option>
         <flag>wxEXPAND</flag>
       </object>
@@ -50,7 +50,7 @@
     <object class="wxBoxSizer">
       <orient>wxVERTICAL</orient>
       <object class="sizeritem">
-        <object class="wxListCtrl" name="ID_EVENT_LIST" subclass="viewer.EventListCtrl">
+        <object class="wxListCtrl" name="ID_EVENT_LIST" subclass="event_viewer.EventListCtrl">
           <style>wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_HRULES|wxLC_VRULES</style>
         </object>
         <option>1</option>
@@ -259,7 +259,7 @@
           <object class="sizeritem">
             <object class="wxStaticBoxSizer">
               <object class="sizeritem">
-                <object class="wxListCtrl" name="ID_FILTER_LIST" subclass="viewer.FilterListCtrl">
+                <object class="wxListCtrl" name="ID_FILTER_LIST" subclass="event_viewer.FilterListCtrl">
                   <size>500,300</size>
                   <style>wxLC_REPORT|wxLC_HRULES|wxLC_VRULES</style>
                 </object>

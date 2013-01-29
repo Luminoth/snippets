@@ -227,7 +227,7 @@ class Event(object):
             return True
 
     def __init__(self, app):
-        self.__logger = logging.getLogger("viewer.Event")
+        self.__logger = logging.getLogger("event_viewer.Event")
 
         self.__app = app
         self.__id = 0
@@ -295,7 +295,7 @@ class Event(object):
 
 class EventLogParser(object):
     def __init__(self, app):
-        self.__logger = logging.getLogger("viewer.EventLogParser")
+        self.__logger = logging.getLogger("event_viewer.EventLogParser")
         self.__app = app
 
     def parse(self, filename, progress_callback):
@@ -594,7 +594,7 @@ class XRCIntCtrl(wx.TextCtrl):#wx.lib.intctrl.IntCtrl):
 
 class FilterDialog(object):
     def __init__(self, app):
-        self.__logger = logging.getLogger("viewer.FilterDialog")
+        self.__logger = logging.getLogger("event_viewer.FilterDialog")
 
         self.__app = app
         self.__dialog = self.__app.resource.LoadDialog(self.__app.main_frame, "ID_FILTER_DIALOG")
@@ -944,7 +944,7 @@ class ViewerApp(wx.App):
         self.__event_menu.Enable(self.__event_details, enable)
 
     def __load_controls(self):
-        self.__resource = wx.xrc.XmlResource("viewer.xrc")
+        self.__resource = wx.xrc.XmlResource("event_viewer.xrc")
         self.__main_frame = self.resource.LoadFrame(None, "ID_MAIN_FRAME")
         self.main_frame.SetSize(ViewerApp.SIZE)
 
@@ -977,7 +977,7 @@ class ViewerApp(wx.App):
         self.main_frame.GetMenuBar().Enable(self.__file_close, False)
 
     def OnInit(self):
-        self.__logger = logging.getLogger("viewer.ViewerApp")
+        self.__logger = logging.getLogger("event_viewer.ViewerApp")
         self.__last_dir = os.getcwd()
         self.__last_filename = ""
 
@@ -1047,7 +1047,7 @@ logger = None
 
 def parse_arguments(argv):
     parser = optparse.OptionParser(version="%prog ", description=ViewerApp.TITLE,
-        usage="Usage: viewer.py")
+        usage="Usage: event_viewer.py")
     (options, args) = parser.parse_args(argv[1:])
 
 def initialize_logger():
