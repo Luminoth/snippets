@@ -209,11 +209,11 @@ public:
     bool sendto(const std::string& buffer, const ClientSocket& socket, int flags=0);
 
     // returns how much was read and the socket it was from
-    std::pair<size_t, std::shared_ptr<ClientSocket> > recvfrom(Buffer& buffer, int flags=0);
+    std::pair<size_t, std::shared_ptr<ClientSocket>> recvfrom(Buffer& buffer, int flags=0);
 
 protected:
     // override these to provide some other way of doing them
-    virtual std::pair<size_t, std::shared_ptr<ClientSocket> > do_recvfrom(BufferType* buffer, size_t len, int flags);
+    virtual std::pair<size_t, std::shared_ptr<ClientSocket>> do_recvfrom(BufferType* buffer, size_t len, int flags);
 };
 
 }

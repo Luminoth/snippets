@@ -12,7 +12,7 @@ SerializationMap::~SerializationMap() throw()
 {
 }
 
-void SerializationMap::serialize(Packer& packer) const
+void SerializationMap::serialize(Packer& packer) const throw(SerializationError)
 {
     packer.pack(static_cast<uint32_t>(size()), "size");
     for(const auto& i : *this) {
@@ -21,7 +21,7 @@ void SerializationMap::serialize(Packer& packer) const
     }
 }
 
-void SerializationMap::deserialize(Unpacker& unpacker)
+void SerializationMap::deserialize(Unpacker& unpacker) throw(SerializationError)
 {
     uint32_t size;
     unpacker.unpack(size, "size");
@@ -53,14 +53,14 @@ public:
 public:
     void test_1()
     {
-        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer("simple"));
+        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer(energonsoftware::PackerType::Simple));
         CPPUNIT_ASSERT(static_cast<bool>(packer));
 
         packer->pack("uno", "1");
         packer->pack("dos", "2");
         packer->pack("tres", "3");
 
-        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), "simple"));
+        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), energonsoftware::PackerType::Simple));
         std::string s("almost empty");
 
         unpacker->unpack(s, "1");
@@ -75,7 +75,7 @@ public:
 
     void test_SerializationMap()
     {
-        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer("simple"));
+        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer(energonsoftware::PackerType::Simple));
         CPPUNIT_ASSERT(static_cast<bool>(packer));
 
         energonsoftware::SerializationMap sm;
@@ -84,7 +84,7 @@ public:
         sm["tres"] = "three";
         sm.serialize(*packer);
 
-        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), "simple"));
+        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), energonsoftware::PackerType::Simple));
         energonsoftware::SerializationMap recip;
         recip.deserialize(*unpacker);
 
@@ -100,11 +100,11 @@ public:
         fv.push_back(19.9f);
         fv.push_back(119.9f);
 
-        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer("simple"));
+        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer(energonsoftware::PackerType::Simple));
         CPPUNIT_ASSERT(static_cast<bool>(packer));
         packer->pack(fv, "vector");
 
-        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), "simple"));
+        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), energonsoftware::PackerType::Simple));
         std::vector<float> nfv;
         unpacker->unpack(nfv, "vector");
 
@@ -120,11 +120,11 @@ public:
         fv.push_back(19.9f);
         fv.push_back(119.9f);
 
-        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer("simple"));
+        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer(energonsoftware::PackerType::Simple));
         CPPUNIT_ASSERT(static_cast<bool>(packer));
         packer->pack(fv, "list");
 
-        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), "simple"));
+        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), energonsoftware::PackerType::Simple));
         std::list<float> nfv;
         unpacker->unpack(nfv, "list");
 
@@ -146,11 +146,11 @@ public:
         fv.push_back(19.9f);
         fv.push_back(119.9f);
 
-        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer("simple"));
+        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer(energonsoftware::PackerType::Simple));
         CPPUNIT_ASSERT(static_cast<bool>(packer));
         packer->pack(fv, "deque");
 
-        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), "simple"));
+        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), energonsoftware::PackerType::Simple));
         std::deque<float> nfv;
         unpacker->unpack(nfv, "deque");
 
@@ -162,11 +162,11 @@ public:
     void test_shared_ptr()
     {
         std::shared_ptr<float> p3(new float(6));
-        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer("simple"));
+        std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer(energonsoftware::PackerType::Simple));
         CPPUNIT_ASSERT(static_cast<bool>(packer));
         packer->pack(p3, "shared_ptr");
 
-        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), "simple"));
+        std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(packer->buffer(), energonsoftware::PackerType::Simple));
         std::shared_ptr<float> p12(new float(8.88f));
         unpacker->unpack(p12, "shared_ptr");
 

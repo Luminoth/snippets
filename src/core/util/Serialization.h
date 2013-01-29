@@ -5,20 +5,26 @@
 
 namespace energonsoftware {
 
+class SerializationError : public std::exception
+{
+public:
+    explicit SerializationError(const std::string& what) throw() : _what(what) {}
+    virtual ~SerializationError() throw() {}
+    virtual const char* what() const throw() { return _what.c_str(); }
+
+private:
+    std::string _what;
+};
+
 class Serializable
 {
 public:
-    Serializable()
-    {
-    }
-
-    virtual ~Serializable() throw()
-    {
-    }
+    Serializable() {}
+    virtual ~Serializable() throw() {}
 
 public:
-    virtual void serialize(Packer& packer) const = 0;
-    virtual void deserialize(Unpacker& unpacker) = 0;
+    virtual void serialize(Packer& packer) const throw(SerializationError) = 0;
+    virtual void deserialize(Unpacker& unpacker) throw(SerializationError) = 0;
 };
 
 class SerializationMap : public std::map<std::string, std::string>, public Serializable
@@ -28,14 +34,14 @@ public:
     virtual ~SerializationMap() throw();
 
 public:
-    virtual void serialize(Packer& packer) const;
-    virtual void deserialize(Unpacker& unpacker);
+    virtual void serialize(Packer& packer) const throw(SerializationError);
+    virtual void deserialize(Unpacker& unpacker) throw(SerializationError);
 
 public:
     template <typename T>
     void add(const std::string& key, const T& t)
     {
-        std::shared_ptr<Packer> packer(Packer::new_packer("simple"));
+        std::shared_ptr<Packer> packer(Packer::new_packer(PackerType::Simple));
         packer->pack(t, key);
         (*this)[key] = packer->buffer();
     }
@@ -43,7 +49,7 @@ public:
     template <typename T>
     void get(const std::string& key, T& t)
     {
-        std::shared_ptr<Unpacker> unpacker(Unpacker::new_unpacker((*this)[key], "simple"));
+        std::shared_ptr<Unpacker> unpacker(Unpacker::new_unpacker((*this)[key], PackerType::Simple));
         unpacker->unpack(t, key);
     }
 };

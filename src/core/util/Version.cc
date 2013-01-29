@@ -8,9 +8,9 @@ Version::Version(const std::string& version)
     : _major(0), _minor(0), _maintenance(0)
 {
     boost::char_separator<char> sep(".");
-    boost::tokenizer<boost::char_separator<char> > tok(version, sep);
+    boost::tokenizer<boost::char_separator<char>> tok(version, sep);
 
-    boost::tokenizer<boost::char_separator<char> >::iterator it = tok.begin();
+    boost::tokenizer<boost::char_separator<char>>::iterator it = tok.begin();
     if(it != tok.end()) {
         _major = std::atoi(it->c_str());
         it++;

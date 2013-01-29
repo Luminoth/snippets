@@ -7,7 +7,7 @@ namespace energonsoftware {
 
 Logger& BinaryMessage::logger(Logger::instance("energonsoftware.core.messages.BinaryMessage"));
 
-BinaryMessage::BinaryMessage(const std::string& packer_type, uint32_t type, const Payload& payload)
+BinaryMessage::BinaryMessage(PackerType packer_type, uint32_t type, const Payload& payload)
     : BufferedMessage(false), Serializable(), _payload(payload), _packer_type(packer_type),
         _type(type), _data(), _complete(true)
 {
@@ -24,13 +24,13 @@ BinaryMessage::~BinaryMessage() throw()
 {
 }
 
-void BinaryMessage::serialize(Packer& packer) const
+void BinaryMessage::serialize(Packer& packer) const throw(SerializationError)
 {
     packer.pack(type(), "type");
 
     try {
         on_serialize_header(packer);
-    on_serialize_payload(packer);
+        on_serialize_payload(packer);
     } catch(const std::bad_cast& e) {
         LOG_ERROR("Error serializing binary message: " << e.what() << "\n");
     } catch(const std::out_of_range& e) {
@@ -50,7 +50,7 @@ size_t BinaryMessage::unpack_message_len(Unpacker& unpacker) const
     return atoi(scratch.c_str());
 }
 
-void BinaryMessage::deserialize(Unpacker& unpacker)
+void BinaryMessage::deserialize(Unpacker& unpacker) throw(SerializationError)
 {
     complete(false);
 
@@ -127,7 +127,7 @@ size_t BinaryMessage::data_len() const
     return _data ? _data->length() : 0;
 }
 
-ClientBinaryMessage::ClientBinaryMessage(const std::string& packer_type, uint32_t type, const std::string& sessionid, const Payload& payload)
+ClientBinaryMessage::ClientBinaryMessage(PackerType packer_type, uint32_t type, const std::string& sessionid, const Payload& payload)
     : BinaryMessage(packer_type, type, payload), _sessionid(sessionid)
 {
 }
@@ -169,7 +169,7 @@ void ClientBinaryMessage::on_deserialize_header(Unpacker& unpacker)
     unpacker.unpack(_sessionid, "sessionid");
 }
 
-ServerBinaryMessage::ServerBinaryMessage(const std::string& packer_type, uint32_t type, bool oob, const Payload& payload)
+ServerBinaryMessage::ServerBinaryMessage(PackerType packer_type, uint32_t type, bool oob, const Payload& payload)
     : BinaryMessage(packer_type, type, payload), _oob(oob)
 {
 }

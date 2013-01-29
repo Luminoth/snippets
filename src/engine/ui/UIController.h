@@ -10,7 +10,7 @@ class UIController
 {
 private:
     static std::shared_ptr<UIController> current_controller;
-    static std::stack<std::shared_ptr<UIController> > controller_stack;
+    static std::stack<std::shared_ptr<UIController>> controller_stack;
 
 public:
     static std::shared_ptr<UIController> controller() { return current_controller; }

@@ -6,6 +6,7 @@ namespace energonsoftware {
 // TODO: move this out of core, it doens't belong here
 
 // sleep time in microseconds
+// (eg. use like boost::this_thread::sleep(boost::posix_time::microseconds(thread_sleep_time()))
 inline int thread_sleep_time()
 {
 #if defined _DEBUG

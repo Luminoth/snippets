@@ -486,10 +486,10 @@ bool ServerSocket::sendto(const std::string& buffer, const ClientSocket& socket,
     return sendto(reinterpret_cast<const BufferType*>(buffer.c_str()), buffer.length(), socket, flags);
 }
 
-std::pair<size_t, std::shared_ptr<ClientSocket> > ServerSocket::recvfrom(Buffer& buffer, int flags)
+std::pair<size_t, std::shared_ptr<ClientSocket>> ServerSocket::recvfrom(Buffer& buffer, int flags)
 {
     // NOTE: this doesn't check the buffer size because datagrams don't work like that
-    std::pair<size_t, std::shared_ptr<ClientSocket> > rval;
+    std::pair<size_t, std::shared_ptr<ClientSocket>> rval;
     do {
         rval = do_recvfrom(&(*(buffer.begin())), buffer.size(), flags);
     } while(static_cast<int>(rval.first) < 0 && last_socket_error() == SOCKET_WOULDBLOCK);
@@ -497,13 +497,13 @@ std::pair<size_t, std::shared_ptr<ClientSocket> > ServerSocket::recvfrom(Buffer&
     return rval;
 }
 
-std::pair<size_t, std::shared_ptr<ClientSocket> > ServerSocket::do_recvfrom(BufferType* buffer, size_t len, int flags)
+std::pair<size_t, std::shared_ptr<ClientSocket>> ServerSocket::do_recvfrom(BufferType* buffer, size_t len, int flags)
 {
     sockaddr_in addr;
     socklen_t alen = sizeof(addr);
 
     size_t read = ::recvfrom(socket(), buffer, len, flags, reinterpret_cast<sockaddr*>(&addr), &alen);
-    return std::pair<size_t, std::shared_ptr<ClientSocket> >(read, std::shared_ptr<ClientSocket>(new ClientSocket(addr)));
+    return std::pair<size_t, std::shared_ptr<ClientSocket>>(read, std::shared_ptr<ClientSocket>(new ClientSocket(addr)));
 }
 
 }

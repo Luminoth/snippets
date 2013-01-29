@@ -16,13 +16,20 @@ private:
     std::string _what;
 };
 
+enum class PackerType
+{
+    Simple,
+    Binary,
+    //Protobuf,
+    XML,
+};
+
 class Packer
 {
 public:
-    // returns nullptr if the type is invalid
-    static Packer* new_packer(const std::string& type="simple", const boost::any& data=boost::any(std::string("")));
+    static std::string type_to_str(PackerType type);
 
-    static bool is_valid_type(const std::string& type);
+    static std::shared_ptr<Packer> new_packer(PackerType type, const boost::any& data=boost::any(std::string("")));
 
 private:
     static Logger& logger;
@@ -117,9 +124,8 @@ private:
 class Unpacker
 {
 public:
-    // returns nullptr if the type is invalid
-    static Unpacker* new_unpacker(const std::string& obj, const std::string& type="simple", const boost::any& data=boost::any(std::string("")));
-    static Unpacker* new_unpacker(const unsigned char* obj, size_t len, const std::string& type="simple", const boost::any& data=boost::any(std::string("")));
+    static std::shared_ptr<Unpacker> new_unpacker(const std::string& obj, PackerType type, const boost::any& data=boost::any(std::string("")));
+    static std::shared_ptr<Unpacker> new_unpacker(const unsigned char* obj, size_t len, PackerType type, const boost::any& data=boost::any(std::string("")));
 
 private:
     static Logger& logger;

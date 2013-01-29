@@ -23,8 +23,8 @@ class MessageHandlerModule;
 class MessageHandler
 {
 public:
-    typedef std::unordered_map<std::string, std::shared_ptr<MessageHandlerModule> > XmlMessageHandlerMap;
-    typedef std::unordered_map<uint32_t, std::shared_ptr<MessageHandlerModule> > BinaryMessageHandlerMap;
+    typedef std::unordered_map<std::string, std::shared_ptr<MessageHandlerModule>> XmlMessageHandlerMap;
+    typedef std::unordered_map<uint32_t, std::shared_ptr<MessageHandlerModule>> BinaryMessageHandlerMap;
 
 private:
     static Logger& logger;

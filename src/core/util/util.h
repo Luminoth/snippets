@@ -19,8 +19,18 @@ std::string last_std_error(int error) throw();
 std::string last_error() throw();
 std::string last_error(int error) throw();
 
-// returns the time in seconds
+// returns the universal epoch as a ptime
+boost::gregorian::date epoch_date();
+boost::posix_time::ptime epoch_time();
+
+// returns the universal time (since epoch) in seconds
+// tested to millisecond accuracy
 double get_time();
+double get_time(const boost::posix_time::ptime& time);
+
+// converts a unix timestamp (time since epoch in seconds)
+// to a posix time
+boost::posix_time::ptime from_time(uint64_t seconds);
 
 #if defined WITH_CRYPTO
 // base64 encoding (caller is responsible for freeing the return value)

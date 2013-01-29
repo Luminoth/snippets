@@ -57,6 +57,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <functional>
 #include <iosfwd>
 #include <list>

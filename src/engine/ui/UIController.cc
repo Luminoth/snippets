@@ -4,7 +4,7 @@
 namespace energonsoftware {
 
 std::shared_ptr<UIController> UIController::current_controller(new UIController());
-std::stack<std::shared_ptr<UIController> > UIController::controller_stack;
+std::stack<std::shared_ptr<UIController>> UIController::controller_stack;
 
 void UIController::release_controllers()
 {

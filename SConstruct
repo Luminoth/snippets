@@ -55,6 +55,7 @@ data_dir = os.path.join("share", src_name)
 ### BASE COMPILER OPTIONS ###
 ccflags = [
     "-std=c++11",
+    "-march=i686",
     "-msse3",
     "-pedantic-errors",
     "-Wall",

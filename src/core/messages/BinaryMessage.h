@@ -19,7 +19,7 @@ protected:
     static Logger& logger;
 
 public:
-    explicit BinaryMessage(const std::string& packer_type, uint32_t type, const Payload& payload=Payload());
+    explicit BinaryMessage(PackerType packer_type, uint32_t type, const Payload& payload=Payload());
 
     // NOTE: this is pretty slow because it has to copy the payload
     BinaryMessage(const BinaryMessage& message);
@@ -27,8 +27,8 @@ public:
     virtual ~BinaryMessage() throw();
 
 public:
-    const std::string& packer_type() const { return _packer_type; }
-    void packer_type(const std::string& packer_type) { _packer_type = packer_type; }
+    PackerType packer_type() const { return _packer_type; }
+    void packer_type(PackerType packer_type) { _packer_type = packer_type; }
 
     // check this when deserializing to see if the message
     // has all of the data necessary
@@ -39,8 +39,8 @@ public:
 
     virtual BufferedMessageType msg_type() const { return BufferedMessageType::Binary; }
 
-    virtual void serialize(Packer& packer) const;
-    virtual void deserialize(Unpacker& unpacker);
+    virtual void serialize(Packer& packer) const throw(SerializationError) override;
+    virtual void deserialize(Unpacker& unpacker) throw(SerializationError) override;
 
 public:
     BinaryMessage& operator=(const BinaryMessage& rhs);
@@ -48,8 +48,6 @@ public:
     bool operator!=(const BinaryMessage& rhs) const;
 
 protected:
-    // override these
-
     // return a string representation of the header
     virtual std::string header() const = 0;
 
@@ -71,7 +69,7 @@ protected:
     Payload _payload;
 
 private:
-    std::string _packer_type;
+    PackerType _packer_type;
     uint32_t _type;
     std::shared_ptr<std::string> _data;
     bool _complete;
@@ -80,7 +78,7 @@ private:
 class ClientBinaryMessage : public BinaryMessage
 {
 public:
-    explicit ClientBinaryMessage(const std::string& packer_type, uint32_t type, const std::string& sessionid="", const Payload& payload=Payload());
+    explicit ClientBinaryMessage(PackerType packer_type, uint32_t type, const std::string& sessionid="", const Payload& payload=Payload());
 
     // NOTE: this is pretty slow because it has to copy the payload
     ClientBinaryMessage(const ClientBinaryMessage& message);
@@ -95,9 +93,9 @@ public:
     bool operator!=(const ClientBinaryMessage& rhs) const;
 
 private:
-    virtual std::string header() const { return sessionid(); }
-    virtual void on_serialize_header(Packer& packer) const;
-    virtual void on_deserialize_header(Unpacker& unpacker);
+    virtual std::string header() const override { return sessionid(); }
+    virtual void on_serialize_header(Packer& packer) const override;
+    virtual void on_deserialize_header(Unpacker& unpacker) override;
 
 private:
     std::string _sessionid;
@@ -106,7 +104,7 @@ private:
 class ServerBinaryMessage : public BinaryMessage
 {
 public:
-    explicit ServerBinaryMessage(const std::string& packer_type, uint32_t type, bool oob=true, const Payload& payload=Payload());
+    explicit ServerBinaryMessage(PackerType packer_type, uint32_t type, bool oob=true, const Payload& payload=Payload());
 
     // NOTE: this is pretty slow because it has to copy the payload
     ServerBinaryMessage(const ServerBinaryMessage& message);
@@ -121,9 +119,9 @@ public:
     bool operator!=(const ServerBinaryMessage& rhs) const;
 
 private:
-    virtual std::string header() const { return oob() ? "1" : "0"; }
-    virtual void on_serialize_header(Packer& packer) const;
-    virtual void on_deserialize_header(Unpacker& unpacker);
+    virtual std::string header() const override { return oob() ? "1" : "0"; }
+    virtual void on_serialize_header(Packer& packer) const override;
+    virtual void on_deserialize_header(Unpacker& unpacker) override;
 
 private:
     bool _oob;

@@ -1,0 +1,370 @@
+<?xml version="1.0" ?>
+<resource>
+  <object class="wxFrame" name="ID_MAIN_FRAME">
+    <object class="wxMenuBar">
+      <object class="wxMenu">
+        <label>&amp;File</label>
+        <object class="wxMenuItem" name="wxID_OPEN">
+          <label>&amp;Open...</label>
+        </object>
+        <object class="wxMenuItem" name="wxID_CLOSE">
+          <label>&amp;Close</label>
+        </object>
+        <object class="separator"/>
+        <object class="wxMenuItem" name="wxID_EXIT">
+          <label>E&amp;xit</label>
+        </object>
+      </object>
+      <object class="wxMenu">
+        <label>&amp;Filter</label>
+        <object class="wxMenuItem" name="ID_FILTER">
+          <label>Fi&amp;lter...</label>
+        </object>
+      </object>
+      <object class="wxMenu">
+        <label>&amp;Help</label>
+        <object class="wxMenuItem" name="wxID_ABOUT">
+          <label>&amp;About...</label>
+        </object>
+      </object>
+    </object>
+    <object class="wxStatusBar"/>
+    <object class="wxBoxSizer">
+      <orient>wxVERTICAL</orient>
+      <object class="sizeritem">
+        <object class="wxNotebook" name="ID_EVENT_NOTEBOOK" subclass="viewer.XRCAuiNotebook"/>
+        <option>1</option>
+        <flag>wxEXPAND</flag>
+      </object>
+    </object>
+    <centered>1</centered>
+  </object>
+  <object class="wxMenu" name="ID_EVENT_MENU">
+    <object class="wxMenuItem" name="ID_DETAILS">
+      <label>&amp;Details...</label>
+      <enabled>0</enabled>
+    </object>
+    <label>&amp;Event</label>
+  </object>
+  <object class="wxPanel" name="ID_EVENT_PANEL">
+    <object class="wxBoxSizer">
+      <orient>wxVERTICAL</orient>
+      <object class="sizeritem">
+        <object class="wxListCtrl" name="ID_EVENT_LIST" subclass="viewer.EventListCtrl">
+          <style>wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_HRULES|wxLC_VRULES</style>
+        </object>
+        <option>1</option>
+        <flag>wxEXPAND</flag>
+      </object>
+    </object>
+  </object>
+  <object class="wxDialog" name="ID_DETAILS_DIALOG">
+    <title>Event Details</title>
+    <style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
+    <object class="wxBoxSizer">
+      <orient>wxVERTICAL</orient>
+      <object class="sizeritem">
+        <object class="wxStaticBoxSizer">
+          <object class="sizeritem">
+            <object class="wxGridSizer">
+              <object class="sizeritem">
+                <object class="wxStaticText">
+                  <label>Id:</label>
+                  <wrap>-1</wrap>
+                  <style>wxALIGN_LEFT</style>
+                </object>
+                <option>0</option>
+              </object>
+              <object class="sizeritem">
+                <object class="wxStaticText" name="ID_DETAILS_EVENT_ID">
+                  <wrap>-1</wrap>
+                  <style>wxALIGN_LEFT</style>
+                </object>
+                <option>1</option>
+                <flag>wxEXPAND|wxALIGN_LEFT</flag>
+              </object>
+              <object class="sizeritem">
+                <object class="wxStaticText">
+                  <label>Timestamp:</label>
+                  <wrap>-1</wrap>
+                  <style>wxALIGN_LEFT</style>
+                </object>
+                <option>0</option>
+              </object>
+              <object class="sizeritem">
+                <object class="wxStaticText" name="ID_DETAILS_EVENT_TIMESTAMP">
+                  <wrap>-1</wrap>
+                  <style>wxALIGN_LEFT</style>
+                </object>
+                <option>1</option>
+                <flag>wxEXPAND|wxALIGN_LEFT</flag>
+              </object>
+              <object class="sizeritem">
+                <object class="wxStaticText">
+                  <label>Type:</label>
+                  <wrap>-1</wrap>
+                  <style>wxALIGN_LEFT</style>
+                </object>
+                <option>0</option>
+              </object>
+              <object class="sizeritem">
+                <object class="wxStaticText" name="ID_DETAILS_EVENT_TYPE">
+                  <wrap>-1</wrap>
+                  <style>wxALIGN_LEFT</style>
+                </object>
+                <option>1</option>
+                <flag>wxEXPAND|wxALIGN_LEFT</flag>
+              </object>
+              <cols>2</cols>
+            </object>
+            <option>1</option>
+            <flag>wxALL|wxEXPAND</flag>
+            <border>5</border>
+          </object>
+          <label>Event Details</label>
+          <orient>wxVERTICAL</orient>
+        </object>
+        <option>0</option>
+        <flag>wxALL|wxEXPAND</flag>
+        <border>5</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxBoxSizer">
+          <object class="spacer">
+            <option>1</option>
+            <flag>wxEXPAND</flag>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_OK">
+              <default>1</default>
+            </object>
+            <option>0</option>
+          </object>
+          <orient>wxHORIZONTAL</orient>
+          <object class="spacer">
+            <option>1</option>
+            <flag>wxEXPAND</flag>
+          </object>
+        </object>
+        <option>0</option>
+        <flag>wxALL|wxEXPAND</flag>
+        <border>5</border>
+      </object>
+    </object>
+  </object>
+  <object class="wxDialog" name="ID_FILTER_DIALOG">
+    <title>Event Filters</title>
+    <style>wxDEFAULT_DIALOG_STYLE</style>
+    <object class="wxBoxSizer">
+      <orient>wxVERTICAL</orient>
+      <object class="sizeritem">
+        <object class="wxBoxSizer">
+          <object class="sizeritem">
+            <object class="wxRadioBox" name="ID_FILTER_MATCH_TYPE">
+              <label>Match Type</label>
+              <content>
+                <item>None</item>
+                <item>Any</item>
+                <item>All</item>
+              </content>
+            </object>
+            <option>1</option>
+            <flag>wxALL|wxEXPAND</flag>
+            <border>5</border>
+          </object>
+          <orient>wxHORIZONTAL</orient>
+        </object>
+        <option>0</option>
+        <flag>wxEXPAND</flag>
+      </object>
+      <object class="sizeritem">
+        <object class="wxBoxSizer">
+          <object class="sizeritem">
+            <object class="wxStaticBoxSizer">
+              <object class="sizeritem">
+                <object class="wxBoxSizer">
+                  <object class="sizeritem">
+                    <object class="wxStaticText">
+                      <label>Filter Type:</label>
+                      <wrap>-1</wrap>
+                    </object>
+                    <option>0</option>
+                    <flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTRE_VERTICAL</flag>
+                    <border>5</border>
+                  </object>
+                  <object class="sizeritem">
+                    <object class="wxComboBox" name="ID_FILTER_TYPE">
+                      <content>
+                        <item>Select a Type...</item>
+                        <item>Event Type</item>
+                      </content>
+                      <style>wxCB_READONLY</style>
+                    </object>
+                    <option>1</option>
+                    <flag>wxALL|wxEXPAND|wxALIGN_LEFT</flag>
+                    <border>5</border>
+                  </object>
+                  <orient>wxHORIZONTAL</orient>
+                </object>
+                <option>0</option>
+                <flag>wxEXPAND</flag>
+              </object>
+              <label>Add Filter</label>
+              <orient>wxVERTICAL</orient>
+            </object>
+            <option>0</option>
+            <flag>wxALL|wxEXPAND</flag>
+            <border>5</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxBoxSizer">
+              <object class="spacer">
+                <option>1</option>
+                <flag>wxEXPAND</flag>
+              </object>
+              <object class="sizeritem">
+                <object class="wxButton" name="ID_FILTER_ADD">
+                  <label>Add Filter -&gt;</label>
+                </object>
+                <option>0</option>
+                <flag>wxALL|wxEXPAND|wxALIGN_CENTRE</flag>
+                <border>5</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxButton" name="ID_FILTER_REMOVE">
+                  <label>&lt;- Remove Filter</label>
+                </object>
+                <option>0</option>
+                <flag>wxALL|wxEXPAND|wxALIGN_CENTRE</flag>
+                <border>5</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxButton" name="ID_FILTER_CLEAR">
+                  <label>Clear Filters</label>
+                </object>
+                <option>0</option>
+                <flag>wxALL|wxEXPAND|wxALIGN_CENTRE</flag>
+                <border>5</border>
+              </object>
+              <orient>wxVERTICAL</orient>
+              <object class="spacer">
+                <option>1</option>
+                <flag>wxEXPAND</flag>
+              </object>
+            </object>
+            <option>0</option>
+            <flag>wxALL|wxEXPAND</flag>
+            <border>5</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxStaticBoxSizer">
+              <object class="sizeritem">
+                <object class="wxListCtrl" name="ID_FILTER_LIST" subclass="viewer.FilterListCtrl">
+                  <size>500,300</size>
+                  <style>wxLC_REPORT|wxLC_HRULES|wxLC_VRULES</style>
+                </object>
+                <option>1</option>
+                <flag>wxALL|wxEXPAND</flag>
+                <border>5</border>
+              </object>
+              <label>Filters</label>
+              <orient>wxVERTICAL</orient>
+            </object>
+            <option>1</option>
+            <flag>wxALL|wxEXPAND</flag>
+            <border>5</border>
+          </object>
+          <orient>wxHORIZONTAL</orient>
+        </object>
+        <option>0</option>
+        <flag>wxEXPAND</flag>
+      </object>
+      <object class="sizeritem">
+        <object class="wxStaticBoxSizer">
+          <object class="sizeritem">
+            <object class="wxBoxSizer">
+              <object class="sizeritem">
+                <object class="wxPanel" name="ID_FILTER_CONTROLS_EMPTY">
+                  <object class="wxBoxSizer">
+                    <orient>wxVERTICAL</orient>
+                    <object class="sizeritem">
+                      <object class="wxStaticText">
+                        <label>Select a Filter...</label>
+                      </object>
+                      <option>1</option>
+                      <flag>wxALL</flag>
+                      <border>5</border>
+                    </object>
+                  </object>
+                </object>
+                <option>1</option>
+                <flag>wxEXPAND</flag>
+              </object>
+              <object class="sizeritem">
+                <object class="wxPanel" name="ID_FILTER_CONTROLS_EVENT_TYPE">
+                  <hidden>1</hidden>
+                  <object class="wxBoxSizer">
+                    <object class="sizeritem">
+                      <object class="wxStaticText">
+                        <label>Event Type:</label>
+                      </object>
+                      <option>0</option>
+                      <flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTRE_VERTICAL</flag>
+                      <border>5</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxComboBox" name="ID_FILTER_EVENT_TYPE_TYPE">
+                        <content>
+                          <item>Unknown Event</item>
+                        </content>
+                        <style>wxCB_READONLY</style>
+                      </object>
+                      <option>0</option>
+                      <flag>wxALL|wxALIGN_LEFT</flag>
+                      <border>5</border>
+                    </object>
+                    <orient>wxHORIZONTAL</orient>
+                  </object>
+                </object>
+                <option>1</option>
+                <flag>wxEXPAND</flag>
+              </object>
+            </object>
+            <option>1</option>
+            <flag>wxEXPAND</flag>
+          </object>
+          <label>Filter Options</label>
+          <orient>wxVERTICAL</orient>
+        </object>
+        <option>1</option>
+        <flag>wxALL|wxEXPAND</flag>
+        <border>5</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxBoxSizer">
+          <object class="spacer">
+            <option>1</option>
+            <flag>wxEXPAND</flag>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="ID_FILTER_RUN">
+              <label>Run Filters</label>
+            </object>
+            <option>0</option>
+            <flag>wxALL</flag>
+            <border>5</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_CLOSE"/>
+            <option>0</option>
+            <flag>wxALL</flag>
+            <border>5</border>
+          </object>
+          <orient>wxHORIZONTAL</orient>
+        </object>
+        <option>0</option>
+        <flag>wxEXPAND</flag>
+      </object>
+    </object>
+  </object>
+</resource>

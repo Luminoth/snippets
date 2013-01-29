@@ -9,27 +9,38 @@ namespace energonsoftware {
 
 Logger& Packer::logger(Logger::instance("energonsoftware.core.util.Packer"));
 
-Packer* Packer::new_packer(const std::string& type, const boost::any& data)
+std::string Packer::type_to_str(PackerType type)
 {
-    const std::string scratch(boost::algorithm::to_lower_copy(type));
-    if(scratch == "simple") {
-        return new SimplePacker();
-    } else if(scratch == "binary") {
-        return new BinaryPacker();
-    /*} else if(scratch == "protobuf") {
-        return new ProtoBufPacker(boost::any_cast<ProtoBufPackerType>(data));*/
-    } else if(scratch == "xml") {
-        return new XmlPacker();
+    switch(type)
+    {
+    case PackerType::Simple:
+        return "simple";
+    case PackerType::Binary:
+        return "binary";
+    /*case PackerType::Protobuf:
+        return "protobuf";*/
+    case PackerType::XML:
+        return "xml";
     }
-
-    LOG_ERROR("Unknown packer type: " << type << ", returning nullptr\n");
-    return nullptr;
+    return "invalid";
 }
 
-bool Packer::is_valid_type(const std::string& type)
+std::shared_ptr<Packer> Packer::new_packer(PackerType type, const boost::any& data)
 {
-    const std::string scratch(boost::algorithm::to_lower_copy(type));
-    return scratch == "simple" || scratch == "binary" /*|| scratch == "protobuf"*/ || scratch == "xml";
+    switch(type)
+    {
+    case PackerType::Simple:
+        return std::shared_ptr<Packer>(new SimplePacker());
+    case PackerType::Binary:
+        return std::shared_ptr<Packer>(new BinaryPacker());
+    /*case PackerType::Protobuf:
+        return std::shared_ptr<Packer>(new ProtoBufPacker(boost::any_cast<ProtoBufPackerType>(data)));*/
+    case PackerType::XML:
+        return std::shared_ptr<Packer>(new XmlPacker());
+    }
+
+    LOG_ERROR("Unknown packer type: " << type_to_str(type) << "\n");
+    return std::shared_ptr<Packer>();
 }
 
 Packer& Packer::pack(const Serializable& v, const std::string& name) throw(PackerError)
@@ -40,38 +51,40 @@ Packer& Packer::pack(const Serializable& v, const std::string& name) throw(Packe
 
 Logger& Unpacker::logger(Logger::instance("energonsoftware.core.util.Unpacker"));
 
-Unpacker* Unpacker::new_unpacker(const std::string& obj, const std::string& type, const boost::any& data)
+std::shared_ptr<Unpacker> Unpacker::new_unpacker(const std::string& obj, PackerType type, const boost::any& data)
 {
-    const std::string scratch(boost::algorithm::to_lower_copy(type));
-    if(scratch == "simple") {
-        return new SimpleUnpacker(obj);
-    } else if(scratch == "binary") {
-        return new BinaryUnpacker(obj);
-    /*} else if(scratch == "protobuf") {
-        return new ProtoBufUnpacker(boost::any_cast<ProtoBufPackerType>(data), obj);*/
-    } else if(scratch == "xml") {
-        return new XmlUnpacker(obj);
+    switch(type)
+    {
+    case PackerType::Simple:
+        return std::shared_ptr<Unpacker>(new SimpleUnpacker(obj));
+    case PackerType::Binary:
+        return std::shared_ptr<Unpacker>(new BinaryUnpacker(obj));
+    /*case PackerType::Protobuf:
+        return std::shared_ptr<Unpacker>(new ProtoBufUnpacker(boost::any_cast<ProtoBufPackerType>(data), obj));*/
+    case PackerType::XML:
+        return std::shared_ptr<Unpacker>(new XmlUnpacker(obj));
     }
 
-    LOG_ERROR("Unknown packer type: " << type << ", returning nullptr\n");
-    return nullptr;
+    LOG_ERROR("Unknown packer type: " << Packer::type_to_str(type) << "\n");
+    return std::shared_ptr<Unpacker>();
 }
 
-Unpacker* Unpacker::new_unpacker(const unsigned char* obj, size_t len, const std::string& type, const boost::any& data)
+std::shared_ptr<Unpacker> Unpacker::new_unpacker(const unsigned char* obj, size_t len, PackerType type, const boost::any& data)
 {
-    const std::string scratch(boost::algorithm::to_lower_copy(type));
-    if(scratch == "simple") {
-        return new SimpleUnpacker(obj, len);
-    } else if(scratch == "binary") {
-        return new BinaryUnpacker(obj, len);
-    /*} else if(scratch == "protobuf") {
-        return new ProtoBufUnpacker(boost::any_cast<ProtoBufPackerType>(data), obj, len);*/
-    } else if(scratch == "xml") {
-        return new XmlUnpacker(obj, len);
+    switch(type)
+    {
+    case PackerType::Simple:
+        return std::shared_ptr<Unpacker>(new SimpleUnpacker(obj, len));
+    case PackerType::Binary:
+        return std::shared_ptr<Unpacker>(new BinaryUnpacker(obj, len));
+    /*case PackerType::Protobuf:
+        return std::shared_ptr<Unpacker>(new ProtoBufUnpacker(boost::any_cast<ProtoBufPackerType>(data), obj, len));*/
+    case PackerType::XML:
+        return std::shared_ptr<Unpacker>(new XmlUnpacker(obj, len));
     }
 
-    LOG_ERROR("Unknown packer type: " << type << ", returning nullptr\n");
-    return nullptr;
+    LOG_ERROR("Unknown packer type: " << Packer::type_to_str(type) << "\n");
+    return std::shared_ptr<Unpacker>();
 }
 
 Unpacker::Unpacker(const std::vector<unsigned char>& obj)
@@ -120,26 +133,26 @@ public:
 public:
     void test_simple()
     {
-        test_packer("simple");
+        test_packer(energonsoftware::PackerType::Simple);
     }
 
     void test_binary()
     {
-        test_packer("binary");
+        test_packer(energonsoftware::PackerType::Binary);
     }
 
     /*void test_protobuf()
     {
-        test_packer("protobuf", boost::any(mmorpg::ProtoBufPackerTypeTest));
+        test_packer(energonsoftware::PackerType::Protobuf, boost::any(mmorpg::ProtoBufPackerTypeTest));
     }*/
 
     void test_xml()
     {
-        test_packer("xml");
+        test_packer(energonsoftware::PackerType::XML);
     }
 
 private:
-    std::shared_ptr<energonsoftware::Packer> create_packer(const std::string& type, const boost::any& data)
+    std::shared_ptr<energonsoftware::Packer> create_packer(energonsoftware::PackerType type, const boost::any& data)
     {
         std::shared_ptr<energonsoftware::Packer> packer(energonsoftware::Packer::new_packer(type, data));
         CPPUNIT_ASSERT(static_cast<bool>(packer));
@@ -158,7 +171,7 @@ private:
         return packer;
     }
 
-    void unpack_packer(const std::string& type, const std::string& buffer, const boost::any& data)
+    void unpack_packer(energonsoftware::PackerType type, const std::string& buffer, const boost::any& data)
     {
         std::shared_ptr<energonsoftware::Unpacker> unpacker(energonsoftware::Unpacker::new_unpacker(buffer, type, data));
         CPPUNIT_ASSERT(unpacker);
@@ -202,7 +215,7 @@ private:
         CPPUNIT_ASSERT_EQUAL(false, b);
     }
 
-    void test_packer(const std::string& type, const boost::any& data=boost::any(std::string("")))
+    void test_packer(energonsoftware::PackerType type, const boost::any& data=boost::any(std::string("")))
     {
         std::shared_ptr<energonsoftware::Packer> packer(create_packer(type, data));
         unpack_packer(type, packer->buffer(), data);

@@ -71,30 +71,29 @@ std::string last_error(int error) throw()
 #endif
 }
 
+boost::gregorian::date epoch_date()
+{
+    return boost::gregorian::date(1970, 1, 1);
+}
+
+boost::posix_time::ptime epoch_time()
+{
+    return boost::posix_time::ptime(epoch_date());
+}
+
 double get_time()
 {
-    timeval tv;
+    return get_time(boost::posix_time::microsec_clock::universal_time());
+}
 
-#if defined WIN32
-    /* from http://www.cpp-programming.net/c-tidbits/gettimeofday-function-for-windows/ */
-    FILETIME ft;
-    GetSystemTimeAsFileTime(&ft);
+double get_time(const boost::posix_time::ptime& time)
+{
+    return (time - epoch_time()).total_microseconds() / 1000000.0;
+}
 
-    unsigned __int64 tmpres = 0;
-    tmpres |= ft.dwHighDateTime;
-    tmpres <<= 32;
-    tmpres |= ft.dwLowDateTime;
-
-    // converting file time to unix epoch
-    tmpres -= DELTA_EPOCH_IN_MICROSECS;
-    tmpres /= 10;   // convert into microseconds
-    tv.tv_sec = static_cast<long>(tmpres / 1000000UL);
-    tv.tv_usec = static_cast<long>(tmpres % 1000000UL);
-#else
-    gettimeofday(&tv, nullptr);
-#endif
-
-    return tv.tv_sec + (tv.tv_usec * 1e-6);
+boost::posix_time::ptime from_time(uint64_t seconds)
+{
+    return boost::posix_time::ptime(epoch_date(), boost::posix_time::seconds(seconds));
 }
 
 #if defined WITH_CRYPTO
@@ -369,6 +368,8 @@ class UtilTest : public CppUnit::TestFixture
 {
 public:
     CPPUNIT_TEST_SUITE(UtilTest);
+        CPPUNIT_TEST(test_get_time);
+        CPPUNIT_TEST(test_from_time);
 #if defined WITH_CRYPTO
         CPPUNIT_TEST(test_base64);
         CPPUNIT_TEST(test_md5sum);
@@ -388,6 +389,18 @@ private:
     static energonsoftware::Logger& logger;
 
 public:
+    void test_get_time()
+    {
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(get_time_noboost(), energonsoftware::get_time(), 0.001);
+    }
+
+    void test_from_time()
+    {
+        const double current_time = energonsoftware::get_time();
+        boost::posix_time::ptime current_ptime(energonsoftware::from_time(static_cast<uint64_t>(current_time)));
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(current_time, energonsoftware::get_time(current_ptime), 1.0);
+    }
+
 #if defined WITH_CRYPTO
     void test_base64()
     {
@@ -481,6 +494,33 @@ public:
         CPPUNIT_ASSERT(POWER_OF_2(2));
         CPPUNIT_ASSERT(!POWER_OF_2(200));
         CPPUNIT_ASSERT(POWER_OF_2(256));
+    }
+
+private:
+    double get_time_noboost()
+    {
+        timeval tv;
+
+#if defined WIN32
+        /* from http://www.cpp-programming.net/c-tidbits/gettimeofday-function-for-windows/ */
+        FILETIME ft;
+        GetSystemTimeAsFileTime(&ft);
+
+        unsigned __int64 tmpres = 0;
+        tmpres |= ft.dwHighDateTime;
+        tmpres <<= 32;
+        tmpres |= ft.dwLowDateTime;
+
+        // converting file time to unix epoch
+        tmpres -= DELTA_EPOCH_IN_MICROSECS;
+        tmpres /= 10;   // convert into microseconds
+        tv.tv_sec = static_cast<long>(tmpres / 1000000UL);
+        tv.tv_usec = static_cast<long>(tmpres % 1000000UL);
+#else
+        gettimeofday(&tv, nullptr);
+#endif
+
+        return tv.tv_sec + (tv.tv_usec * 1e-6);
     }
 };
 energonsoftware::Logger& UtilTest::logger(energonsoftware::Logger::instance("energonsoftware.core.util.UtilTest"));
