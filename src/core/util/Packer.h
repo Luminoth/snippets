@@ -108,6 +108,10 @@ public:
     virtual Packer& reset() = 0;
     virtual Packer& pack(const std::string& v, const std::string& name) throw(PackerError) = 0;
     virtual Packer& pack(const char* const v, const std::string& name) throw(PackerError) = 0;
+    virtual Packer& pack(int8_t v, const std::string& name) throw(PackerError) = 0;
+    virtual Packer& pack(uint8_t v, const std::string& name) throw(PackerError) = 0;
+    /*virtual Packer& pack(int16_t v, const std::string& name) throw(PackerError) = 0;
+    virtual Packer& pack(uint16_t v, const std::string& name) throw(PackerError) = 0;*/
     virtual Packer& pack(int32_t v, const std::string& name) throw(PackerError) = 0;
     virtual Packer& pack(uint32_t v, const std::string& name) throw(PackerError) = 0;
     virtual Packer& pack(int64_t v, const std::string& name) throw(PackerError) = 0;
@@ -238,6 +242,10 @@ public:
     virtual Unpacker& skip(unsigned int count) throw(PackerError) = 0;
     virtual Unpacker& position(int unsigned position) throw(PackerError) = 0;
     virtual Unpacker& unpack(std::string& value, const std::string& name) throw(PackerError) = 0;
+    virtual Unpacker& unpack(int8_t& value, const std::string& name) throw(PackerError) = 0;
+    virtual Unpacker& unpack(uint8_t& value, const std::string& name) throw(PackerError) = 0;
+    /*virtual Unpacker& unpack(int16_t& value, const std::string& name) throw(PackerError) = 0;
+    virtual Unpacker& unpack(uint16_t& value, const std::string& name) throw(PackerError) = 0;*/
     virtual Unpacker& unpack(int32_t& value, const std::string& name) throw(PackerError) = 0;
     virtual Unpacker& unpack(uint32_t& value, const std::string& name) throw(PackerError) = 0;
     virtual Unpacker& unpack(int64_t& value, const std::string& name) throw(PackerError) = 0;

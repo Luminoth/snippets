@@ -28,6 +28,9 @@ public:
     virtual ~EventLogger() throw();
 
 public:
+    void init(const boost::filesystem::path& filename);
+    void shutdown();
+
     // NOTE: defaults to disabled
     bool enabled() const { return _enabled; }
     void enable(bool enable=true);
@@ -37,11 +40,15 @@ public:
     void packer_type(PackerType type) { _packer_type = type; }
 
     void log(const Event& event) throw(EventLoggerError);
+
+    // TODO: this should take iterator endpoints
     void log(const std::vector<Event>& events) throw(EventLoggerError);
 
 private:
     bool _enabled;
     PackerType _packer_type;
+
+    boost::filesystem::path _filename;
 
 private:
     EventLogger();

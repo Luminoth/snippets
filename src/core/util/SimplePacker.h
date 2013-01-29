@@ -16,6 +16,8 @@ public:
     virtual Packer& reset() override;
     virtual Packer& pack(const std::string& v, const std::string& name) throw(PackerError) override;
     virtual Packer& pack(const char* const v, const std::string& name) throw(PackerError) override;
+    virtual Packer& pack(int8_t v, const std::string& name) throw(PackerError) override;
+    virtual Packer& pack(uint8_t v, const std::string& name) throw(PackerError) override;
     virtual Packer& pack(int32_t v, const std::string& name) throw(PackerError) override;
     virtual Packer& pack(uint32_t v, const std::string& name) throw(PackerError) override;
     virtual Packer& pack(int64_t v, const std::string& name) throw(PackerError) override;
@@ -45,6 +47,8 @@ public:
     virtual Unpacker& skip(unsigned int count) throw(PackerError) override;
     virtual Unpacker& position(unsigned int position) throw(PackerError) override;
     virtual Unpacker& unpack(std::string& v, const std::string& name) throw(PackerError) override;
+    virtual Unpacker& unpack(int8_t& v, const std::string& name) throw(PackerError) override;
+    virtual Unpacker& unpack(uint8_t& v, const std::string& name) throw(PackerError) override;
     virtual Unpacker& unpack(int32_t& v, const std::string& name) throw(PackerError) override;
     virtual Unpacker& unpack(uint32_t& v, const std::string& name) throw(PackerError) override;
     virtual Unpacker& unpack(int64_t& v, const std::string& name) throw(PackerError) override;

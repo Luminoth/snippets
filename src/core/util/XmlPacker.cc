@@ -36,6 +36,22 @@ Packer& XmlPacker::pack(const char* const v, const std::string& name) throw(Pack
     return *this;
 }
 
+Packer& XmlPacker::pack(int8_t v, const std::string& name) throw(PackerError)
+{
+    _buffer << "<" << name << ">";
+    _buffer << v;
+    _buffer << "</" << name << ">";
+    return *this;
+}
+
+Packer& XmlPacker::pack(uint8_t v, const std::string& name) throw(PackerError)
+{
+    _buffer << "<" << name << ">";
+    _buffer << v;
+    _buffer << "</" << name << ">";
+    return *this;
+}
+
 Packer& XmlPacker::pack(int32_t v, const std::string& name) throw(PackerError)
 {
     _buffer << "<" << name << ">";
@@ -134,6 +150,22 @@ Unpacker& XmlUnpacker::skip(unsigned int count) throw(PackerError)
 Unpacker& XmlUnpacker::unpack(std::string& v, const std::string& name) throw(PackerError)
 {
     next_value(name, v);
+    return *this;
+}
+
+Unpacker& XmlUnpacker::unpack(int8_t& v, const std::string& name) throw(PackerError)
+{
+    std::string value;
+    next_value(name, value);
+    v = value[0];
+    return *this;
+}
+
+Unpacker& XmlUnpacker::unpack(uint8_t& v, const std::string& name) throw(PackerError)
+{
+    std::string value;
+    next_value(name, value);
+    v = value[0];
     return *this;
 }
 

@@ -33,6 +33,18 @@ Packer& SimplePacker::pack(const char* const v, const std::string& name) throw(P
     return *this;
 }
 
+Packer& SimplePacker::pack(int8_t v, const std::string& name) throw(PackerError)
+{
+    _buffer.write(reinterpret_cast<const char*>(&v), sizeof(int8_t));
+    return *this;
+}
+
+Packer& SimplePacker::pack(uint8_t v, const std::string& name) throw(PackerError)
+{
+    _buffer.write(reinterpret_cast<const char*>(&v), sizeof(uint8_t));
+    return *this;
+}
+
 Packer& SimplePacker::pack(int32_t v, const std::string& name) throw(PackerError)
 {
     _buffer.write(reinterpret_cast<const char*>(&v), sizeof(int32_t));
@@ -124,6 +136,18 @@ Unpacker& SimpleUnpacker::unpack(std::string& v, const std::string& name) throw(
     std::shared_ptr<char> n(new char[len]);
     _buffer.read(n.get(), len);
     v.assign(n.get(), len);
+    return *this;
+}
+
+Unpacker& SimpleUnpacker::unpack(int8_t& v, const std::string& name) throw(PackerError)
+{
+    _buffer.read(reinterpret_cast<char*>(&v), sizeof(int8_t));
+    return *this;
+}
+
+Unpacker& SimpleUnpacker::unpack(uint8_t& v, const std::string& name) throw(PackerError)
+{
+    _buffer.read(reinterpret_cast<char*>(&v), sizeof(uint8_t));
     return *this;
 }
 

@@ -60,6 +60,18 @@ Packer& BinaryPacker::pack(const char* const v, const std::string& name) throw(P
     return *this;
 }
 
+Packer& BinaryPacker::pack(int8_t v, const std::string& name) throw(PackerError)
+{
+    _buffer.write(reinterpret_cast<const char*>(&v), 1);
+    return *this;
+}
+
+Packer& BinaryPacker::pack(uint8_t v, const std::string& name) throw(PackerError)
+{
+    _buffer.write(reinterpret_cast<const char*>(&v), 1);
+    return *this;
+}
+
 Packer& BinaryPacker::pack(int32_t v, const std::string& name) throw(PackerError)
 {
     char* bytes = reinterpret_cast<char*>(&v);
@@ -239,6 +251,18 @@ Unpacker& BinaryUnpacker::unpack(std::string& v, const std::string& name) throw(
     }
 
     v.assign(n.get(), len);
+    return *this;
+}
+
+Unpacker& BinaryUnpacker::unpack(int8_t& v, const std::string& name) throw(PackerError)
+{
+    _buffer.read(reinterpret_cast<char*>(&v), 1);
+    return *this;
+}
+
+Unpacker& BinaryUnpacker::unpack(uint8_t& v, const std::string& name) throw(PackerError)
+{
+    _buffer.read(reinterpret_cast<char*>(&v), 1);
     return *this;
 }
 

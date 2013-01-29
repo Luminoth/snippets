@@ -34,11 +34,29 @@ def read_bytes(buffer, count):
     del buffer[:count]
     return bytes
 
+def read_line(buffer):
+    idx = buffer.find('\n')
+    if idx < 0: return
+
+    # this will return the
+    # line minus the '\n'
+    # (and removes the '\n'
+    bytes = buffer[:idx]
+    del buffer[:idx+1]
+    return bytes
+
 def read_byte(buffer):
     return read_bytes(buffer, 1)
 
+def read_bool(buffer):
+    return False if 0x00 == ord(read_byte(buffer)) else True
+
 def read_string(buffer, len):
     return str(read_bytes(buffer, len))
+
+def read_packed_string(buffer):
+    len = read_int(buffer)
+    return read_string(buffer, len)
 
 def read_int(buffer):
     # little-endian
@@ -50,6 +68,16 @@ def read_long(buffer):
     bytes = read_bytes(buffer, 8)
     return ((bytes[7] & 0xff) << 56) | ((bytes[6] & 0xff) << 48) | ((bytes[5] & 0xff) << 40) | ((bytes[4] & 0xff) << 32) | ((bytes[3] & 0xff) << 24) | ((bytes[2] & 0xff) << 16) | ((bytes[1] & 0xff) << 8) | (bytes[0] & 0xff)
 
+def read_float(buffer):
+    bytes = read_bytes(buffer, 4)
+    #TODO: write this
+    return 0.0
+
+def read_double(buffer):
+    bytes = read_bytes(buffer, 8)
+    #TODO: write this
+    return 0.0
+
 class Borg(object):
     __shared_state = {}
 
@@ -60,15 +88,19 @@ class Borg(object):
 
 class EventType(object):
     UNKNOWN = 0
+    TEST_EVENT = 1
 
     # NOTE: these must match the values in the XRC
     EVENT_NAMES = {
         UNKNOWN : "Unknown Event",
+        TEST_EVENT : "Test Event",
     }
     EVENT_NAMES_REV = dict((value, key) for key, value in EVENT_NAMES.iteritems())
 
     @staticmethod
     def create_event_type(type):
+        if EventType.TEST_EVENT == type:
+            return TestEvent()
         return EventType()
 
     @staticmethod
@@ -107,10 +139,71 @@ class EventType(object):
         return ""
 
     def deserialize(self, buffer):
-        return True
+        return False
 
     def __str__(self):
         return "Unknown Event Type!"
+
+class TestEvent(EventType):
+    def __init__(self):
+        EventType.__init__(self, EventType.TEST_EVENT)
+
+        self.__test_bool = False
+        self.__test_char = 0
+        self.__test_int = 0
+        self.__test_long = 0
+        self.__test_float = 0.0
+        self.__test_double = 0.0
+        self.__test_string = ""
+
+    @property
+    def version(self):
+        return 1
+
+    @property
+    def test_bool(self):
+        return self.__test_bool
+
+    @property
+    def test_char(self):
+        return self.__test_char
+
+    @property
+    def test_int(self):
+        return self.__test_int
+
+    @property
+    def test_long(self):
+        return self.__test_long
+
+    @property
+    def test_float(self):
+        return self.__test_float
+
+    @property
+    def test_double(self):
+        return self.__test_double
+
+    @property
+    def test_string(self):
+        return self.__test_string
+
+    def deserialize(self, buffer):
+        self.__test_bool = read_bool(buffer)
+        self.__test_char = read_byte(buffer)
+        self.__test_int = read_int(buffer)
+        self.__test_long = read_long(buffer)
+        self.__test_float = read_float(buffer)
+        self.__test_double = read_double(buffer)
+        self.__test_string = read_packed_string(buffer)
+
+        return True
+
+    def __getitem__(self, key):
+        return None
+
+    def __str__(self):
+        return "TestEvent(b: %s, ch: %s, i: %s, l: %s, f: %s, d: %s, s: %s)" % (self.__test_bool, self.__test_char, self.__test_int, self.__test_long, self.__test_float, self.__test_double, self.__test_string)
 
 class Event(object):
     class Header(object):
@@ -121,14 +214,14 @@ class Event(object):
             self.__app = app
 
         def deserialize(self, buffer):
-            magic = read_bytes(buffer, 8)
+            magic = read_packed_string(buffer)
             if self.MAGIC != magic:
-                wx.PostEvent(self.__app, ParseErrorEvent(message="Invalid MAGIC!"))
+                wx.PostEvent(self.__app, ParseErrorEvent(message="Invalid MAGIC: %s (%d)" % (magic, len(magic))))
                 return False
 
             version = read_int(buffer)
             if self.VERSION != version:
-                wx.PostEvent(self.__app, ParseErrorEvent(message="Invalid VERSION: %d" % (version)))
+                wx.PostEvent(self.__app, ParseErrorEvent(message="Invalid VERSION: %d" % version))
                 return False
 
             return True
@@ -143,7 +236,7 @@ class Event(object):
 
     @property
     def valid(self):
-        return self.__id > 0
+        return self.id > 0 and self.type.id > 0
 
     @property
     def id(self):
@@ -163,20 +256,18 @@ class Event(object):
         return self.__type
 
     def deserialize(self, buffer):
+        packer = str(read_line(buffer))
+        if "simple" != packer:
+            return False
+
         header = Event.Header(self.__app)
         if not header.deserialize(buffer):
             return False
+
         self.__id = read_long(buffer)
-
-        # java timestamps are millisecond
-        # so we gotta cut some precision
-        self.__timestamp = (read_long(buffer) / 1000)
-
-        # TODO: we know the size of the content here
-        # so if we don't recognize a type, we should
-        # just go ahead and skip that event somehow
-
+        self.__timestamp = read_long(buffer)
         type = read_int(buffer)
+
         self.__type = EventType.create_event_type(type)
         if self.__type.type != type:
             wx.PostEvent(self.__app, ParseErrorEvent(message="Event type mismatch!"))
@@ -291,6 +382,12 @@ class DetailsDialog(object):
         # load event type specific controls
         if self.__event.type.type == EventType.UNKNOWN:
             pass
+        elif self.__event.type.type == EventType.TEST_EVENT:
+            self.__load_test_event_controls()
+
+    def __load_test_event_controls(self):
+        # TODO: write me
+        pass
 
     def __bind_events(self):
         pass
@@ -880,6 +977,10 @@ class ViewerApp(wx.App):
         self.main_frame.GetMenuBar().Enable(self.__file_close, False)
 
     def OnInit(self):
+        self.__logger = logging.getLogger("viewer.ViewerApp")
+        self.__last_dir = os.getcwd()
+        self.__last_filename = ""
+
         self.__load_controls()
         self.__bind_events()
         self.__reset()
@@ -888,9 +989,11 @@ class ViewerApp(wx.App):
         return True
 
     def OnFileOpen(self, evt):
-        dlg = wx.FileDialog(self.main_frame, "Open Event Log", wildcard="Event Log (*.evt)|*.evt|All Files (*.*)|*.*",
+        dlg = wx.FileDialog(self.main_frame, "Open Event Log", self.__last_dir, self.__last_filename, wildcard="Event Log (*.evt)|*.evt|All Files (*.*)|*.*",
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
         if dlg.ShowModal() == wx.ID_OK:
+            self.__last_dir = dlg.GetDirectory()
+            self.__last_filename = dlg.GetFilename()
             filename = os.path.join(dlg.GetDirectory(), dlg.GetFilename())
 
             # clean up the UI
@@ -900,7 +1003,7 @@ class ViewerApp(wx.App):
 
             # add the page to the notebook
             page = EventPage(self, self.__event_notebook)
-            self.__event_notebook.AddPage(page.panel, os.path.basename(filename), True)
+            self.__event_notebook.AddPage(page.panel, dlg.GetFilename(), True)
 
             # begin parsing
             wx.PostEvent(page.panel, ParseBeginEvent(filename=filename))
@@ -924,7 +1027,7 @@ class ViewerApp(wx.App):
         # post an event to the current page
         # and let it figure out what to do
         if self.has_current_page:
-            wx.PostEvent(page, EventDetails())
+            wx.PostEvent(self.current_page, EventDetails())
 
     def OnFilterFilter(self, evt):
         dlg = FilterDialog(self)
@@ -937,7 +1040,8 @@ class ViewerApp(wx.App):
         dlg.Destroy()
 
     def OnParseError(self, evt):
-        wx.MessageBox(evt.message, "Parse Error", wx.OK | wx.ICON_ERROR, self)
+        #self.__logger.warning("Parse error: %s" % evt.message)
+        wx.MessageBox(evt.message, "Parse Error", wx.OK | wx.ICON_ERROR, self.main_frame)
 
 logger = None
 

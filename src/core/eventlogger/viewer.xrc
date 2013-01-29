@@ -316,6 +316,7 @@
                       <object class="wxComboBox" name="ID_FILTER_EVENT_TYPE_TYPE">
                         <content>
                           <item>Unknown Event</item>
+                          <item>Test Event</item>
                         </content>
                         <style>wxCB_READONLY</style>
                       </object>
