@@ -93,6 +93,8 @@
     <ClCompile Include="src\core\configuration\DatabaseConfiguration.cc" />
     <ClCompile Include="src\core\database\ConnectionPool.cc" />
     <ClCompile Include="src\core\database\DatabaseConnection.cc" />
+    <ClCompile Include="src\core\eventlogger\Event.cc" />
+    <ClCompile Include="src\core\eventlogger\EventLogger.cc" />
     <ClCompile Include="src\core\graphics\Bitmap.cc" />
     <ClCompile Include="src\core\graphics\PNG.cc" />
     <ClCompile Include="src\core\graphics\Targa.cc" />
@@ -106,7 +108,10 @@
     <ClCompile Include="src\core\math\Quaternion.cc" />
     <ClCompile Include="src\core\math\Sphere.cc" />
     <ClCompile Include="src\core\math\Vector.cc" />
+    <ClCompile Include="src\core\messages\BinaryMessage.cc" />
     <ClCompile Include="src\core\messages\BufferedMessage.cc" />
+    <ClCompile Include="src\core\messages\MessageHandler.cc" />
+    <ClCompile Include="src\core\messages\XmlMessage.cc" />
     <ClCompile Include="src\core\network\network_util.cc" />
     <ClCompile Include="src\core\network\Socket.cc" />
     <ClCompile Include="src\core\physics\AABB.cc" />
@@ -157,6 +162,8 @@
     <ClInclude Include="src\core\database\DatabaseConnection.h" />
     <ClInclude Include="src\core\database\DatabaseError.h" />
     <ClInclude Include="src\core\errors\NotImplementedError.h" />
+    <ClInclude Include="src\core\eventlogger\Event.h" />
+    <ClInclude Include="src\core\eventlogger\EventLogger.h" />
     <ClInclude Include="src\core\graphics\Bitmap.h" />
     <ClInclude Include="src\core\graphics\PNG.h" />
     <ClInclude Include="src\core\graphics\Targa.h" />
@@ -170,7 +177,11 @@
     <ClInclude Include="src\core\math\Quaternion.h" />
     <ClInclude Include="src\core\math\Sphere.h" />
     <ClInclude Include="src\core\math\Vector.h" />
+    <ClInclude Include="src\core\messages\BinaryMessage.h" />
     <ClInclude Include="src\core\messages\BufferedMessage.h" />
+    <ClInclude Include="src\core\messages\MessageHandler.h" />
+    <ClInclude Include="src\core\messages\MessageHandlerModule.h" />
+    <ClInclude Include="src\core\messages\XmlMessage.h" />
     <ClInclude Include="src\core\network\network_util.h" />
     <ClInclude Include="src\core\network\Socket.h" />
     <ClInclude Include="src\core\physics\AABB.h" />

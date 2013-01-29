@@ -63,6 +63,9 @@
     <Filter Include="Source Files\core\messages">
       <UniqueIdentifier>{6ee9e76d-09d4-4178-a274-f6656b27c979}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\core\eventlogger">
+      <UniqueIdentifier>{71ee0f96-5347-41fd-826c-8297a951bec4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\common.cc">
@@ -225,6 +228,21 @@
       <Filter>Source Files\core\network</Filter>
     </ClCompile>
     <ClCompile Include="src\core\messages\BufferedMessage.cc">
+      <Filter>Source Files\core\messages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\eventlogger\Event.cc">
+      <Filter>Source Files\core\eventlogger</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\eventlogger\EventLogger.cc">
+      <Filter>Source Files\core\eventlogger</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\messages\BinaryMessage.cc">
+      <Filter>Source Files\core\messages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\messages\MessageHandler.cc">
+      <Filter>Source Files\core\messages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\messages\XmlMessage.cc">
       <Filter>Source Files\core\messages</Filter>
     </ClCompile>
   </ItemGroup>
@@ -428,6 +446,24 @@
       <Filter>Source Files\core\network</Filter>
     </ClInclude>
     <ClInclude Include="src\core\messages\BufferedMessage.h">
+      <Filter>Source Files\core\messages</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\eventlogger\Event.h">
+      <Filter>Source Files\core\eventlogger</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\eventlogger\EventLogger.h">
+      <Filter>Source Files\core\eventlogger</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\messages\BinaryMessage.h">
+      <Filter>Source Files\core\messages</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\messages\MessageHandler.h">
+      <Filter>Source Files\core\messages</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\messages\MessageHandlerModule.h">
+      <Filter>Source Files\core\messages</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\messages\XmlMessage.h">
       <Filter>Source Files\core\messages</Filter>
     </ClInclude>
   </ItemGroup>
