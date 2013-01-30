@@ -8,7 +8,7 @@ namespace energonsoftware {
 
 Physical::Physical()
     : Partitionable(), _mutex(),
-        _position(), _view(0.0f, 0.0f, 1.0f), _up(0.0f, 1.0f, 0.0f), _orientation(),
+        _position(), _view(Vector::FORWARD), _up(Vector::UP), _orientation(),
         _velocity(), _acceleration(), _mass(1.0f), _scale(1.0f),
         _relative_bounds(), _absolute_bounds(),
         _last_simulate(get_time())
@@ -57,18 +57,18 @@ void Physical::pitch(float angle)
 
     // need to pitch against our local x-axis
     // TODO: need a better explanation for why this is a special case!
-    Quaternion q(Quaternion::new_axis(angle, Vector3(1.0f, 0.0f, 0.0f)));
+    Quaternion q(Quaternion::new_axis(angle, Vector::XAXIS));
     _orientation = _orientation * q;
 }
 
 void Physical::yaw(float angle)
 {
-    rotate(angle, Vector3(0.0f, 1.0f, 0.0f));
+    rotate(angle, Vector::YAXIS);
 }
 
 void Physical::roll(float angle)
 {
-    rotate(angle, Vector3(0.0f, 0.0f, 1.0f));
+    rotate(angle, Vector::ZAXIS);
 }
 
 void Physical::transform(Matrix4& matrix) const

@@ -59,7 +59,7 @@ Vector3 Quaternion::axis() const
     if(std::fabs(s) >= 0.001f) {
         return _vector / s;
     }
-    return Vector3(1.0f, 0.0f, 0.0f);
+    return Vector::XAXIS;
 }
 
 Quaternion Quaternion::slerp(const Quaternion& rhs, double t) const

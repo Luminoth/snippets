@@ -114,9 +114,9 @@ public:
 
     // angle is in radians
     Matrix4& rotate(float angle, const Vector3& around);
-    Matrix4& pitch(float angle) { return rotate(angle, Vector3(1.0f, 0.0f, 0.0f)); }
-    Matrix4& yaw(float angle) { return rotate(angle, Vector3(0.0f, 1.0f, 0.0f)); }
-    Matrix4& roll(float angle) { return rotate(angle, Vector3(0.0f, 0.0f, 1.0f)); }
+    Matrix4& pitch(float angle) { return rotate(angle, Vector::XAXIS); }
+    Matrix4& yaw(float angle) { return rotate(angle, Vector::YAXIS); }
+    Matrix4& roll(float angle) { return rotate(angle, Vector::ZAXIS); }
     Matrix4& rotation_identity()
     {
         _m[0] = 1.0f; _m[1] = 0.0f; _m[2] = 0.0f;

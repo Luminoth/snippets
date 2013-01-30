@@ -4,6 +4,20 @@
 
 namespace energonsoftware {
 
+const Vector Vector::ZERO(0.0f, 0.0f, 0.0f, 0.0f);
+
+const Vector Vector::RIGHT(1.0f, 0.0f, 0.0f);
+const Vector Vector::LEFT(-1.0f, 0.0f, 0.0f);
+const Vector Vector::UP(0.0f, 1.0f, 0.0f);
+const Vector Vector::DOWN(0.0f, -1.0f, 0.0f);
+const Vector Vector::BACKWARD(0.0f, 0.0f, 1.0f);
+const Vector Vector::FORWARD(0.0f, 0.0f, -1.0f);
+
+const Vector Vector::XAXIS(1.0f, 0.0f, 0.0f);
+const Vector Vector::YAXIS(0.0f, 1.0f, 0.0f);
+const Vector Vector::ZAXIS(0.0f, 0.0f, 1.0f);
+const Vector Vector::WAXIS(0.0f, 0.0f, 0.0f, 1.0f);
+
 void Vector::destroy(Vector* const vector, MemoryAllocator* const allocator)
 {
     vector->~Vector();
@@ -160,11 +174,8 @@ public:
 
     void test_zero()
     {
-        static const energonsoftware::Vector v1(0.0f, 0.0f, 0.0f);
-        CPPUNIT_ASSERT(v1.is_zero());
-
-        static const energonsoftware::Vector v2(0.0f, 1.0f, 0.0f);
-        CPPUNIT_ASSERT(!v2.is_zero());
+        CPPUNIT_ASSERT(energonsoftware::Vector::ZERO.is_zero());
+        CPPUNIT_ASSERT(!energonsoftware::Vector::YAXIS.is_zero());
 
         energonsoftware::Vector v3(1.0f, 2.0f, 3.0f);
         CPPUNIT_ASSERT(!v3.is_zero());
@@ -231,10 +242,9 @@ public:
 
     void test_perpendicular()
     {
-        static const energonsoftware::Vector v1(1.0f, 0.0f, 0.0f);
-        static const energonsoftware::Vector v2(0.0f, 100.0f, 0.0f);
-
-        CPPUNIT_ASSERT(v1.perpendicular(v2));
+        CPPUNIT_ASSERT(energonsoftware::Vector::XAXIS.perpendicular(energonsoftware::Vector::YAXIS));
+        CPPUNIT_ASSERT(energonsoftware::Vector::YAXIS.perpendicular(energonsoftware::Vector::ZAXIS));
+        CPPUNIT_ASSERT(energonsoftware::Vector::ZAXIS.perpendicular(energonsoftware::Vector::XAXIS));
     }
 
     void test_direction()
@@ -362,11 +372,12 @@ public:
 
     void test_cross()
     {
-        static const energonsoftware::Vector expected(0.0f, 0.0f, 1.0f);
+        CPPUNIT_ASSERT_EQUAL(energonsoftware::Vector::ZAXIS, energonsoftware::Vector::XAXIS ^ energonsoftware::Vector::YAXIS);
+        CPPUNIT_ASSERT_EQUAL(energonsoftware::Vector::XAXIS, energonsoftware::Vector::YAXIS ^ energonsoftware::Vector::ZAXIS);
+        CPPUNIT_ASSERT_EQUAL(energonsoftware::Vector::YAXIS, energonsoftware::Vector::ZAXIS ^ energonsoftware::Vector::XAXIS);
 
-        static const energonsoftware::Vector v1(1.0f, 0.0f, 0.0f);
-        static const energonsoftware::Vector v2(0.0f, 1.0f, 0.0f);
-        CPPUNIT_ASSERT_EQUAL(expected, v1 ^ v2);
+        CPPUNIT_ASSERT_EQUAL(energonsoftware::Vector::ZERO, energonsoftware::Vector::XAXIS ^ energonsoftware::Vector::XAXIS);
+        CPPUNIT_ASSERT_EQUAL(energonsoftware::Vector::ZERO, energonsoftware::Vector::ZERO ^ energonsoftware::Vector::YAXIS);
 // TODO: test ^=
     }
 };

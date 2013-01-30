@@ -18,6 +18,22 @@ mixing sizes where it is mathematically inappropriate to do so.
 class Vector
 {
 public:
+    static const Vector ZERO;
+
+    // NOTE: right-handed orientation (OpenGL style)
+    static const Vector RIGHT;
+    static const Vector LEFT;
+    static const Vector UP;
+    static const Vector DOWN;
+    static const Vector BACKWARD;
+    static const Vector FORWARD;
+
+    static const Vector XAXIS;
+    static const Vector YAXIS;
+    static const Vector ZAXIS;
+    static const Vector WAXIS;
+
+public:
     static void destroy(Vector* const vector, MemoryAllocator* const allocator);
     static Vector* create_array(size_t count, MemoryAllocator& allocator);
     static void destroy_array(Vector* const vectors, size_t count, MemoryAllocator* const allocator);
