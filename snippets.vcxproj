@@ -86,6 +86,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="doc\dependencies.txt" />
+    <None Include="event_viewer.py" />
+    <None Include="event_viewer.xrc" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\common.cc" />
