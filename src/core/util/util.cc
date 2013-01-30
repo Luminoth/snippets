@@ -16,13 +16,6 @@ static energonsoftware::Logger& logger(energonsoftware::Logger::instance("energo
 
 namespace energonsoftware {
 
-/* from http://www.cpp-programming.net/c-tidbits/gettimeofday-function-for-windows/ */
-#if defined(_MSC_VER) || defined(_MSC_EXTENSIONS)
-    #define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
-#else
-    #define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
-#endif
-
 bool is_little_endian()
 {
     unsigned int n = 1;
@@ -96,12 +89,12 @@ boost::posix_time::ptime from_time(uint64_t seconds)
     return boost::posix_time::ptime(epoch_date(), boost::posix_time::seconds(seconds));
 }
 
-#if defined WITH_CRYPTO
 // TODO: this is a bit arbitrary and unnecessary
 #define BASE64_MAX_BUFFER 10240
 
 char* base64_encode(const unsigned char* input, size_t len)
 {
+#if defined USE_OPENSSL
     // create the encoder
     BIO* b64 = BIO_new(BIO_f_base64());
     BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
@@ -124,10 +117,15 @@ char* base64_encode(const unsigned char* input, size_t len)
 
     BIO_free_all(bio);
     return ret;
+#else
+    // TODO: write non-OpenSSL version
+    return nullptr;
+#endif
 }
 
 unsigned char* base64_decode(const char* input, size_t& len)
 {
+#if defined USE_OPENSSL
     // create the decoder
     BIO* b64 = BIO_new(BIO_f_base64());
     BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
@@ -146,11 +144,19 @@ unsigned char* base64_decode(const char* input, size_t& len)
 
     BIO_free_all(bio);
     return ret;
+#else
+    // TODO: write non-OpenSSL version
+    return nullptr;
+#endif
 }
 
 void md5sum(const unsigned char* input, size_t len, unsigned char* output)
 {
+#if defined USE_OPENSSL
     MD5(input, len, output);
+#else
+    // TODO: write non-OpenSSL version
+#endif
 }
 
 void md5sum_hex(const unsigned char* input, size_t len, char* output)
@@ -182,8 +188,19 @@ bool md5sum_file(const boost::filesystem::path& path, char* output)
     return true;
 }
 
+std::string md5_digest_password(const std::string& username, const std::string& realm, const std::string& password)
+{
+    const std::string key(username + ":" + realm + ":" + password);
+
+    char digest[(MD5_DIGEST_LENGTH << 1) + 1];
+    md5sum_hex(reinterpret_cast<const unsigned char*>(key.c_str()), key.length(), digest);
+    return digest;
+}
+
+#if defined WITH_CRYPTO
 bool blowfish_encrypt(const unsigned char* key, const unsigned char* input, size_t ilen, unsigned char* output, size_t& olen)
 {
+#if defined USE_OPENSSL
     EVP_CIPHER_CTX ctx;
     EVP_CIPHER_CTX_init(&ctx);
     EVP_EncryptInit_ex(&ctx, EVP_bf_ecb(), nullptr, key, nullptr);
@@ -203,10 +220,15 @@ bool blowfish_encrypt(const unsigned char* key, const unsigned char* input, size
 
     EVP_CIPHER_CTX_cleanup(&ctx);
     return true;
+#else
+    // TODO: write non-OpenSSL version
+    return false;
+#endif
 }
 
 bool blowfish_decrypt(const unsigned char* key, const unsigned char* input, size_t ilen, unsigned char* output, size_t& olen)
 {
+#if defined USE_OPENSSL
     EVP_CIPHER_CTX ctx;
     EVP_CIPHER_CTX_init(&ctx);
     EVP_DecryptInit_ex(&ctx, EVP_bf_ecb(), nullptr, key, nullptr);
@@ -226,15 +248,10 @@ bool blowfish_decrypt(const unsigned char* key, const unsigned char* input, size
 
     EVP_CIPHER_CTX_cleanup(&ctx);
     return true;
-}
-
-std::string md5_digest_password(const std::string& username, const std::string& realm, const std::string& password)
-{
-    const std::string key(username + ":" + realm + ":" + password);
-
-    char digest[(MD5_DIGEST_LENGTH << 1) + 1];
-    md5sum_hex(reinterpret_cast<const unsigned char*>(key.c_str()), key.length(), digest);
-    return digest;
+#else
+    // TODO: write non-OpenSSL version
+    return false;
+#endif
 }
 #endif
 
@@ -364,18 +381,25 @@ void daemonize(bool changedir)
 #include "src/core/common.h"
 #include "src/test/UnitTest.h"
 
+/* from http://www.cpp-programming.net/c-tidbits/gettimeofday-function-for-windows/ */
+#if defined(_MSC_VER) || defined(_MSC_EXTENSIONS)
+    #define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
+#else
+    #define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
+#endif
+
 class UtilTest : public CppUnit::TestFixture
 {
 public:
     CPPUNIT_TEST_SUITE(UtilTest);
         CPPUNIT_TEST(test_get_time);
         CPPUNIT_TEST(test_from_time);
-#if defined WITH_CRYPTO
         CPPUNIT_TEST(test_base64);
         CPPUNIT_TEST(test_md5sum);
         CPPUNIT_TEST(test_md5sum_file);
-        CPPUNIT_TEST(test_blowfish);
         CPPUNIT_TEST(test_md5_digest_password);
+#if defined WITH_CRYPTO
+        CPPUNIT_TEST(test_blowfish);
 #endif
         CPPUNIT_TEST(test_bin2hex);
         CPPUNIT_TEST(test_power_of_2);
@@ -401,7 +425,6 @@ public:
         CPPUNIT_ASSERT_DOUBLES_EQUAL(current_time, energonsoftware::get_time(current_ptime), 1.0);
     }
 
-#if defined WITH_CRYPTO
     void test_base64()
     {
         static const std::string data("123456");
@@ -440,6 +463,15 @@ public:
         CPPUNIT_ASSERT_EQUAL(expected, std::string(output));
     }
 
+    void test_md5_digest_password()
+    {
+        static const std::string expected("d242e9f26a573ab24f8673cc9576baad");
+
+        std::string passwordmd5(energonsoftware::md5_digest_password("test1", "mmorpg", "test"));
+        CPPUNIT_ASSERT_EQUAL(expected, passwordmd5);
+    }
+
+#if defined WITH_CRYPTO
     void test_blowfish()
     {
         static const std::string data("I'm a fish, but not a blowfish!");
@@ -455,14 +487,6 @@ public:
         unsigned char decoded[1024];
         CPPUNIT_ASSERT(energonsoftware::blowfish_decrypt(key, encoded, ilen, decoded, olen));
         CPPUNIT_ASSERT_EQUAL(data, std::string(reinterpret_cast<char*>(decoded), olen));
-    }
-
-    void test_md5_digest_password()
-    {
-        static const std::string expected("d242e9f26a573ab24f8673cc9576baad");
-
-        std::string passwordmd5(energonsoftware::md5_digest_password("test1", "mmorpg", "test"));
-        CPPUNIT_ASSERT_EQUAL(expected, passwordmd5);
     }
 #endif
 

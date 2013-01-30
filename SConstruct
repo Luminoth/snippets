@@ -39,6 +39,7 @@ int main()
 USE_SSE = "USE_SSE"
 USE_OPENSSL = "USE_OPENSSL"
 WITH_CRYPTO = "WITH_CRYPTO"
+WITH_TLS = "WITH_TLS"
 WITH_UNIT_TESTS = "WITH_UNIT_TESTS"
 WITH_PROFILE = "WITH_PROFILE"
 
@@ -80,7 +81,7 @@ ccpath = [
     os.getcwd(),
     "/opt/local/include",       # osx darwin ports
 ]
-ccdefs = [ USE_SSE, USE_OPENSSL, WITH_CRYPTO, "_FORTIFY_SOURCE=2" ]
+ccdefs = [ USE_SSE, USE_OPENSSL, WITH_CRYPTO, WITH_TLS, "_FORTIFY_SOURCE=2" ]
 ldflags = []
 ldpath = [
     os.path.join(os.getcwd(), lib_dir),
@@ -208,6 +209,7 @@ def CheckCommonConfiguration(env, check_libs):
             CheckLibOrExit(conf, "pthread")
             CheckLibOrExit(conf, "ssl")
             CheckLibOrExit(conf, "crypto")
+            CheckLibOrExit(conf, "gnutls")
             CheckLibOrExit(conf, "xerces-c")
 
             CheckLibOrExit(conf, "boost_date_time")

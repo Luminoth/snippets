@@ -44,9 +44,19 @@ int main(int argc, char* argv[])
     CppUnit::TestRunner runner;
     runner.addTest(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
     try {
+#if defined USE_SSE
+        LOG_INFO("Using SSE\n");
+#endif
+#if defined USE_OPENSSL
+        LOG_INFO("Using OpenSSL\n");
+#endif
+
         LOG_INFO("Running tests "  <<  testPath << "\n");
 #if defined WITH_CRYPTO
         LOG_INFO("Including crypto tests...\n");
+#endif
+#if defined WITH_TLS
+        LOG_INFO("Including TLS tests...\n");
 #endif
         runner.run(controller, testPath);
 

@@ -1,8 +1,10 @@
 #if !defined __UTIL_H__
 #define __UTIL_H__
 
-#if defined WITH_CRYPTO || USE_OPENSSL
-#include <openssl/md5.h>
+#if defined WITH_CRYPTO
+#if defined USE_OPENSSL
+    #include <openssl/md5.h>
+#endif
 #endif
 
 namespace energonsoftware {
@@ -32,7 +34,6 @@ double get_time(const boost::posix_time::ptime& time);
 // to a posix time
 boost::posix_time::ptime from_time(uint64_t seconds);
 
-#if defined WITH_CRYPTO
 // base64 encoding (caller is responsible for freeing the return value)
 // NOTE: these allocate memory without using a MemoryAllocator
 char* base64_encode(const unsigned char* input, size_t len);
@@ -48,11 +49,12 @@ void md5sum_hex(const unsigned char* input, size_t len, char* output);
 // md5 sum of a file, base64 encoded (same rules apply here as md5sum_hex)
 bool md5sum_file(const boost::filesystem::path& path, char* output);
 
+std::string md5_digest_password(const std::string& username, const std::string& realm, const std::string& password);
+
+#if defined WITH_CRYPTO
 // blowfish encryption (key length is assumed to be 16 bytes, output should have enough space for ilen + 8 bytes)
 bool blowfish_encrypt(const unsigned char* key, const unsigned char* input, size_t ilen, unsigned char* output, size_t& olen);
 bool blowfish_decrypt(const unsigned char* key, const unsigned char* input, size_t ilen, unsigned char* output, size_t& olen);
-
-std::string md5_digest_password(const std::string& username, const std::string& realm, const std::string& password);
 #endif
 
 // creates a hex dump of the given buffer, up to maxlen

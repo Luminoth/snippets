@@ -2,7 +2,7 @@
 #define __RANDOM_H__
 
 #if defined USE_OPENSSL
-#include <openssl/bn.h>
+    #include <openssl/bn.h>
 #endif
 #include <boost/random.hpp>
 
@@ -40,9 +40,9 @@ T& choice(std::deque<T>& l)
     return l[uniform<unsigned>(0, l.size())];
 }
 
-#if defined USE_OPENSSL
 inline unsigned long large_rand_range(unsigned long range)
 {
+#if defined USE_OPENSSL
     BIGNUM* r = BN_new();
     BN_set_word(r, range);
 
@@ -54,8 +54,11 @@ inline unsigned long large_rand_range(unsigned long range)
     BN_clear_free(r);
     BN_clear_free(v);
     return ret;
-}
+#else
+    // TODO: write non-OpenSSL version
+    return 0;
 #endif
+}
 
 }
 }
