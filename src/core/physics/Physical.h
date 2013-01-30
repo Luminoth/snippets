@@ -19,17 +19,23 @@ public:
     virtual const Position& position() const override { return _position; }
     virtual void position(const Position& position) final;
 
-    virtual const Direction& view_unrotated() const final { return _view; }
-    virtual void view(const Direction& view) final;
+    virtual const Direction& forward_unrotated() const final { return _forward; }
+    virtual void forward(const Direction& forward) final;
 
     // NOTE: not normalized
-    virtual Direction view() const final { return _orientation * _view; }
+    virtual Direction forward() const final { return _orientation * _forward; }
 
     virtual const Direction& up_unrotated() const final { return _up; }
     virtual void up(const Direction& up) final;
 
     // NOTE: not normalized
     virtual Direction up() const final { return _orientation * _up; }
+
+    virtual const Direction& right_unrotated() const final { return _right; }
+    virtual void right(const Direction& right) final;
+
+    // NOTE: not normalized
+    virtual Direction right() const final { return _orientation * _right; }
 
     virtual const Quaternion& orientation() const final { return _orientation; }
     virtual void orientation(const Quaternion& orientation) final;
@@ -78,7 +84,7 @@ private:
 
     // "camera" properties
     Position _position;
-    Direction _view, _up;
+    Direction _forward, _up, _right;
     Quaternion _orientation;
 
     // physical properties

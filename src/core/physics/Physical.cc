@@ -8,7 +8,7 @@ namespace energonsoftware {
 
 Physical::Physical()
     : Partitionable(), _mutex(),
-        _position(), _view(Vector::FORWARD), _up(Vector::UP), _orientation(),
+        _position(), _forward(Vector::FORWARD), _up(Vector::UP), _right(Vector::RIGHT), _orientation(),
         _velocity(), _acceleration(), _mass(1.0f), _scale(1.0f),
         _relative_bounds(), _absolute_bounds(),
         _last_simulate(get_time())
@@ -25,16 +25,22 @@ void Physical::position(const Position& position)
     _position = position;
 }
 
-void Physical::view(const Direction& view)
+void Physical::forward(const Direction& forward)
 {
     boost::lock_guard<boost::recursive_mutex> guard(_mutex);
-    _view = view;
+    _forward = forward;
 }
 
 void Physical::up(const Direction& up)
 {
     boost::lock_guard<boost::recursive_mutex> guard(_mutex);
     _up = up;
+}
+
+void Physical::right(const Direction& right)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    _right = right;
 }
 
 void Physical::orientation(const Quaternion& orientation)
