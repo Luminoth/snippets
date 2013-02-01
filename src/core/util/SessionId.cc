@@ -10,8 +10,8 @@ SessionId::SessionId(const std::string& password, int expiry)
         _creation_time(static_cast<long>(get_time()))
 {
     // generate the seed values (assume the RNG is seeded)
-    unsigned long salt1 = Random::large_rand_range(10000);
-    unsigned long salt2 = Random::large_rand_range(10000);
+    unsigned long salt1 = Random<>::large_rand_range(10000);
+    unsigned long salt2 = Random<>::large_rand_range(10000);
 
     // the value to encrypt
     std::stringstream value;

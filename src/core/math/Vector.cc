@@ -48,9 +48,9 @@ void Vector::destroy_array(Vector* const vectors, size_t count, MemoryAllocator*
 
 Vector Vector::random(float length)
 {
-    Vector v(Random::uniform<float>(-0.5f, 0.5f),
-        Random::uniform<float>(-0.5f, 0.5f),
-        Random::uniform<float>(-0.5f, 0.5f));
+    Vector v(Random<>::uniform_std<float>(-0.5f, 0.5f),
+        Random<>::uniform_std<float>(-0.5f, 0.5f),
+        Random<>::uniform_std<float>(-0.5f, 0.5f));
     return v.set_length(length);
 }
 
@@ -169,7 +169,7 @@ public:
         CPPUNIT_ASSERT_DOUBLES_EQUAL(1.0f, v8.length(), 0.0001f);
 
         static const energonsoftware::Vector v9(energonsoftware::Vector::random(5345.346f));
-        CPPUNIT_ASSERT_DOUBLES_EQUAL(5345.346f, v9.length(), 0.0001f);
+        CPPUNIT_ASSERT_DOUBLES_EQUAL(5345.346f, v9.length(), 0.001f);
     }
 
     void test_zero()

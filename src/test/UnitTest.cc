@@ -18,7 +18,7 @@
 int main(int argc, char* argv[])
 {
     std::cout << "Initializing RNG..." << std::endl;
-    energonsoftware::Random::seed();
+    energonsoftware::Random<>::seed_std();
 
     std::cout << "Initializing logging..." << std::endl;
     energonsoftware::Logger::configure(energonsoftware::Logger::Level::Debug);

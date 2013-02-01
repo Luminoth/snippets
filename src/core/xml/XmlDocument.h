@@ -28,11 +28,11 @@ private:
     XmlDocument();
 
 public:
-    template<class T, class traits>
+    template<typename T, typename traits>
     friend std::basic_ostream<T, traits>& operator<<(std::basic_ostream<T, traits>& lhs, const XmlDocument& rhs);
 };
 
-template<class T, class traits>
+template<typename T, typename traits>
 inline std::basic_ostream<T, traits>& operator<<(std::basic_ostream<T, traits>& lhs, const XmlDocument& rhs)
 {
     lhs << rhs._root;

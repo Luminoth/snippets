@@ -16,7 +16,7 @@ public:
     explicit XmlString(const std::string& str);
     explicit XmlString(const std::wstring& str);
 
-    template<class InputIterator>
+    template<typename InputIterator>
     XmlString(InputIterator begin, InputIterator end);
 
     virtual ~XmlString() throw();
@@ -40,7 +40,7 @@ private:
 public:
     friend xercesc::XMLFormatter& operator<<(xercesc::XMLFormatter& lhs, const XmlString& rhs);
 
-    template<class T, class traits>
+    template<typename T, typename traits>
     friend std::basic_ostream<T, traits>& operator<<(std::basic_ostream<T, traits>& lhs, const XmlString& rhs);
 };
 
@@ -50,7 +50,7 @@ inline xercesc::XMLFormatter& operator<<(xercesc::XMLFormatter& lhs, const XmlSt
     return lhs;
 }
 
-template<class T, class traits>
+template<typename T, typename traits>
 inline std::basic_ostream<T, traits>& operator<<(std::basic_ostream<T, traits>& lhs, const XmlString& rhs)
 {
     lhs << rhs.to_native();

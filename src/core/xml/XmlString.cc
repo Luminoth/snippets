@@ -48,7 +48,7 @@ XmlString::XmlString(const std::wstring& str)
 {
 }
 
-template<class InputIterator>
+template<typename InputIterator>
 XmlString::XmlString(InputIterator begin, InputIterator end)
     : _str(begin, end)
 {

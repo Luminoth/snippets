@@ -84,7 +84,7 @@ private:
 public:
     friend xercesc::XMLFormatter& operator<<(xercesc::XMLFormatter& lhs, const XmlNode& rhs);
 
-    template<class T, class traits>
+    template<typename T, typename traits>
     friend std::basic_ostream<T, traits>& operator<<(std::basic_ostream<T, traits>& lhs, const XmlNode& rhs);
 };
 
@@ -96,7 +96,7 @@ inline xercesc::XMLFormatter& operator<<(xercesc::XMLFormatter& lhs, const XmlNo
     return lhs;
 }
 
-template<class T, class traits>
+template<typename T, typename traits>
 inline std::basic_ostream<T, traits>& operator<<(std::basic_ostream<T, traits>& lhs, const XmlNode& rhs)
 {
     xercesc::MemBufFormatTarget target;

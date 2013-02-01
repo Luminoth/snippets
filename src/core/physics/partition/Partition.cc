@@ -161,10 +161,10 @@ public:
         for(int i=0; i<100000; ++i) {
             data.push_back(std::shared_ptr<TestPartitionable>(
                 new(16, *_allocator) TestPartitionable(
-                    energonsoftware::Point3(energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
-                        energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
-                        energonsoftware::Random::uniform<float>(0.0f, 1000.0f)),
-                    energonsoftware::Random::uniform<float>(0.0f, 3.0f),
+                    energonsoftware::Point3(energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f),
+                        energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f),
+                        energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f)),
+                    energonsoftware::Random<>::uniform_std<float>(0.0f, 3.0f),
                     "G_" + i),
                 std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
         }
@@ -191,10 +191,10 @@ public:
         for(int i=0; i<dnum; ++i) {
             data.push_back(std::shared_ptr<TestPartitionable>(
                 new(16, *_allocator) TestPartitionable(
-                    energonsoftware::Point3(energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
-                        energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
-                        energonsoftware::Random::uniform<float>(0.0f, 1000.0f)),
-                    energonsoftware::Random::uniform<float>(0.0f, 3.0f),
+                    energonsoftware::Point3(energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f),
+                        energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f),
+                        energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f)),
+                    energonsoftware::Random<>::uniform_std<float>(0.0f, 3.0f),
                     "G_" + i),
                 std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
         }
@@ -202,9 +202,9 @@ public:
         // create the intersect set
         std::vector<energonsoftware::Point3> cents;
         for(int i=0; i<cnum; ++i) {
-            cents.push_back(energonsoftware::Point3(energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
-                energonsoftware::Random::uniform<float>(0.0f, 1000.0f),
-                energonsoftware::Random::uniform<float>(0.0f, 1000.0f)));
+            cents.push_back(energonsoftware::Point3(energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f),
+                energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f),
+                energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f)));
         }
 
         // test each partition type
