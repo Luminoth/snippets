@@ -39,12 +39,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;C:\openssl-1.0.1c\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;C:\openssl-1.0.1c\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;C:\openssl-1.0.1c\include;C:\gnutls-3.1.6\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;C:\openssl-1.0.1c\lib;C:\gnutls-3.1.6\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;C:\openssl-1.0.1c\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;C:\openssl-1.0.1c\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;C:\openssl-1.0.1c\include;C:\gnutls-3.1.6\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;C:\openssl-1.0.1c\lib;C:\gnutls-3.1.6\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -53,7 +53,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>src/pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;%(PreprocessorDefinitions);WIN32;WITH_UNIT_TESTS;USE_SSE;WITH_CRYPTO;USE_OPENSSL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_UNICODE;%(PreprocessorDefinitions);WIN32;WITH_UNIT_TESTS;USE_SSE;WITH_CRYPTO;WITH_TLS;USE_OPENSSL</PreprocessorDefinitions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
@@ -72,7 +72,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>src/pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;%(PreprocessorDefinitions);WIN32;WITH_UNIT_TESTS;USE_SSE;WITH_CRYPTO;USE_OPENSSL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_UNICODE;%(PreprocessorDefinitions);WIN32;WITH_UNIT_TESTS;USE_SSE;WITH_CRYPTO;WITH_TLS;USE_OPENSSL</PreprocessorDefinitions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
@@ -114,8 +114,10 @@
     <ClCompile Include="src\core\messages\BufferedMessage.cc" />
     <ClCompile Include="src\core\messages\MessageHandler.cc" />
     <ClCompile Include="src\core\messages\XmlMessage.cc" />
+    <ClCompile Include="src\core\network\BufferedSender.cc" />
     <ClCompile Include="src\core\network\network_util.cc" />
     <ClCompile Include="src\core\network\Socket.cc" />
+    <ClCompile Include="src\core\network\TLSSocket.cc" />
     <ClCompile Include="src\core\physics\AABB.cc" />
     <ClCompile Include="src\core\physics\BoundingSphere.cc" />
     <ClCompile Include="src\core\physics\partition\Partition.cc" />
@@ -129,6 +131,7 @@
     <ClCompile Include="src\core\util\MemoryAllocator.cc" />
     <ClCompile Include="src\core\util\Nonce.cc" />
     <ClCompile Include="src\core\util\Packer.cc" />
+    <ClCompile Include="src\core\util\Random.cc" />
     <ClCompile Include="src\core\util\Serialization.cc" />
     <ClCompile Include="src\core\util\SessionId.cc" />
     <ClCompile Include="src\core\util\SimplePacker.cc" />
@@ -184,8 +187,10 @@
     <ClInclude Include="src\core\messages\MessageHandler.h" />
     <ClInclude Include="src\core\messages\MessageHandlerModule.h" />
     <ClInclude Include="src\core\messages\XmlMessage.h" />
+    <ClInclude Include="src\core\network\BufferedSender.h" />
     <ClInclude Include="src\core\network\network_util.h" />
     <ClInclude Include="src\core\network\Socket.h" />
+    <ClInclude Include="src\core\network\TLSSocket.h" />
     <ClInclude Include="src\core\physics\AABB.h" />
     <ClInclude Include="src\core\physics\BoundingSphere.h" />
     <ClInclude Include="src\core\physics\BoundingVolume.h" />

@@ -245,6 +245,15 @@
     <ClCompile Include="src\core\messages\XmlMessage.cc">
       <Filter>Source Files\core\messages</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\network\BufferedSender.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\TLSSocket.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\util\Random.cc">
+      <Filter>Source Files\core\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\common.h">
@@ -465,6 +474,12 @@
     </ClInclude>
     <ClInclude Include="src\core\messages\XmlMessage.h">
       <Filter>Source Files\core\messages</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\BufferedSender.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\TLSSocket.h">
+      <Filter>Source Files\core\network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

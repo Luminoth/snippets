@@ -24,7 +24,7 @@ public:
         assert(std::is_arithmetic<T>::value);
         assert(start < end);
 
-        return start + (end - start) * ::random();
+        return start + (end - start) * rand/*om*/();
     }
 
     static unsigned long large_rand_range(unsigned long range)
