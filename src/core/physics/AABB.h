@@ -5,6 +5,7 @@
 
 namespace energonsoftware {
 
+class BoundingCapsule;
 class BoundingSphere;
 
 class AABB : public BoundingVolume
@@ -33,6 +34,8 @@ public:
 
     float distance_squared(const Point3& p) const;
     float distance(const Point3& p) const;
+    /*float distance_squared(const BoundingCapsule& c) const;
+    float distance(const BoundingCapsule& c) const;*/
     float distance_squared(const BoundingSphere& s) const;
     float distance(const BoundingSphere& s) const;
     float distance_squared(const AABB& a) const;

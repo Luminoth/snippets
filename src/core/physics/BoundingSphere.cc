@@ -25,7 +25,9 @@ BoundingSphere::~BoundingSphere() throw()
 
 float BoundingSphere::distance(const Intersectable& other) const
 {
-    if(typeid(other) == typeid(BoundingSphere)) {
+    /*if(typeid(other) == typeid(BoundingCapsule)) {
+        return distance(dynamic_cast<const BoundingCapsule&>(other));
+    } else*/ if(typeid(other) == typeid(BoundingSphere)) {
         return distance(dynamic_cast<const BoundingSphere&>(other));
     } else if(typeid(other) == typeid(AABB)) {
         return distance(dynamic_cast<const AABB&>(other));
@@ -42,6 +44,16 @@ float BoundingSphere::distance(const Point3& p) const
 {
     return _sphere.center().distance(p) - _sphere.radius();
 }
+
+/*float AABB::distance_squared(const BoundingCapsule& c) const
+{
+    return _sphere.center().distance_squared(c.capsule().center()) - std::pow(_sphere.radius() + c.capsule().radius(), 2);
+}
+
+float AABB::distance(const BoundingCapsule& c) const
+{
+    return _sphere.center().distance_squared(c.capsule().center()) - (_sphere.radius() + c.capsule().radius());
+}*/
 
 float BoundingSphere::distance_squared(const BoundingSphere& s) const
 {
@@ -80,7 +92,6 @@ class BoundingSphereTest : public CppUnit::TestFixture
 public:
     CPPUNIT_TEST_SUITE(BoundingSphereTest);
         CPPUNIT_TEST(test_initialize);
-        CPPUNIT_TEST(test_distance);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -105,10 +116,6 @@ public:
         static const energonsoftware::BoundingSphere bs3(a3);
         CPPUNIT_ASSERT_EQUAL(a3.center(), bs3.center());
         CPPUNIT_ASSERT_EQUAL(a3.radius(), bs3.radius());
-    }
-
-    void test_distance()
-    {
     }
 };
 

@@ -254,6 +254,12 @@
     <ClCompile Include="src\core\util\Random.cc">
       <Filter>Source Files\core\util</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\math\Capsule.cc">
+      <Filter>Source Files\core\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\physics\BoundingCapsule.cc">
+      <Filter>Source Files\core\physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\common.h">
@@ -480,6 +486,12 @@
     </ClInclude>
     <ClInclude Include="src\core\network\TLSSocket.h">
       <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math\Capsule.h">
+      <Filter>Source Files\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\BoundingCapsule.h">
+      <Filter>Source Files\core\physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

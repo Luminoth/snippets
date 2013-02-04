@@ -38,7 +38,7 @@ public:
         static const energonsoftware::Point3 p2(235.62f, 26.62f, -235.325f);
         static const float r2 = 22345.235f;
         static const energonsoftware::Sphere s2(p2, r2);
-        CPPUNIT_ASSERT_EQUAL(s2.center(), p2);
+        CPPUNIT_ASSERT_EQUAL(p2, s2.center());
         CPPUNIT_ASSERT_EQUAL(r2, s2.radius());
     }
 };

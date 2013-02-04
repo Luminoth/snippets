@@ -1,5 +1,6 @@
 #include "src/pch.h"
 #include "src/core/math/math_util.h"
+#include "BoundingCapsule.h"
 #include "BoundingSphere.h"
 #include "AABB.h"
 
@@ -86,7 +87,9 @@ void AABB::update(const Point3& point)
 
 float AABB::distance(const Intersectable& other) const
 {
-    if(typeid(other) == typeid(BoundingSphere)) {
+    /*if(typeid(other) == typeid(BoundingCapsule)) {
+        return distance(dynamic_cast<const BoundingCapsule&>(other));
+    } else*/ if(typeid(other) == typeid(BoundingSphere)) {
         return distance(dynamic_cast<const BoundingSphere&>(other));
     } else if(typeid(other) == typeid(AABB)) {
         return distance(dynamic_cast<const AABB&>(other));
@@ -103,6 +106,16 @@ float AABB::distance(const Point3& p) const
 {
     return p.distance(closest_point(p));
 }
+
+/*float AABB::distance_squared(const BoundingCapsule& c) const
+{
+    return c.distance_squared(closest_point(c.center()));
+}
+
+float AABB::distance(const BoundingCapsule& c) const
+{
+    return c.distance(closest_point(c.center()));
+}*/
 
 float AABB::distance_squared(const BoundingSphere& s) const
 {
@@ -176,7 +189,6 @@ public:
         CPPUNIT_TEST(test_update);
         CPPUNIT_TEST(test_distance);
         CPPUNIT_TEST(test_closest_point);
-        CPPUNIT_TEST(test_addition);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -281,10 +293,6 @@ public:
         CPPUNIT_ASSERT_EQUAL(0.0f, box.closest_point(p1).distance(cp1));
         CPPUNIT_ASSERT_EQUAL(0.0f, box.closest_point(p2).distance(cp2));
         CPPUNIT_ASSERT_EQUAL(0.0f, box.closest_point(p3).distance(cp3));
-    }
-
-    void test_addition()
-    {
     }
 };
 
