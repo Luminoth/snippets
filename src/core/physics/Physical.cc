@@ -6,50 +6,28 @@
 
 namespace energonsoftware {
 
-Physical::Physical()
-    : Partitionable(), _mutex(),
-        _position(), _forward(Vector::FORWARD), _up(Vector::UP), _right(Vector::RIGHT), _orientation(),
-        _velocity(), _acceleration(), _mass(1.0f), _scale(1.0f),
-        _relative_bounds(), _absolute_bounds(),
-        _last_simulate(get_time())
+Transform::Transform()
+    : _mutex(), _position(), _orientation(), _scale(1.0f)
 {
 }
 
-Physical::~Physical() throw()
+Transform::~Transform() throw()
 {
 }
 
-void Physical::position(const Position& position)
+void Transform::position(const Position& position)
 {
     boost::lock_guard<boost::recursive_mutex> guard(_mutex);
     _position = position;
 }
 
-void Physical::forward(const Direction& forward)
-{
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
-    _forward = forward;
-}
-
-void Physical::up(const Direction& up)
-{
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
-    _up = up;
-}
-
-void Physical::right(const Direction& right)
-{
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
-    _right = right;
-}
-
-void Physical::orientation(const Quaternion& orientation)
+void Transform::orientation(const Quaternion& orientation)
 {
     boost::lock_guard<boost::recursive_mutex> guard(_mutex);
     _orientation = orientation;
 }
 
-void Physical::rotate(float angle, const Vector3& around)
+void Transform::rotate(float angle, const Vector3& around)
 {
     boost::lock_guard<boost::recursive_mutex> guard(_mutex);
 
@@ -57,7 +35,7 @@ void Physical::rotate(float angle, const Vector3& around)
     _orientation = q * _orientation;
 }
 
-void Physical::pitch(float angle)
+void Transform::pitch(float angle)
 {
     boost::lock_guard<boost::recursive_mutex> guard(_mutex);
 
@@ -67,21 +45,96 @@ void Physical::pitch(float angle)
     _orientation = _orientation * q;
 }
 
-void Physical::yaw(float angle)
+void Transform::yaw(float angle)
 {
     rotate(angle, Vector::YAXIS);
 }
 
-void Physical::roll(float angle)
+void Transform::roll(float angle)
 {
     rotate(angle, Vector::ZAXIS);
 }
 
-void Physical::transform(Matrix4& matrix) const
+void Transform::scale(float scale)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    _scale = scale;
+}
+
+void Transform::transform(Matrix4& matrix) const
 {
     matrix.translate(_position);
     matrix *= _orientation.matrix();
     matrix.uniform_scale(_scale);
+}
+
+void Transform::update(const Vector3& velocity, double dt)
+{
+    _position += velocity * dt;
+}
+
+AABBCollider::AABBCollider()
+    : Collider(), _mutex(), _bounds()
+{
+}
+
+void AABBCollider::bounds(const BoundingVolume& bounds)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+
+    // TODO: typeof check this and convert if necessary!
+    _bounds = dynamic_cast<const AABB&>(bounds);
+}
+
+RigidBody::RigidBody()
+    : _velocity(), _acceleration(), _mass(1.0f)
+{
+}
+
+RigidBody::~RigidBody() throw()
+{
+}
+
+void RigidBody::velocity(const Vector3& velocity)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    _velocity = velocity;
+}
+
+void RigidBody::acceleration(const Vector3& acceleration)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    _acceleration = acceleration;
+}
+
+void RigidBody::mass(float mass)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    _mass = mass;
+}
+
+void RigidBody::update(double dt)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    _velocity += _acceleration * dt;
+}
+
+Physical::Physical()
+    : Partitionable(),
+        _mutex(), _transform(), _collider(new AABBCollider()), _rigidbody(),
+        _last_simulate(get_time()), _absolute_bounds()
+{
+}
+
+Physical::Physical(const Physical& physical)
+    : Partitionable(),
+        _mutex(), _transform(physical._transform), _collider(new AABBCollider(*physical._collider)), _rigidbody(physical._rigidbody),
+        _last_simulate(get_time()), _absolute_bounds(physical._absolute_bounds)
+{
+}
+
+Physical::~Physical() throw()
+{
 }
 
 void Physical::simulate()
@@ -95,21 +148,34 @@ void Physical::simulate()
         return;
     }
 
-    // adjust our velocity by our acceleration
-    _velocity += _acceleration * dt;
-
-    // apply the velocity to our position
-    _position += _velocity * dt;
+    _rigidbody.update(dt);
+    _transform.update(_rigidbody.velocity(), dt);
 
     _last_simulate = now;
+}
+
+void Physical::absolute_bounds(const BoundingVolume& bounds)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+
+    _collider->bounds(bounds);
+    _absolute_bounds = position() + dynamic_cast<const AABB&>(bounds);
 }
 
 std::string Physical::str() const
 {
     // TODO: expand this
     std::stringstream ss;
-    ss << "Physical(p:" << _position.str() << ", o:" << _orientation.str() << ", s:" << _scale << ")";
+    ss << "Physical(t:" << _transform.str() << ", c:" << _collider->str() << ", r:" << _rigidbody.str() << ")";
     return ss.str();
+}
+
+Physical& Physical::operator=(const Physical& rhs)
+{
+    _transform = rhs._transform;
+    _collider.reset(new AABBCollider(*rhs._collider));
+    _rigidbody = rhs._rigidbody;
+    return *this;
 }
 
 }
