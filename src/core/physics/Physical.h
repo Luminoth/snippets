@@ -14,6 +14,7 @@ class Transform final
 {
 public:
     Transform();
+    Transform(const Transform& transform);
     virtual ~Transform() throw();
 
 public:
@@ -41,6 +42,9 @@ public:
     void transform(Matrix4& matrix) const;
 
     std::string str() const;
+
+public:
+    Transform& operator=(const Transform& transform);
 
 private:
     friend class Physical;
@@ -70,12 +74,16 @@ class AABBCollider : public Collider
 {
 public:
     AABBCollider();
+    AABBCollider(const AABBCollider& collider);
     virtual ~AABBCollider() throw();
 
 public:
     virtual void bounds(const BoundingVolume& bounds) override;
     virtual const BoundingVolume& bounds() const override { return _bounds; }
     virtual std::string str() const;
+
+public:
+    AABBCollider& operator=(const AABBCollider& collider);
 
 private:
     boost::recursive_mutex _mutex;
@@ -87,6 +95,7 @@ class RigidBody final
 {
 public:
     RigidBody();
+    RigidBody(const RigidBody& rigidbody);
     virtual ~RigidBody() throw();
 
 public:
@@ -100,6 +109,9 @@ public:
     void mass(float mass);
 
     std::string str() const;
+
+public:
+    RigidBody& operator=(const RigidBody& rigidbody);
 
 private:
     friend class Physical;

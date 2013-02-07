@@ -100,15 +100,24 @@ static const int MAX_BUFFER = 1024;
  // can remove this once VC++ gets its shit together
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
 TypeName(const TypeName&); \
-TypeName& operator=(const TypeName&)
+TypeName(TypeName&&); \
+TypeName& operator=(const TypeName&); \
+TypeName& operator=(TypeName&&)
 #else
 // NOTE: also disables move operations
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
 TypeName(const TypeName&) = delete; \
-TypeName(TypeName&) = delete; \
+TypeName(TypeName&&) = delete; \
 TypeName& operator=(const TypeName&) = delete; \
-TypeName& operator=(TypeName&) = delete
+TypeName& operator=(TypeName&&) = delete
 #endif
+
+// NOTE: also defaults move operations
+#define DEFAULT_COPY_AND_ASSIGN(TypeName) \
+TypeName(const TypeName&) = default; \
+TypeName(TypeName&&) = default; \
+TypeName& operator=(const TypeName&) = default; \
+TypeName& operator=(TypeName&&) = default
 
 #include "src/core/errors/NotImplementedError.h"
 #include "src/core/logging/Logger.h"

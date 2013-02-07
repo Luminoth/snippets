@@ -11,6 +11,11 @@ Transform::Transform()
 {
 }
 
+Transform::Transform(const Transform& transform)
+    : _mutex(), _position(transform._position), _orientation(transform._orientation), _scale(transform._scale)
+{
+}
+
 Transform::~Transform() throw()
 {
 }
@@ -68,13 +73,41 @@ void Transform::transform(Matrix4& matrix) const
     matrix.uniform_scale(_scale);
 }
 
+std::string Transform::str() const
+{
+    std::stringstream ss;
+    ss << "Transform(p:" << _position.str() << ", o:" << _orientation.str() << ", s:" << _scale << ")";
+    return ss.str();
+}
+
+Transform& Transform::operator=(const Transform& transform)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+
+    _position = transform._position;
+    _orientation = transform._orientation;
+    _scale = transform._scale;
+
+    return *this;
+}
+
 void Transform::update(const Vector3& velocity, double dt)
 {
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
     _position += velocity * dt;
 }
 
 AABBCollider::AABBCollider()
     : Collider(), _mutex(), _bounds()
+{
+}
+
+AABBCollider::AABBCollider(const AABBCollider& collider)
+    : Collider(), _mutex(), _bounds(collider._bounds)
+{
+}
+
+AABBCollider::~AABBCollider() throw()
 {
 }
 
@@ -86,8 +119,29 @@ void AABBCollider::bounds(const BoundingVolume& bounds)
     _bounds = dynamic_cast<const AABB&>(bounds);
 }
 
+std::string AABBCollider::str() const
+{
+    std::stringstream ss;
+    ss << "AABBCollider(b:" << _bounds.str() << ")";
+    return ss.str();
+}
+
+AABBCollider& AABBCollider::operator=(const AABBCollider& collider)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+
+    _bounds = collider._bounds;
+
+    return *this;
+}
+
 RigidBody::RigidBody()
-    : _velocity(), _acceleration(), _mass(1.0f)
+    : _mutex(), _velocity(), _acceleration(), _mass(1.0f)
+{
+}
+
+RigidBody::RigidBody(const RigidBody& rigidbody)
+    : _mutex(), _velocity(rigidbody._velocity), _acceleration(rigidbody._acceleration), _mass(rigidbody._mass)
 {
 }
 
@@ -113,6 +167,24 @@ void RigidBody::mass(float mass)
     _mass = mass;
 }
 
+std::string RigidBody::str() const
+{
+    std::stringstream ss;
+    ss << "RigidBody(v:" << _velocity.str() << ", a:" << _acceleration.str() << ", m:" << _mass << ")";
+    return ss.str();
+}
+
+RigidBody& RigidBody::operator=(const RigidBody& rigidbody)
+{
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+
+    _velocity = rigidbody._velocity;
+    _acceleration = rigidbody._acceleration;
+    _mass = rigidbody._mass;
+
+    return *this;
+}
+
 void RigidBody::update(double dt)
 {
     boost::lock_guard<boost::recursive_mutex> guard(_mutex);
@@ -128,9 +200,11 @@ Physical::Physical()
 
 Physical::Physical(const Physical& physical)
     : Partitionable(),
-        _mutex(), _transform(physical._transform), _collider(new AABBCollider(*physical._collider)), _rigidbody(physical._rigidbody),
+        _mutex(), _transform(physical._transform), _collider(), _rigidbody(physical._rigidbody),
         _last_simulate(get_time()), _absolute_bounds(physical._absolute_bounds)
 {
+    // TODO: typeof check this and convert if necessary!
+    _collider.reset(new AABBCollider(dynamic_cast<const AABBCollider&>(*physical._collider)));
 }
 
 Physical::~Physical() throw()
@@ -159,12 +233,13 @@ void Physical::absolute_bounds(const BoundingVolume& bounds)
     boost::lock_guard<boost::recursive_mutex> guard(_mutex);
 
     _collider->bounds(bounds);
+
+    // TODO: typeof check this and convert if necessary!
     _absolute_bounds = position() + dynamic_cast<const AABB&>(bounds);
 }
 
 std::string Physical::str() const
 {
-    // TODO: expand this
     std::stringstream ss;
     ss << "Physical(t:" << _transform.str() << ", c:" << _collider->str() << ", r:" << _rigidbody.str() << ")";
     return ss.str();
@@ -172,9 +247,12 @@ std::string Physical::str() const
 
 Physical& Physical::operator=(const Physical& rhs)
 {
+    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+
     _transform = rhs._transform;
-    _collider.reset(new AABBCollider(*rhs._collider));
+    _collider.reset(new AABBCollider(dynamic_cast<const AABBCollider&>(*rhs._collider)));
     _rigidbody = rhs._rigidbody;
+
     return *this;
 }
 
