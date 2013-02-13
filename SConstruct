@@ -214,6 +214,7 @@ def CheckCommonConfiguration(env, check_libs):
 
             CheckLibOrExit(conf, "boost_date_time")
             CheckLibOrExit(conf, "boost_filesystem")
+            CheckLibOrExit(conf, "boost_regex")
             CheckLibOrExit(conf, "boost_system")
             CheckLibOrExit(conf, "boost_thread")
 

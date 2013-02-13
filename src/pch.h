@@ -75,6 +75,7 @@
 #define BOOST_ALL_NO_LIB
 #include <boost/version.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/any.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>

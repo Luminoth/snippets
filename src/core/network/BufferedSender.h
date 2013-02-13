@@ -1,7 +1,6 @@
 #if !defined __BUFFEREDSENDER_H__
 #define __BUFFEREDSENDER_H__
 
-#include <boost/pending/queue.hpp>
 #include "src/core/messages/BufferedMessage.h"
 #include "network_util.h"
 
@@ -68,7 +67,7 @@ private:
     void pop_buffer();
 
 private:
-    boost::queue<std::shared_ptr<BufferedMessage> > _buffer;
+    std::queue<std::shared_ptr<BufferedMessage> > _buffer;
     std::shared_ptr<BufferedMessage> _current;
     unsigned long _packet_count;
 
