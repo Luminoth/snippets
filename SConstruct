@@ -39,6 +39,7 @@ int main()
 USE_SSE = "USE_SSE"
 USE_OPENSSL = "USE_OPENSSL"
 WITH_CRYPTO = "WITH_CRYPTO"
+WITH_PYTHON = "WITH_PYTHON"
 WITH_TLS = "WITH_TLS"
 WITH_UNIT_TESTS = "WITH_UNIT_TESTS"
 WITH_PROFILE = "WITH_PROFILE"
@@ -81,7 +82,14 @@ ccpath = [
     os.getcwd(),
     "/opt/local/include",       # osx darwin ports
 ]
-ccdefs = [ USE_SSE, USE_OPENSSL, WITH_CRYPTO, WITH_TLS, "_FORTIFY_SOURCE=2" ]
+ccdefs = [
+    USE_SSE,
+    USE_OPENSSL,
+    WITH_CRYPTO,
+#    WITH_PYTHON,
+    WITH_TLS,
+    "_FORTIFY_SOURCE=2"
+]
 ldflags = []
 ldpath = [
     os.path.join(os.getcwd(), lib_dir),
@@ -199,6 +207,9 @@ def CheckCommonConfiguration(env, check_libs):
         if not conf.CheckBoost(BOOST_VERSION):
             print("Boost version >= %s required!" % BOOST_VERSION)
             Exit(1)
+
+        env.ParseConfig("python-config --includes")
+        if check_libs: env.ParseConfig("python-config --ldflags")
 
         if conf.CheckCHeader("valgrind/callgrind.h") or conf.CheckCHeader("callgrind.h"):
             conf.env.MergeFlags({ "CPPDEFINES": [ "-DHAS_CALLGRIND_H" ] })
