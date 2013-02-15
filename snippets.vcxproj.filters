@@ -66,6 +66,9 @@
     <Filter Include="Source Files\core\eventlogger">
       <UniqueIdentifier>{71ee0f96-5347-41fd-826c-8297a951bec4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\core\python">
+      <UniqueIdentifier>{730fdcb6-2936-483b-9f8f-852092b2759a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\common.cc">
@@ -259,6 +262,24 @@
     </ClCompile>
     <ClCompile Include="src\core\physics\BoundingCapsule.cc">
       <Filter>Source Files\core\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\HttpServer.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\HttpSession.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\TcpClient.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\TcpServer.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\TcpSession.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\python\PythonScript.cc">
+      <Filter>Source Files\core\python</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -492,6 +513,27 @@
     </ClInclude>
     <ClInclude Include="src\core\physics\BoundingCapsule.h">
       <Filter>Source Files\core\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\HttpServer.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\HttpSession.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\TcpClient.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\TcpServer.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\TcpSession.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\python\PythonObject.h">
+      <Filter>Source Files\core\python</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\python\PythonScript.h">
+      <Filter>Source Files\core\python</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
