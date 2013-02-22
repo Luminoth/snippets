@@ -26,6 +26,15 @@ struct DatabaseValue
     DatabaseType type;
     boost::any value;
 
+    DatabaseValue()
+        : type(DatabaseType::Null), value()
+    {
+    }
+
+    virtual ~DatabaseValue() throw()
+    {
+    }
+
     operator bool() const { return type != DatabaseType::Null; }
     bool operator!() const { return type == DatabaseType::Null; }
 };

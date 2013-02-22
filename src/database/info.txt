@@ -1,0 +1,3 @@
+Server-side only database connection stuff goes here.
+The client-side code should never link to the library
+created from the source here.

@@ -99,6 +99,7 @@ libs = []
 
 ### TARGETS ###
 core_lib = "%s-core" % src_name
+database_lib = "%s-db" % src_name
 engine_lib = "%s-engine" % src_name
 
 tests_app = src_name
@@ -133,6 +134,7 @@ if "unittest" in build_meta_targets:
     build_dir = os.path.join(build_dir, "test")
 
     core_lib += "-test"
+    database_lib += "-test"
     engine_lib += "-test"
 
 profile = int(ARGUMENTS.get("profile", 0))
@@ -143,6 +145,7 @@ if profile:
     build_dir = os.path.join(build_dir, "profile")
 
     core_lib += "-profile"
+    database_lib += "-profile"
     engine_lib += "-profile"
 
     tests_app += "-profile"
@@ -184,6 +187,7 @@ else:
 
     # append -debug to our targets
     core_lib += "-debug"
+    database_lib += "-debug"
     engine_lib += "-debug"
 
     tests_app += "-debug"
@@ -237,14 +241,14 @@ def CheckCommonConfiguration(env, check_libs):
 
     return conf
 
-# checks for engine libraries
-def CheckEngineConfiguration(env, check_libs):
+# checks for test app libraries
+def CheckTestConfiguration(env, check_libs):
     #check_libs = True   # bleh :(
 
     conf = CheckCommonConfiguration(env, check_libs)
     if not conf.env.GetOption("clean"):
         if check_libs:
-            pass
+            CheckLibOrExit(conf, "mysqlclient_r")
 
     return conf
 
@@ -257,7 +261,7 @@ def GenerateCommonEnv(app_name=""):
 
     return env
 
-def GenerateEngineEnv(include_libs, app_name=""):
+def GenerateTestEnv(app_name=""):
     env = GenerateCommonEnv(app_name)
 
     return env
@@ -278,12 +282,25 @@ def BuildCore():
     Clean(lib, base_build_dir)
     Clean(lib, lib_dir)
 
+def BuildDatabase():
+    print("Building database library...")
+
+    env = GenerateCommonEnv()
+    conf = CheckCommonConfiguration(env, False)
+    env = conf.Finish()
+
+    obj = SConscript(os.path.join(src_dir, "database", "SConscript"), exports=[ "env" ],
+        variant_dir=os.path.join(build_dir, "database"), duplicate=0)
+    lib = env.StaticLibrary(os.path.join(lib_dir, database_lib), obj)
+
+    Clean(lib, base_build_dir)
+    Clean(lib, lib_dir)
 
 def BuildEngine():
     print("Building engine library...")
 
-    env = GenerateEngineEnv(False)
-    conf = CheckEngineConfiguration(env, False)
+    env = GenerateCommonEnv()
+    conf = CheckCommonConfiguration(env, False)
     env = conf.Finish()
 
     obj = SConscript(os.path.join(src_dir, "engine", "SConscript"), exports=[ "env" ],
@@ -296,8 +313,8 @@ def BuildEngine():
 def BuildTests():
     print("Building tests...")
 
-    env = GenerateCommonEnv(tests_app)
-    conf = CheckCommonConfiguration(env, True)
+    env = GenerateTestEnv(tests_app)
+    conf = CheckTestConfiguration(env, True)
     env = conf.Finish()
 
     # have to add libs to LINKFLAGS so we can tell the linker
@@ -307,6 +324,7 @@ def BuildTests():
         env.MergeFlags({ "LINKFLAGS": [
             "-Wl,-all_load",
             "-l%s" % engine_lib,
+            "-l%s" % database_lib,
             "-l%s" % core_lib,
             "-Wl,-noall_load"
         ] })
@@ -314,11 +332,12 @@ def BuildTests():
         env.MergeFlags({ "LINKFLAGS": [
             "-Wl,-whole-archive",
             "-l%s" % engine_lib,
+            "-l%s" % database_lib,
             "-l%s" % core_lib,
             "-Wl,-no-whole-archive"
         ] })
     else:
-        env.MergeFlags({ "LIBS": [ engine_lib, core_lib ] })
+        env.MergeFlags({ "LIBS": [ engine_lib, database_lib, core_lib ] })
 
     obj = SConscript(os.path.join(src_dir, "test", "SConscript"), exports=[ "env" ],
         variant_dir=os.path.join(build_dir, "test"), duplicate=0)
@@ -327,6 +346,7 @@ def BuildTests():
     # have to add libraries as dependencies by hand on linux
     if sys.platform == "darwin" or "linux" in sys.platform:
         Depends(app, os.path.join(lib_dir, "lib%s.a" % engine_lib))
+        Depends(app, os.path.join(lib_dir, "lib%s.a" % database_lib))
         Depends(app, os.path.join(lib_dir, "lib%s.a" % core_lib))
 
     Clean(app, base_build_dir)
@@ -353,7 +373,9 @@ BuildCore()
 
 if "unittest" in build_meta_targets:
     # build everything that's not an app
+    BuildDatabase()
     BuildEngine()
     BuildTests()
 else:
+    BuildDatabase()
     BuildEngine()
