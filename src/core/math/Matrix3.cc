@@ -45,7 +45,7 @@ public:
 
 public:
     Matrix3Test() : CppUnit::TestFixture() {}
-    virtual ~Matrix3Test() throw() {}
+    virtual ~Matrix3Test() noexcept {}
 
 public:
     void test_allocation()

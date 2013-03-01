@@ -31,7 +31,7 @@ AABB::AABB(const Point3& center, float radius)
     _maximum = center + rv;
 }
 
-AABB::~AABB() throw()
+AABB::~AABB() noexcept
 {
 }
 
@@ -193,7 +193,7 @@ public:
 
 public:
     AABBTest() : CppUnit::TestFixture() {}
-    virtual ~AABBTest() throw() {}
+    virtual ~AABBTest() noexcept {}
 
 public:
     void test_initialize()

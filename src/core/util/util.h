@@ -12,14 +12,14 @@ namespace energonsoftware {
 bool is_little_endian();
 
 // returns the error created by using strerror() and errno.
-std::string last_std_error() throw();
-std::string last_std_error(int error) throw();
+std::string last_std_error() noexcept;
+std::string last_std_error(int error) noexcept;
 
 // in Windows, returns the error created
 // by using FormatMessage() and GetLastError()
 // everywhere else, returns last_std_error()
-std::string last_error() throw();
-std::string last_error(int error) throw();
+std::string last_error() noexcept;
+std::string last_error(int error) noexcept;
 
 // returns the universal epoch as a ptime
 boost::gregorian::date epoch_date();

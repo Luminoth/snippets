@@ -8,9 +8,9 @@ namespace energonsoftware {
 class SerializationError : public std::exception
 {
 public:
-    explicit SerializationError(const std::string& what) throw() : _what(what) {}
-    virtual ~SerializationError() throw() {}
-    virtual const char* what() const throw() { return _what.c_str(); }
+    explicit SerializationError(const std::string& what) noexcept : _what(what) {}
+    virtual ~SerializationError() noexcept {}
+    virtual const char* what() const noexcept { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -20,7 +20,7 @@ class Serializable
 {
 public:
     Serializable() {}
-    virtual ~Serializable() throw() {}
+    virtual ~Serializable() noexcept {}
 
 public:
     virtual void serialize(Packer& packer) const throw(SerializationError) = 0;
@@ -31,7 +31,7 @@ class SerializationMap : public std::map<std::string, std::string>, public Seria
 {
 public:
     SerializationMap();
-    virtual ~SerializationMap() throw();
+    virtual ~SerializationMap() noexcept;
 
 public:
     virtual void serialize(Packer& packer) const throw(SerializationError);

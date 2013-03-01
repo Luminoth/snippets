@@ -21,7 +21,7 @@ PingManager::PingManager(UdpServer& server, const std::string& sessionid)
 {
 }
 
-PingManager::~PingManager() throw()
+PingManager::~PingManager() noexcept
 {
 }
 

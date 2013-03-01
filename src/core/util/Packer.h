@@ -8,9 +8,9 @@ class Serializable;
 class PackerError : public std::exception
 {
 public:
-    explicit PackerError(const std::string& what) throw() : _what(what) {}
-    virtual ~PackerError() throw() {}
-    virtual const char* what() const throw() { return _what.c_str(); }
+    explicit PackerError(const std::string& what) noexcept : _what(what) {}
+    virtual ~PackerError() noexcept {}
+    virtual const char* what() const noexcept { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -36,7 +36,7 @@ private:
 
 public:
     Packer() {}
-    virtual ~Packer() throw() {}
+    virtual ~Packer() noexcept {}
 
 public:
     template<typename T>
@@ -138,7 +138,7 @@ public:
     explicit Unpacker(const std::string& obj) : _obj(obj) {}
     explicit Unpacker(const std::vector<unsigned char>& obj);
     Unpacker(const unsigned char* obj, size_t len);
-    virtual ~Unpacker() throw() {}
+    virtual ~Unpacker() noexcept {}
 
 public:
     virtual const std::string& original_object() const final { return _obj; }

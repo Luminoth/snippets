@@ -109,7 +109,7 @@ public:
 
 public:
     NetworkUtilTest() : CppUnit::TestFixture() {}
-    virtual ~NetworkUtilTest() throw() {}
+    virtual ~NetworkUtilTest() noexcept {}
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(NetworkUtilTest);

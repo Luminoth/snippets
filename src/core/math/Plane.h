@@ -16,7 +16,7 @@ public:
     Plane(const Normal3& n, float d) : _plane(n.normalized(), d) { }
 
     Plane(const Point3& p1, const Point3& p2, const Point3& p3);
-    virtual ~Plane() throw() {}
+    virtual ~Plane() noexcept {}
 
 public:
     Normal3 normal() const { return Normal3(_plane.x(), _plane.y(), _plane.z()); }

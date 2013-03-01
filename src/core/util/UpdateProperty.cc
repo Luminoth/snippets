@@ -11,7 +11,7 @@ public:
 
 public:
     UpdatePropertyTest() : CppUnit::TestFixture() {}
-    virtual ~UpdatePropertyTest() throw() {}
+    virtual ~UpdatePropertyTest() noexcept {}
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(UpdatePropertyTest);

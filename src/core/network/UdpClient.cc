@@ -13,7 +13,7 @@ UdpClient::UdpClient()
 {
 }
 
-UdpClient::~UdpClient() throw()
+UdpClient::~UdpClient() noexcept
 {
 }
 

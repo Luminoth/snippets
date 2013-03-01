@@ -8,7 +8,7 @@ Sphere::Sphere(const Point3& center, float radius)
 {
 }
 
-Sphere::~Sphere() throw()
+Sphere::~Sphere() noexcept
 {
 }
 
@@ -26,7 +26,7 @@ public:
 
 public:
     SphereTest() : CppUnit::TestFixture() {}
-    virtual ~SphereTest() throw() {}
+    virtual ~SphereTest() noexcept {}
 
 public:
     void test_initialize()

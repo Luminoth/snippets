@@ -52,7 +52,7 @@ public:
     static std::shared_ptr<MemoryAllocator> new_allocator(Type type, size_t size);
 
 public:
-    virtual ~MemoryAllocator() throw();
+    virtual ~MemoryAllocator() noexcept;
 
 public:
     // values returned in bytes
@@ -169,7 +169,7 @@ class MemoryAllocatorTest : public CppUnit::TestFixture
 {
 public:
     explicit MemoryAllocatorTest(energonsoftware::MemoryAllocator::Type type);
-    virtual ~MemoryAllocatorTest() throw() {}
+    virtual ~MemoryAllocatorTest() noexcept {}
 
 public:
     void setUp();

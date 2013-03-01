@@ -17,7 +17,7 @@ DatabaseConnection::DatabaseConnection(int64_t id, const DatabaseConfiguration& 
     _port = this->config().database_port();
 }
 
-DatabaseConnection::~DatabaseConnection() throw()
+DatabaseConnection::~DatabaseConnection() noexcept
 {
 }
 

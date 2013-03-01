@@ -8,8 +8,8 @@ namespace energonsoftware {
 class ConnectionPoolError : public DatabaseError
 {
 public:
-    explicit ConnectionPoolError(const std::string& what) throw() : DatabaseError(what) {}
-    virtual ~ConnectionPoolError() throw() {}
+    explicit ConnectionPoolError(const std::string& what) noexcept : DatabaseError(what) {}
+    virtual ~ConnectionPoolError() noexcept {}
 };
 
 class DatabaseConnection;
@@ -20,7 +20,7 @@ private:
     static Logger& logger;
 
 public:
-    virtual ~ConnectionPool() throw();
+    virtual ~ConnectionPool() noexcept;
 
 public:
     // acquires a connection
@@ -33,7 +33,7 @@ public:
     size_t size() { return _size; }
 
 private:
-    void cleanup() throw();
+    void cleanup() noexcept;
     void push_connection(std::shared_ptr<DatabaseConnection> connection);
 
 private:

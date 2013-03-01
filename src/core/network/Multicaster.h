@@ -12,7 +12,7 @@ private:
 
 public:
     Multicaster(BufferedSender& server, const std::string& address);
-    virtual ~Multicaster() throw();
+    virtual ~Multicaster() noexcept;
 
 private:
     virtual bool enable_broadcast();

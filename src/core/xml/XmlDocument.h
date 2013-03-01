@@ -11,7 +11,7 @@ public:
     explicit XmlDocument(const XmlString& name);
     explicit XmlDocument(const XmlNode& root);
     XmlDocument(const XmlDocument& document);
-    virtual ~XmlDocument() throw();
+    virtual ~XmlDocument() noexcept;
 
 public:
     const XmlString& type() const { return _root.name(); }

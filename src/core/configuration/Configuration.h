@@ -8,9 +8,9 @@ class Logger;
 class ConfigurationError : public std::exception
 {
 public:
-    explicit ConfigurationError(const std::string& what) throw() : _what(what) {}
-    virtual ~ConfigurationError() throw() {}
-    virtual const char* what() const throw() { return _what.c_str(); }
+    explicit ConfigurationError(const std::string& what) noexcept : _what(what) {}
+    virtual ~ConfigurationError() noexcept {}
+    virtual const char* what() const noexcept { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -19,8 +19,8 @@ private:
 class NoSuchConfigOptionError : public ConfigurationError
 {
 public:
-    explicit NoSuchConfigOptionError(const std::string& what) throw() : ConfigurationError(what) {}
-    virtual ~NoSuchConfigOptionError() throw() {}
+    explicit NoSuchConfigOptionError(const std::string& what) noexcept : ConfigurationError(what) {}
+    virtual ~NoSuchConfigOptionError() noexcept {}
 };
 
 /*
@@ -57,14 +57,14 @@ private:
         {
         }
 
-        virtual ~ConfigOption() throw() {}
+        virtual ~ConfigOption() noexcept {}
     };
 
     typedef std::unordered_map<std::string, ConfigOption> ConfigOptions;
     typedef std::unordered_map<std::string, ConfigOptions> ConfigSections;
 
 public:
-    virtual ~Configuration() throw();
+    virtual ~Configuration() noexcept;
 
 public:
     // generates a header from the default values

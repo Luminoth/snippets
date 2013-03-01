@@ -22,7 +22,7 @@ MySQLDatabaseConnection::MySQLDatabaseConnection(long id, const DatabaseConfigur
     connection_count++;
 }
 
-MySQLDatabaseConnection::~MySQLDatabaseConnection() throw()
+MySQLDatabaseConnection::~MySQLDatabaseConnection() noexcept
 {
     boost::lock_guard<boost::recursive_mutex> guard(init_mutex);
 

@@ -25,7 +25,7 @@ MemoryAllocator::MemoryAllocator()
 {
 }
 
-MemoryAllocator::~MemoryAllocator() throw()
+MemoryAllocator::~MemoryAllocator() noexcept
 {
 }
 
@@ -113,7 +113,7 @@ public:
     {
     }
 
-    virtual ~TestObject() throw() {}
+    virtual ~TestObject() noexcept {}
 
 public:
     void do_stuff()
@@ -211,7 +211,7 @@ public:
     {
     }
 
-    virtual ~DerivedObject() throw() {}
+    virtual ~DerivedObject() noexcept {}
 
 private:
     virtual void on_do_stuff() override

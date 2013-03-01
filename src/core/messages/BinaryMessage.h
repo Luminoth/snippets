@@ -24,7 +24,7 @@ public:
     // NOTE: this is pretty slow because it has to copy the payload
     BinaryMessage(const BinaryMessage& message);
 
-    virtual ~BinaryMessage() throw();
+    virtual ~BinaryMessage() noexcept;
 
 public:
     PackerType packer_type() const { return _packer_type; }
@@ -83,7 +83,7 @@ public:
     // NOTE: this is pretty slow because it has to copy the payload
     ClientBinaryMessage(const ClientBinaryMessage& message);
 
-    virtual ~ClientBinaryMessage() throw();
+    virtual ~ClientBinaryMessage() noexcept;
 
 public:
     const std::string& sessionid() const { return _sessionid; }
@@ -109,7 +109,7 @@ public:
     // NOTE: this is pretty slow because it has to copy the payload
     ServerBinaryMessage(const ServerBinaryMessage& message);
 
-    virtual ~ServerBinaryMessage() throw();
+    virtual ~ServerBinaryMessage() noexcept;
 
 public:
     bool oob() const { return _oob; }

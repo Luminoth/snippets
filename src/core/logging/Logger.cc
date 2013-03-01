@@ -93,7 +93,7 @@ Logger::Logger(const std::string& category)
 {
 }
 
-Logger::~Logger() throw()
+Logger::~Logger() noexcept
 {
 }
 
@@ -143,7 +143,7 @@ private:
 
 public:
     LoggerTest() : CppUnit::TestFixture() {}
-    virtual ~LoggerTest() throw() {}
+    virtual ~LoggerTest() noexcept {}
 
 public:
     void test_levels()

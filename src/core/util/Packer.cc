@@ -128,7 +128,7 @@ public:
 
 public:
     PackerTest() : CppUnit::TestFixture() {}
-    virtual ~PackerTest() throw() {}
+    virtual ~PackerTest() noexcept {}
 
 public:
     void test_simple()

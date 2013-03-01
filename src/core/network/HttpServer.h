@@ -14,7 +14,7 @@ private:
 
 public:
     explicit HttpServer(HttpSessionFactory* session_factory);
-    virtual ~HttpServer() throw();
+    virtual ~HttpServer() noexcept;
 
 private:
     virtual void on_packet(TcpSession& session);

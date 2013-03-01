@@ -45,7 +45,7 @@ PNG::PNG(size_t width, size_t height, size_t bpp, boost::shared_array<unsigned c
 {
 }
 
-PNG::~PNG() throw()
+PNG::~PNG() noexcept
 {
 }
 
@@ -146,7 +146,7 @@ bool PNG::load(const boost::filesystem::path& filename, MemoryAllocator& allocat
     return true;
 }
 
-void PNG::unload() throw()
+void PNG::unload() noexcept
 {
     _width = _height = _bpp = 0;
     release();

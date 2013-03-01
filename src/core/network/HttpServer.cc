@@ -12,7 +12,7 @@ HttpServer::HttpServer(HttpSessionFactory* session_factory)
 {
 }
 
-HttpServer::~HttpServer() throw()
+HttpServer::~HttpServer() noexcept
 {
 }
 

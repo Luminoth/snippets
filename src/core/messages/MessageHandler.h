@@ -8,9 +8,9 @@ namespace energonsoftware {
 class MessageHandlerError : public std::exception
 {
 public:
-    explicit MessageHandlerError(const std::string& what) throw() : _what(what) { }
-    virtual ~MessageHandlerError() throw() {}
-    virtual const char* what() const throw() { return _what.c_str(); }
+    explicit MessageHandlerError(const std::string& what) noexcept : _what(what) { }
+    virtual ~MessageHandlerError() noexcept {}
+    virtual const char* what() const noexcept { return _what.c_str(); }
 
 protected:
     std::string _what;
@@ -31,7 +31,7 @@ private:
 
 public:
     MessageHandler();
-    virtual ~MessageHandler() throw();
+    virtual ~MessageHandler() noexcept;
 
 public:
     // module needs to have created with new

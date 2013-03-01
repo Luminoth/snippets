@@ -18,7 +18,7 @@ struct Vertex
     int weight_start, weight_count;
 
     Vertex();
-    virtual ~Vertex() throw() {}
+    virtual ~Vertex() noexcept {}
 
     std::string str() const;
 
@@ -36,7 +36,7 @@ struct Triangle
     Vector3 normal;
 
     Triangle();
-    virtual ~Triangle() throw() {}
+    virtual ~Triangle() noexcept {}
 };
 
 struct Weight
@@ -52,7 +52,7 @@ struct Weight
     Vector3 normal, tangent, bitangent;
 
     Weight();
-    virtual ~Weight() throw() {}
+    virtual ~Weight() noexcept {}
 };
 
 struct Edge
@@ -65,7 +65,7 @@ struct Edge
     int t1, t2;
 
     Edge();
-    virtual ~Edge() throw() {}
+    virtual ~Edge() noexcept {}
 
     std::string str() const;
 };
@@ -84,7 +84,7 @@ public:
     Geometry(size_t triangle_count, size_t vertex_count, MemoryAllocator& allocator);
     Geometry(const Triangle* const triangles, size_t triangle_count, const Vertex* const vertices, size_t vertex_count, MemoryAllocator& allocator);
 
-    virtual ~Geometry() throw();
+    virtual ~Geometry() noexcept;
 
 public:
     boost::recursive_mutex& mutex() { return _mutex; }

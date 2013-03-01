@@ -14,7 +14,7 @@ Lexer::Lexer(const std::string& data)
 {
 }
 
-Lexer::~Lexer() throw()
+Lexer::~Lexer() noexcept
 {
 }
 
@@ -281,7 +281,7 @@ public:
 public:
     TestLexer() : Lexer() { init(); }
     explicit TestLexer(const std::string& data) : Lexer(data) { init(); }
-    virtual ~TestLexer() throw() {}
+    virtual ~TestLexer() noexcept {}
 
 public:
     bool constant(std::string& value)
@@ -322,7 +322,7 @@ public:
 
 public:
     LexerTest() : CppUnit::TestFixture(), _lexer() {}
-    virtual ~LexerTest() throw() {}
+    virtual ~LexerTest() noexcept {}
 
 public:
     void test_lexer()

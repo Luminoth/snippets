@@ -10,8 +10,8 @@ namespace energonsoftware {
 class MessageHandlerModuleError : public MessageHandlerError
 {
 public:
-    explicit MessageHandlerModuleError(const std::string& what) throw() : MessageHandlerError(what) {}
-    virtual ~MessageHandlerModuleError() throw() {}
+    explicit MessageHandlerModuleError(const std::string& what) noexcept : MessageHandlerError(what) {}
+    virtual ~MessageHandlerModuleError() noexcept {}
 };
 
 class BufferedSender;
@@ -20,7 +20,7 @@ class MessageHandlerModule
 {
 public:
     MessageHandlerModule() {}
-    virtual ~MessageHandlerModule() throw() {}
+    virtual ~MessageHandlerModule() noexcept {}
 
 public:
     virtual BufferedMessageType msg_type() const = 0;
@@ -38,7 +38,7 @@ class XmlMessageHandlerModule : public MessageHandlerModule
 {
 public:
     XmlMessageHandlerModule() : MessageHandlerModule() {}
-    virtual ~XmlMessageHandlerModule() throw() {}
+    virtual ~XmlMessageHandlerModule() noexcept {}
 
 public:
     virtual BufferedMessageType msg_type() const { return BufferedMessageType::Xml; }
@@ -52,7 +52,7 @@ class BinaryMessageHandlerModule : public MessageHandlerModule
 {
 public:
     BinaryMessageHandlerModule() : MessageHandlerModule() {}
-    virtual ~BinaryMessageHandlerModule() throw() {}
+    virtual ~BinaryMessageHandlerModule() noexcept {}
 
 public:
     virtual BufferedMessageType msg_type() const { return BufferedMessageType::Binary; }
@@ -69,7 +69,7 @@ class TestMessageHandlerModule : public energonsoftware::XmlMessageHandlerModule
 {
 public:
     TestMessageHandlerModule() : energonsoftware::XmlMessageHandlerModule() {}
-    virtual ~TestMessageHandlerModule() throw() {}
+    virtual ~TestMessageHandlerModule() noexcept {}
 
 public:
     virtual std::string xml_type() const { return "test"; }

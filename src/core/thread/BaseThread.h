@@ -15,7 +15,7 @@ public:
     explicit BaseThread(const std::string& name);
 
     // NOTE: this calls stop() on the thread
-    virtual ~BaseThread() throw();
+    virtual ~BaseThread() noexcept;
 
 public:
     virtual std::string name() const final;
@@ -65,10 +65,10 @@ class ThreadFactory
 {
 public:
     ThreadFactory();
-    virtual ~ThreadFactory() throw();
+    virtual ~ThreadFactory() noexcept;
 
 public:
-    virtual std::shared_ptr<BaseThread> new_thread(ThreadPool* pool=nullptr) const throw() = 0;
+    virtual std::shared_ptr<BaseThread> new_thread(ThreadPool* pool=nullptr) const noexcept = 0;
 };
 
 }

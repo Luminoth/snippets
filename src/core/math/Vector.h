@@ -110,7 +110,7 @@ public:
     }
 #endif
 
-    virtual ~Vector() throw() {}
+    virtual ~Vector() noexcept {}
 
 public:
     void x(float x) { _value[0] = x; }

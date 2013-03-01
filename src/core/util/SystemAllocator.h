@@ -11,7 +11,7 @@ private:
     static Logger& logger;
 
 public:
-    virtual ~SystemAllocator() throw();
+    virtual ~SystemAllocator() noexcept;
 
 public:
     virtual size_t total() const override { return _size; }

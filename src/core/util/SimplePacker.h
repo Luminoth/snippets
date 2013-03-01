@@ -10,7 +10,7 @@ class SimplePacker : public Packer
 {
 public:
     SimplePacker();
-    virtual ~SimplePacker() throw();
+    virtual ~SimplePacker() noexcept;
 
 public:
     virtual Packer& reset() override;
@@ -40,7 +40,7 @@ public:
     explicit SimpleUnpacker(const std::string& obj);
     explicit SimpleUnpacker(const std::vector<unsigned char>& obj);
     SimpleUnpacker(const unsigned char* obj, size_t len);
-    virtual ~SimpleUnpacker() throw();
+    virtual ~SimpleUnpacker() noexcept;
 
 public:
     virtual unsigned int position() /*const*/ override { return _buffer.tellg(); }

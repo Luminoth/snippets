@@ -19,7 +19,7 @@ BoundingSphere::BoundingSphere(const AABB& aabb)
 {
 }
 
-BoundingSphere::~BoundingSphere() throw()
+BoundingSphere::~BoundingSphere() noexcept
 {
 }
 
@@ -96,7 +96,7 @@ public:
 
 public:
     BoundingSphereTest() : CppUnit::TestFixture() {}
-    virtual ~BoundingSphereTest() throw() {}
+    virtual ~BoundingSphereTest() noexcept {}
 
 public:
     void test_initialize()

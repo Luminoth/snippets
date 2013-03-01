@@ -20,7 +20,7 @@ public:
     static void release_controllers();
 
 public:
-    virtual ~UIController() throw();
+    virtual ~UIController() noexcept;
 
 public:
     virtual void key_down(InputKeySym key) {}

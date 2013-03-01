@@ -13,7 +13,7 @@ private:
 
 public:
     TcpClient();
-    virtual ~TcpClient() throw();
+    virtual ~TcpClient() noexcept;
 
 public:
     const std::string& host() const { return _host; }

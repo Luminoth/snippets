@@ -15,7 +15,7 @@ private:
     static boost::recursive_mutex init_mutex;
 
 public:
-    virtual ~MySQLDatabaseConnection() throw();
+    virtual ~MySQLDatabaseConnection() noexcept;
 
 private:
     virtual void on_connect(const std::string& database, const std::string& username, const std::string& password) throw(DatabaseConnectionError);

@@ -16,7 +16,7 @@ Transform::Transform(const Transform& transform)
 {
 }
 
-Transform::~Transform() throw()
+Transform::~Transform() noexcept
 {
 }
 
@@ -107,7 +107,7 @@ AABBCollider::AABBCollider(const AABBCollider& collider)
 {
 }
 
-AABBCollider::~AABBCollider() throw()
+AABBCollider::~AABBCollider() noexcept
 {
 }
 
@@ -145,7 +145,7 @@ RigidBody::RigidBody(const RigidBody& rigidbody)
 {
 }
 
-RigidBody::~RigidBody() throw()
+RigidBody::~RigidBody() noexcept
 {
 }
 
@@ -207,7 +207,7 @@ Physical::Physical(const Physical& physical)
     _collider.reset(new AABBCollider(dynamic_cast<const AABBCollider&>(*physical._collider)));
 }
 
-Physical::~Physical() throw()
+Physical::~Physical() noexcept
 {
 }
 
@@ -270,7 +270,7 @@ public:
     {
     }
 
-    virtual ~TestPhysical() throw()
+    virtual ~TestPhysical() noexcept
     {
     }
 
@@ -297,7 +297,7 @@ public:
 
 public:
     PhysicalTest() : CppUnit::TestFixture() {}
-    virtual ~PhysicalTest() throw() {}
+    virtual ~PhysicalTest() noexcept {}
 
 public:
     virtual void test_simulate()

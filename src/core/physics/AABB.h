@@ -16,7 +16,7 @@ public:
 
     AABB(const Point3& minimum, const Point3& maximum);
     AABB(const Point3& center, float radius);
-    virtual ~AABB() throw();
+    virtual ~AABB() noexcept;
 
 public:
     const Point3& minimum() const { return _minimum; }

@@ -22,7 +22,7 @@ public:
     }
 
 public:
-    virtual ~TreePartition() throw()
+    virtual ~TreePartition() noexcept
     {
     }
 

@@ -103,7 +103,7 @@ public:
 
 public:
     FileSystemTest() : CppUnit::TestFixture() {}
-    virtual ~FileSystemTest() throw() {}
+    virtual ~FileSystemTest() noexcept {}
 
 private:
     static energonsoftware::Logger& logger;

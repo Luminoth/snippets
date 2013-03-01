@@ -13,7 +13,7 @@ DatabaseConfiguration::DatabaseConfiguration()
     load_defaults();
 }
 
-DatabaseConfiguration::~DatabaseConfiguration() throw()
+DatabaseConfiguration::~DatabaseConfiguration() noexcept
 {
 }
 

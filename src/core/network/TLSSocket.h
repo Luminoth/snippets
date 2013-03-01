@@ -16,7 +16,7 @@ public:
     TLSSocket();
     //explicit TLSSocket(SOCKET sockfd);
     explicit TLSSocket(const ClientSocket& socket);
-    virtual ~TLSSocket() throw();
+    virtual ~TLSSocket() noexcept;
 
 public:
     bool encrypted() const { return _encrypted; }

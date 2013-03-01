@@ -12,7 +12,7 @@ UdpServer::UdpServerMessage::UdpServerMessage(const unsigned char* packet, size_
 {
 }
 
-UdpServer::UdpServerMessage::~UdpServerMessage() throw()
+UdpServer::UdpServerMessage::~UdpServerMessage() noexcept
 {
 }
 
@@ -34,7 +34,7 @@ UdpServer::UdpServer()
 {
 }
 
-UdpServer::~UdpServer() throw()
+UdpServer::~UdpServer() noexcept
 {
 }
 

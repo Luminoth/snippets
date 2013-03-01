@@ -67,7 +67,7 @@ public:
 private:
     PartitionFactory();
 
-    virtual ~PartitionFactory() throw()
+    virtual ~PartitionFactory() noexcept
     {
     }
 };

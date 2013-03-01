@@ -22,7 +22,7 @@ public:
 
 public:
     MathTest() : CppUnit::TestFixture() {}
-    virtual ~MathTest() throw() {}
+    virtual ~MathTest() noexcept {}
 
 public:
     void test_is_odd()

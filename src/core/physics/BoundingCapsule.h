@@ -18,7 +18,7 @@ public:
     // sets both the radius and height to the AABB's radius
     explicit BoundingCapsule(const AABB& aabb);
 
-    virtual ~BoundingCapsule() throw();
+    virtual ~BoundingCapsule() noexcept;
 
 public:
     void sphere(const Capsule& capsule) { _capsule = capsule; }

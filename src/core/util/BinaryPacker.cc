@@ -9,7 +9,7 @@ BinaryPacker::BinaryPacker()
 {
 }
 
-BinaryPacker::~BinaryPacker() throw()
+BinaryPacker::~BinaryPacker() noexcept
 {
 }
 
@@ -205,7 +205,7 @@ BinaryUnpacker::BinaryUnpacker(const unsigned char* obj, size_t len)
     _buffer.str(_obj);
 }
 
-BinaryUnpacker::~BinaryUnpacker() throw()
+BinaryUnpacker::~BinaryUnpacker() noexcept
 {
 }
 

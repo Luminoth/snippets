@@ -17,7 +17,7 @@ private:
 
 public:
     XmlContentHandler();
-    virtual ~XmlContentHandler() throw();
+    virtual ~XmlContentHandler() noexcept;
 
 public:
     void reset();

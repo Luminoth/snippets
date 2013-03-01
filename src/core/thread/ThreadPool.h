@@ -20,7 +20,7 @@ private:
 
 public:
     explicit ThreadPool(size_t size);
-    virtual ~ThreadPool() throw();
+    virtual ~ThreadPool() noexcept;
 
 public:
     // starts the threads in the pool

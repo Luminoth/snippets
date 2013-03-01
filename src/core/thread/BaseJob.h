@@ -11,7 +11,7 @@ public:
     {
     }
 
-    virtual ~BaseJob() throw()
+    virtual ~BaseJob() noexcept
     {
     }
 

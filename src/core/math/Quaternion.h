@@ -31,7 +31,7 @@ public:
 
     explicit Quaternion(const Matrix4& matrix);
 
-    virtual ~Quaternion() throw() {}
+    virtual ~Quaternion() noexcept {}
 
 public:
     float scalar() const { return _scalar; }

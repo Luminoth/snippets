@@ -28,7 +28,7 @@ XmlMessage::XmlMessage(const XmlMessage& message)
     // NOTE: we don't need to copy the _data pointer
 }
 
-XmlMessage::~XmlMessage() throw()
+XmlMessage::~XmlMessage() noexcept
 {
 }
 

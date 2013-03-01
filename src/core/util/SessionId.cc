@@ -58,7 +58,7 @@ SessionId::SessionId(const std::string& password, const std::string& sessionid, 
     _creation_time = atol(value.substr(pos1+1, pos2 - pos1).c_str());
 }
 
-SessionId::~SessionId() throw()
+SessionId::~SessionId() noexcept
 {
 }
 
@@ -91,7 +91,7 @@ private:
 
 public:
     SessionIdTest() : CppUnit::TestFixture() {}
-    virtual ~SessionIdTest() throw() {}
+    virtual ~SessionIdTest() noexcept {}
 
 public:
     void test_expiry()

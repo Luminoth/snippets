@@ -18,7 +18,7 @@ XmlDocument::XmlDocument(const XmlDocument& rhs)
 {
 }
 
-XmlDocument::~XmlDocument() throw()
+XmlDocument::~XmlDocument() noexcept
 {
 }
 

@@ -12,7 +12,7 @@ ConnectionPool::ConnectionPool(size_t size) throw(ConnectionPoolError)
 {
 }
 
-ConnectionPool::~ConnectionPool() throw()
+ConnectionPool::~ConnectionPool() noexcept
 {
     if(_pool.size() != _size) {
         LOG_WARNING("Connection pool is missing resources!\n");
@@ -63,7 +63,7 @@ void ConnectionPool::release(std::shared_ptr<DatabaseConnection> connection)
     _pool.push_back(connection);
 }
 
-void ConnectionPool::cleanup() throw()
+void ConnectionPool::cleanup() noexcept
 {
     boost::lock_guard<boost::recursive_mutex> guard(*this);
 

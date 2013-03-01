@@ -15,8 +15,8 @@ class PythonScriptError : public std::exception
 {
 public:
     PythonScriptError(const std::string& what) : _what(what) {}
-    virtual ~PythonScriptError() throw() {}
-    virtual const char* what() const throw() { return _what.c_str(); }
+    virtual ~PythonScriptError() noexcept {}
+    virtual const char* what() const noexcept { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -29,7 +29,7 @@ public:
     {
     public:
         PythonScriptAPI();
-        virtual ~PythonScriptAPI() throw();
+        virtual ~PythonScriptAPI() noexcept;
 
     public:
         bool boolean(const char* value) const;
@@ -98,7 +98,7 @@ public:
     }
 
 public:
-    virtual ~PythonScript() throw();
+    virtual ~PythonScript() noexcept;
 
 protected:
     static void error(const std::string& what) throw(PythonScriptError);

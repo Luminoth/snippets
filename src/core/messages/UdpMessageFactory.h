@@ -21,7 +21,7 @@ public:
     {
     public:
         FactoryMessage(unsigned int packetid, unsigned int chunkcount, unsigned int ttl, std::shared_ptr<ClientSocket> socket);
-        virtual ~FactoryMessage() throw() {}
+        virtual ~FactoryMessage() noexcept {}
 
     public:
         unsigned int packetid() const { return _packetid; }
@@ -61,7 +61,7 @@ private:
 
 public:
     UdpMessageFactory();
-    virtual ~UdpMessageFactory() throw() {}
+    virtual ~UdpMessageFactory() noexcept {}
 
 public:
     bool append(UdpMessage::UdpMessageChunk& chunk, std::shared_ptr<ClientSocket> socket);

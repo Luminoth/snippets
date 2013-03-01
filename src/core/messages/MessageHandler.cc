@@ -14,7 +14,7 @@ MessageHandler::MessageHandler()
 {
 }
 
-MessageHandler::~MessageHandler() throw()
+MessageHandler::~MessageHandler() noexcept
 {
 }
 

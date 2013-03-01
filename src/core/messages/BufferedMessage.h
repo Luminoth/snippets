@@ -24,7 +24,7 @@ public:
     // NOTE: this does not copy the data, so reset() must be called before using it
     BufferedMessage(const BufferedMessage& message);
 
-    virtual ~BufferedMessage() throw();
+    virtual ~BufferedMessage() noexcept;
 
 public:
     // returns true if the data should be encoded before sending

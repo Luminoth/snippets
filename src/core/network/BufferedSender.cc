@@ -20,7 +20,7 @@ StringMessage::StringMessage(const unsigned char* message, size_t len)
     _message.reset(scratch);
 }
 
-StringMessage::~StringMessage() throw()
+StringMessage::~StringMessage() noexcept
 {
 }
 
@@ -34,7 +34,7 @@ BufferedSender::BufferedSender()
     reset_buffer();
 }
 
-BufferedSender::~BufferedSender() throw()
+BufferedSender::~BufferedSender() noexcept
 {
     reset_buffer();
 }

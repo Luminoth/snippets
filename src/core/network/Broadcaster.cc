@@ -13,7 +13,7 @@ Broadcaster::Broadcaster(BufferedSender& server, const std::string& address)
 {
 }
 
-Broadcaster::~Broadcaster() throw()
+Broadcaster::~Broadcaster() noexcept
 {
 }
 

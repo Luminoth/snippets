@@ -38,7 +38,7 @@ UdpMessage::UdpMessage(const UdpMessage& message)
     std::memmove(_packet.get(), message._packet.get(), _len);
 }
 
-UdpMessage::~UdpMessage() throw()
+UdpMessage::~UdpMessage() noexcept
 {
 }
 
@@ -120,7 +120,7 @@ private:
 
 public:
     UdpMessageTest() : CppUnit::TestFixture(), _factory() {}
-    virtual ~UdpMessageTest() throw() {}
+    virtual ~UdpMessageTest() noexcept {}
 
 private:
     void test_chunks(energonsoftware::UdpMessage& message)

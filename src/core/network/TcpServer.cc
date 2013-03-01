@@ -13,7 +13,7 @@ TcpServer::TcpServer(TcpSessionFactory* session_factory)
     // TODO: if(!_session_factory) throw an exception
 }
 
-TcpServer::~TcpServer() throw()
+TcpServer::~TcpServer() noexcept
 {
     erase_sessions();
 }

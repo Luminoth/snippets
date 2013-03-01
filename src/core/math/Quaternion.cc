@@ -147,7 +147,7 @@ public:
 
 public:
     QuaternionTest() : CppUnit::TestFixture() {}
-    virtual ~QuaternionTest() throw() {}
+    virtual ~QuaternionTest() noexcept {}
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(QuaternionTest);

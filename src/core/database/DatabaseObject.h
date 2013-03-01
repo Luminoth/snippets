@@ -9,7 +9,7 @@ class DatabaseObject
 {
 public:
     DatabaseObject() { }
-    virtual ~DatabaseObject() throw() { }
+    virtual ~DatabaseObject() noexcept { }
 
 public:
     bool save(std::shared_ptr<DatabaseConnection> connection) throw(DatabaseConnectionError)

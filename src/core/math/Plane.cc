@@ -27,7 +27,7 @@ public:
 
 public:
     PlaneTest() : CppUnit::TestFixture() {}
-    virtual ~PlaneTest() throw() {}
+    virtual ~PlaneTest() noexcept {}
 
 public:
     void test_initialize()

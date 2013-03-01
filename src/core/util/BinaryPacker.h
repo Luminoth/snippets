@@ -10,7 +10,7 @@ class BinaryPacker : public Packer
 {
 public:
     BinaryPacker();
-    virtual ~BinaryPacker() throw();
+    virtual ~BinaryPacker() noexcept;
 
 public:
     virtual Packer& reset() override;
@@ -40,7 +40,7 @@ public:
     explicit BinaryUnpacker(const std::string& obj);
     explicit BinaryUnpacker(const std::vector<unsigned char>& obj);
     BinaryUnpacker(const unsigned char* obj, size_t len);
-    virtual ~BinaryUnpacker() throw();
+    virtual ~BinaryUnpacker() noexcept;
 
 public:
     virtual unsigned int position() /*const*/ override { return _buffer.tellg(); }

@@ -152,7 +152,7 @@ public:
 
 public:
     Matrix4Test() : CppUnit::TestFixture() {}
-    virtual ~Matrix4Test() throw() {}
+    virtual ~Matrix4Test() noexcept {}
 
 public:
     void test_perspective()

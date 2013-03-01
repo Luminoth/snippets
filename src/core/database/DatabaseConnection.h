@@ -8,8 +8,8 @@ namespace energonsoftware {
 class DatabaseConnectionError : public DatabaseError
 {
 public:
-    explicit DatabaseConnectionError(const std::string& what) throw() : DatabaseError(what) { }
-    virtual ~DatabaseConnectionError() throw() {}
+    explicit DatabaseConnectionError(const std::string& what) noexcept : DatabaseError(what) { }
+    virtual ~DatabaseConnectionError() noexcept {}
 };
 
 enum class DatabaseType
@@ -31,7 +31,7 @@ struct DatabaseValue
     {
     }
 
-    virtual ~DatabaseValue() throw()
+    virtual ~DatabaseValue() noexcept
     {
     }
 
@@ -59,7 +59,7 @@ private:
 
 public:
     DatabaseConnection(int64_t id, const DatabaseConfiguration& config, std::shared_ptr<ConnectionPool> pool=std::shared_ptr<ConnectionPool>()) throw(DatabaseConnectionError);
-    virtual ~DatabaseConnection() throw();
+    virtual ~DatabaseConnection() noexcept;
 
 public:
     // connects to the database

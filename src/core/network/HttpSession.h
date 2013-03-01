@@ -18,7 +18,7 @@ private:
 
 public:
     HttpSession(ClientSocket& socket, TcpServer& server, unsigned long sessionid);
-    virtual ~HttpSession() throw();
+    virtual ~HttpSession() noexcept;
 
 public:
     bool handle_request(const std::string& request);
@@ -63,7 +63,7 @@ class HttpSessionFactory : public TcpSessionFactory
 {
 public:
     HttpSessionFactory();
-    virtual ~HttpSessionFactory() throw();
+    virtual ~HttpSessionFactory() noexcept;
 
 private:
     DISALLOW_COPY_AND_ASSIGN(HttpSessionFactory);

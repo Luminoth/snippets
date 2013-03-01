@@ -13,7 +13,7 @@ TcpSession::TcpSession(ClientSocket& socket, TcpServer& server, unsigned long se
 {
 }
 
-TcpSession::~TcpSession() throw()
+TcpSession::~TcpSession() noexcept
 {
 }
 
@@ -139,11 +139,11 @@ TcpSessionFactory::TcpSessionFactory()
 {
 }
 
-TcpSessionFactory::~TcpSessionFactory() throw()
+TcpSessionFactory::~TcpSessionFactory() noexcept
 {
 }
 
-TcpSession* TcpSessionFactory::new_session(ClientSocket& socket, TcpServer& server, unsigned long sessionid) const throw()
+TcpSession* TcpSessionFactory::new_session(ClientSocket& socket, TcpServer& server, unsigned long sessionid) const noexcept
 {
     return new TcpSession(socket, server, sessionid);
 }

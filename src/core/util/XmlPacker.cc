@@ -10,7 +10,7 @@ XmlPacker::XmlPacker()
 {
 }
 
-XmlPacker::~XmlPacker() throw()
+XmlPacker::~XmlPacker() noexcept
 {
 }
 
@@ -123,7 +123,7 @@ XmlUnpacker::XmlUnpacker(const unsigned char* obj, size_t len)
 {
 }
 
-XmlUnpacker::~XmlUnpacker() throw()
+XmlUnpacker::~XmlUnpacker() noexcept
 {
 }
 

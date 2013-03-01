@@ -14,7 +14,7 @@ Bitmap::Bitmap(size_t width, size_t height, size_t bpp, boost::shared_array<unsi
 {
 }
 
-Bitmap::~Bitmap() throw()
+Bitmap::~Bitmap() noexcept
 {
 }
 
@@ -32,7 +32,7 @@ bool Bitmap::load(const boost::filesystem::path& filename, MemoryAllocator& allo
     return false;
 }
 
-void Bitmap::unload() throw()
+void Bitmap::unload() noexcept
 {
     _width = _height = _bpp = 0;
     release();
@@ -58,7 +58,7 @@ public:
 
 public:
     BitmapTest() : CppUnit::TestFixture() {}
-    virtual ~BitmapTest() throw() {}
+    virtual ~BitmapTest() noexcept {}
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(BitmapTest);

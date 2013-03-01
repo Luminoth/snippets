@@ -14,7 +14,7 @@ class EventType : public Serializable
 {
 public:
     EventType() : Serializable(), _type(0) {}
-    virtual ~EventType() throw() {}
+    virtual ~EventType() noexcept {}
 
 protected:
     explicit EventType(uint32_t type) : Serializable(), _type(type) {}
@@ -44,7 +44,7 @@ private:
 
     public:
         Header() : Serializable() {}
-        virtual ~Header() throw() {}
+        virtual ~Header() noexcept {}
 
     public:
         virtual void serialize(Packer& packer) const throw(SerializationError) override;
@@ -60,7 +60,7 @@ private:
 public:
     Event();
     explicit Event(std::shared_ptr<EventType> type);
-    virtual ~Event() throw();
+    virtual ~Event() noexcept;
 
 public:
     uint64_t id() const { return _id; }
@@ -104,7 +104,7 @@ private:
 
 public:
     TestEvent();
-    virtual ~TestEvent() throw();
+    virtual ~TestEvent() noexcept;
 
 public:
     virtual uint32_t version() const { return 1; }

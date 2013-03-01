@@ -23,12 +23,12 @@ bool is_little_endian()
     return (*b) == 1;
 }
 
-std::string last_std_error() throw()
+std::string last_std_error() noexcept
 {
     return last_std_error(errno);
 }
 
-std::string last_std_error(int error) throw()
+std::string last_std_error(int error) noexcept
 {
 #if defined WIN32
     char buf[1024];
@@ -39,7 +39,7 @@ std::string last_std_error(int error) throw()
 #endif
 }
 
-std::string last_error() throw()
+std::string last_error() noexcept
 {
 #if defined WIN32
     return last_error(GetLastError());
@@ -48,7 +48,7 @@ std::string last_error() throw()
 #endif
 }
 
-std::string last_error(int error) throw()
+std::string last_error(int error) noexcept
 {
 #if defined WIN32
     wchar_t buffer[512] = { 0 };
@@ -407,7 +407,7 @@ public:
 
 public:
     UtilTest() : CppUnit::TestFixture() {}
-    virtual ~UtilTest() throw() {}
+    virtual ~UtilTest() noexcept {}
 
 private:
     static energonsoftware::Logger& logger;

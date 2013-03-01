@@ -13,7 +13,7 @@ Texture::Texture(boost::shared_array<unsigned char> pixels)
 {
 }
 
-Texture::~Texture() throw()
+Texture::~Texture() noexcept
 {
 }
 

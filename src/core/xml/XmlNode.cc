@@ -28,7 +28,7 @@ XmlNode::XmlNode(const XmlNode& node)
     }
 }
 
-XmlNode::~XmlNode() throw()
+XmlNode::~XmlNode() noexcept
 {
 }
 

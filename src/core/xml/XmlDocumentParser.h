@@ -8,9 +8,9 @@ namespace energonsoftware {
 class XmlDocumentParserError : public std::exception
 {
 public:
-    explicit XmlDocumentParserError(const std::string& what) throw() : _what(what) { }
-    virtual ~XmlDocumentParserError() throw() {}
-    virtual const char* what() const throw() { return _what.c_str(); }
+    explicit XmlDocumentParserError(const std::string& what) noexcept : _what(what) { }
+    virtual ~XmlDocumentParserError() noexcept {}
+    virtual const char* what() const noexcept { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -24,7 +24,7 @@ public:
     {
     }
 
-    virtual ~XmlElementMismatchError() throw() {}
+    virtual ~XmlElementMismatchError() noexcept {}
 
 private:
     XmlElementMismatchError(const std::string& what);
@@ -41,7 +41,7 @@ private:
 
 public:
     XmlDocumentParser();
-    virtual ~XmlDocumentParser() throw();
+    virtual ~XmlDocumentParser() noexcept;
 
 public:
     bool parse(const boost::filesystem::path& filename) throw(XmlDocumentParserError);

@@ -13,9 +13,9 @@ class ClientSocket;
 class SocketError : public std::exception
 {
 public:
-    explicit SocketError(const std::string& what) throw() : _what(what) {}
-    virtual ~SocketError() throw() {}
-    virtual const char* what() const throw() { return _what.c_str(); }
+    explicit SocketError(const std::string& what) noexcept : _what(what) {}
+    virtual ~SocketError() noexcept {}
+    virtual const char* what() const noexcept { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -53,7 +53,7 @@ private:
 public:
     Socket();
     explicit Socket(SOCKET sockfd);
-    virtual ~Socket() throw();
+    virtual ~Socket() noexcept;
     Socket(const Socket& socket);
 
 public:
@@ -137,8 +137,8 @@ bool operator!=(const SOCKET& lhs, const Socket& rhs);
 class ClientSocketError : public SocketError
 {
 public:
-    explicit ClientSocketError(const std::string& what) throw() : SocketError(what) {}
-    virtual ~ClientSocketError() throw() {}
+    explicit ClientSocketError(const std::string& what) noexcept : SocketError(what) {}
+    virtual ~ClientSocketError() noexcept {}
 };
 
 class ClientSocket : public Socket
@@ -154,7 +154,7 @@ public:
     ClientSocket();
     explicit ClientSocket(sockaddr_in& addr);
     explicit ClientSocket(SOCKET sockfd);
-    virtual ~ClientSocket() throw();
+    virtual ~ClientSocket() noexcept;
 
 public:
     // calls ::connect()
@@ -169,8 +169,8 @@ public:
 class ServerSocketError : public SocketError
 {
 public:
-    explicit ServerSocketError(const std::string& what) throw() : SocketError(what) {}
-    virtual ~ServerSocketError() throw() {}
+    explicit ServerSocketError(const std::string& what) noexcept : SocketError(what) {}
+    virtual ~ServerSocketError() noexcept {}
 };
 
 class ServerSocket : public ClientSocket
@@ -187,7 +187,7 @@ public:
     ServerSocket();
     explicit ServerSocket(sockaddr_in& addr) { throw std::runtime_error("Invalid creation of a server socket"); };
     explicit ServerSocket(SOCKET sockfd);
-    virtual ~ServerSocket() throw();
+    virtual ~ServerSocket() noexcept;
 
 public:
     bool connect(const std::string& host, unsigned short port) throw(SocketError)

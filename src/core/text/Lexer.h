@@ -35,7 +35,7 @@ protected:
     };
 
 public:
-    virtual ~Lexer() throw();
+    virtual ~Lexer() noexcept;
 
 public:
     virtual bool load(const boost::filesystem::path& filename) final;

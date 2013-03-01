@@ -19,7 +19,7 @@ XmlDocumentParser::XmlDocumentParser()
     _parser->setErrorHandler(_handler.get());
 }
 
-XmlDocumentParser::~XmlDocumentParser() throw()
+XmlDocumentParser::~XmlDocumentParser() noexcept
 {
 }
 
@@ -90,7 +90,7 @@ public:
         : CppUnit::TestFixture(), _parser()
     {
     }
-    virtual ~XmlDocumentParserTest() throw() {}
+    virtual ~XmlDocumentParserTest() noexcept {}
 
 public:
     void setUp()

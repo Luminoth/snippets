@@ -11,7 +11,7 @@ ThreadPool::ThreadPool(size_t size)
 {
 }
 
-ThreadPool::~ThreadPool() throw()
+ThreadPool::~ThreadPool() noexcept
 {
     stop();
 }

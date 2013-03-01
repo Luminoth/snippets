@@ -9,7 +9,7 @@ class Sphere
 {
 public:
     explicit Sphere(const Point3& center=Point3(), float radius=1.0f);
-    virtual ~Sphere() throw();
+    virtual ~Sphere() noexcept;
 
 public:
     void center(const Point3& center) { _center = center; }

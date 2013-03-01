@@ -9,9 +9,9 @@ namespace energonsoftware {
 class PartitionError : public std::exception
 {
 public:
-    explicit PartitionError(const std::string& what) throw() : _what(what) { }
-    virtual ~PartitionError() throw() {}
-    virtual const char* what() const throw() { return _what.c_str(); }
+    explicit PartitionError(const std::string& what) noexcept : _what(what) { }
+    virtual ~PartitionError() noexcept {}
+    virtual const char* what() const noexcept { return _what.c_str(); }
 
 protected:
     std::string _what;
@@ -33,7 +33,7 @@ private:
     static Logger& logger;
 
 public:
-    virtual ~Partition() throw()
+    virtual ~Partition() noexcept
     {
     }
 
