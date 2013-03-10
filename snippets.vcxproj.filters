@@ -69,6 +69,9 @@
     <Filter Include="Source Files\core\python">
       <UniqueIdentifier>{730fdcb6-2936-483b-9f8f-852092b2759a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\database">
+      <UniqueIdentifier>{0fe2c18c-1dca-4650-89cd-ea34edbc3417}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\common.cc">
@@ -280,6 +283,30 @@
     </ClCompile>
     <ClCompile Include="src\core\python\PythonScript.cc">
       <Filter>Source Files\core\python</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\messages\UdpMessage.cc">
+      <Filter>Source Files\core\messages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\messages\UdpMessageFactory.cc">
+      <Filter>Source Files\core\messages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\Multicaster.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\UdpClient.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\UdpServer.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\network\Broadcaster.cc">
+      <Filter>Source Files\core\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database\DatabaseConnectionFactory.cc">
+      <Filter>Source Files\database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database\MySQLDatabaseConnection.cc">
+      <Filter>Source Files\database</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -534,6 +561,33 @@
     </ClInclude>
     <ClInclude Include="src\core\python\PythonScript.h">
       <Filter>Source Files\core\python</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\database\DatabaseObject.h">
+      <Filter>Source Files\core\database</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\messages\UdpMessage.h">
+      <Filter>Source Files\core\messages</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\messages\UdpMessageFactory.h">
+      <Filter>Source Files\core\messages</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\Multicaster.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\UdpClient.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\UdpServer.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\network\Broadcaster.h">
+      <Filter>Source Files\core\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\database\DatabaseConnectionFactory.h">
+      <Filter>Source Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="src\database\MySQLDatabaseConnection.h">
+      <Filter>Source Files\database</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

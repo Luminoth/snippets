@@ -25,7 +25,7 @@ public:
 protected:
     virtual bool reuse_port() const { return true; }
     virtual bool on_restart();
-    virtual void on_handle_packet(const unsigned char* packet, size_t len, std::shared_ptr<ClientSocket> socket);
+    virtual void on_handle_packet(const Socket::BufferType* packet, size_t len, std::shared_ptr<ClientSocket> socket);
 
     // override this
     virtual bool enable_broadcast();

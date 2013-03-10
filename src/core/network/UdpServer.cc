@@ -6,7 +6,7 @@
 
 namespace energonsoftware {
 
-UdpServer::UdpServerMessage::UdpServerMessage(const unsigned char* packet, size_t len, size_t packetid, size_t mtu, int ttl, std::shared_ptr<ClientSocket> socket, unsigned int resend_time, bool encode, bool ack)
+UdpServer::UdpServerMessage::UdpServerMessage(const Socket::BufferType* packet, size_t len, size_t packetid, size_t mtu, int ttl, std::shared_ptr<ClientSocket> socket, unsigned int resend_time, bool encode, bool ack)
     : UdpMessage(packet, len, packetid, mtu, encode, ttl),
         _socket(socket), _ack(ack), _resend_time(resend_time), _send_time(get_time())
 {
@@ -89,7 +89,7 @@ void UdpServer::quit()
 void UdpServer::buffer(BufferedMessage* message, std::shared_ptr<ClientSocket> socket, int ttl, bool ack, unsigned int resend_time)
 {
     message->reset();
-    BufferedSender::buffer(new UdpServerMessage(message->start(), message->full_len(), next_packet_id(),
+    BufferedSender::buffer(new UdpServerMessage(reinterpret_cast<const Socket::BufferType*>(message->start()), message->full_len(), next_packet_id(),
         _mtu, ttl, socket, resend_time, message->encode(), ack));
 }
 
@@ -100,7 +100,7 @@ unsigned long UdpServer::next_packet_id()
     return ++_packet_count;
 }
 
-bool UdpServer::send(const unsigned char* message, size_t len, ClientSocket& socket)
+bool UdpServer::send(const Socket::BufferType* message, size_t len, ClientSocket& socket)
 {
     if(!running()) {
         return false;
@@ -112,13 +112,13 @@ bool UdpServer::send(const unsigned char* message, size_t len, ClientSocket& soc
         return false;
     }
 
-    LOG_DEBUG(bin2hex(message, len) << "\n");
-    return _socket->sendto(message, len, socket);
+    LOG_DEBUG(bin2hex(reinterpret_cast<const unsigned char*>(message), len) << "\n");
+    return _socket->sendto(reinterpret_cast<const Socket::BufferType*>(message), len, socket);
 }
 
 bool UdpServer::send(const std::string& message, ClientSocket& socket)
 {
-    return send(reinterpret_cast<const unsigned char*>(message.c_str()), message.length(), socket);
+    return send(reinterpret_cast<const Socket::BufferType*>(message.c_str()), message.length(), socket);
 }
 
 void UdpServer::ack(unsigned long seqid)
@@ -144,7 +144,7 @@ void UdpServer::read_data()
         }
 
         // copy what we read into a dynamic buffer
-        std::shared_ptr<unsigned char> data(new unsigned char[recvd.first]);
+        boost::shared_array<Socket::BufferType> data(new Socket::BufferType[recvd.first]);
         std::memcpy(data.get(), buffer.data(), recvd.first);
 
         // append the chunk
@@ -182,7 +182,7 @@ bool UdpServer::send_packet(const UdpMessage& packet, ClientSocket& socket)
     for(const UdpMessage::UdpMessageChunk& chunk : chunks) {
         if(packet.encode()) {
             std::string encoded(encode_packet((char*)chunk.second.get(), chunk.first));
-            success &= send(reinterpret_cast<const unsigned char*>(encoded.c_str()), encoded.length(), socket);
+            success &= send(reinterpret_cast<const Socket::BufferType*>(encoded.c_str()), encoded.length(), socket);
         } else {
             success &= send(chunk.second.get(), chunk.first, socket);
         }

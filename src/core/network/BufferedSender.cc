@@ -7,7 +7,7 @@ namespace energonsoftware {
 StringMessage::StringMessage(const std::string& message)
     : BufferedMessage(true), _message(), _len(message.length())
 {
-    unsigned char* scratch = new unsigned char[_len];
+    Socket::BufferType* scratch = new Socket::BufferType[_len];
     std::memcpy(scratch, message.c_str(), _len);
     _message.reset(scratch);
 }
@@ -15,7 +15,7 @@ StringMessage::StringMessage(const std::string& message)
 StringMessage::StringMessage(const unsigned char* message, size_t len)
     : BufferedMessage(true), _message(), _len(len)
 {
-    unsigned char* scratch = new unsigned char[_len];
+    Socket::BufferType* scratch = new Socket::BufferType[_len];
     std::memcpy(scratch, message, _len);
     _message.reset(scratch);
 }
@@ -45,10 +45,10 @@ void BufferedSender::reset_buffer()
     clear_current();
 }
 
-const unsigned char* BufferedSender::current_buffer()
+const Socket::BufferType* BufferedSender::current_buffer()
 {
     pop_buffer();
-    return _current ? _current->current() : nullptr;
+    return _current ? reinterpret_cast<const Socket::BufferType*>(_current->current()) : nullptr;
 }
 
 size_t BufferedSender::current_buffer_len() const
@@ -154,7 +154,7 @@ public:
         fill_buffer(sender);
 
         while(!sender.buffer_empty()) {
-            const unsigned char* current = sender.current_buffer();
+            const energonsoftware::Socket::BufferType* current = sender.current_buffer();
             CPPUNIT_ASSERT(nullptr != current);
 
             size_t len = sender.current_buffer_len();

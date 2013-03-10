@@ -17,7 +17,7 @@ private:
     class UdpServerMessage : public UdpMessage
     {
     public:
-        UdpServerMessage(const unsigned char* packet, size_t len, size_t packetid, size_t mtu, int ttl, std::shared_ptr<ClientSocket> socket, unsigned int resend_time, bool encode, bool ack);
+        UdpServerMessage(const Socket::BufferType* packet, size_t len, size_t packetid, size_t mtu, int ttl, std::shared_ptr<ClientSocket> socket, unsigned int resend_time, bool encode, bool ack);
         virtual ~UdpServerMessage() throw();
 
     public:
@@ -66,7 +66,7 @@ public:
     // message should have been allocated with new
     void buffer(BufferedMessage* message, std::shared_ptr<ClientSocket> socket, int ttl=1, bool ack=false, unsigned int resend_time=0);
 
-    bool send(const unsigned char* message, size_t len, ClientSocket& socket);
+    bool send(const Socket::BufferType* message, size_t len, ClientSocket& socket);
     bool send(const std::string& message, ClientSocket& socket);
 
     void ack(unsigned long seqid);
@@ -79,7 +79,7 @@ protected:
     virtual bool on_restart() { return true; }
     virtual void on_run() {}
     virtual void on_quit() {}
-    virtual void on_handle_packet(const unsigned char* packet, size_t len, std::shared_ptr<ClientSocket> socket) {}
+    virtual void on_handle_packet(const Socket::BufferType* packet, size_t len, std::shared_ptr<ClientSocket> socket) {}
 
 private:
     void read_data();

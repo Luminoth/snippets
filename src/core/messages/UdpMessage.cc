@@ -12,7 +12,7 @@ const unsigned int UdpMessage::MAX_TTL = 99;
 const size_t UdpMessage::HEADER_LEN = 10;
 const std::string UdpMessage::REGEX("^([[:digit:]]{4})([[:digit:]]{2})([[:digit:]]{2})([[:digit:]]{2}).*$");
 
-UdpMessage::UdpMessage(const unsigned char* packet, size_t len, unsigned int packetid, unsigned int mtu, bool encode, unsigned int ttl) throw(std::runtime_error)
+UdpMessage::UdpMessage(const Socket::BufferType* packet, size_t len, unsigned int packetid, unsigned int mtu, bool encode, unsigned int ttl) throw(std::runtime_error)
     : BufferedMessage(encode), _packet(), _len(len), _packetid(packetid),
         _mtu(mtu), _ttl(ttl), _chunkcount(0)
 {
@@ -24,7 +24,7 @@ UdpMessage::UdpMessage(const unsigned char* packet, size_t len, unsigned int pac
         throw std::runtime_error("MTU is too small!");
     }
 
-    _packet.reset(new unsigned char[_len]);
+    _packet.reset(new Socket::BufferType[_len]);
     std::memmove(_packet.get(), packet, _len);
 
     calculate_chunkcounts();
@@ -34,7 +34,7 @@ UdpMessage::UdpMessage(const UdpMessage& message)
     : BufferedMessage(message), _packet(), _len(message._len), _packetid(message._packetid),
         _mtu(message._mtu), _ttl(message._ttl), _chunkcount(message._chunkcount)
 {
-    _packet.reset(new unsigned char[_len]);
+    _packet.reset(new Socket::BufferType[_len]);
     std::memmove(_packet.get(), message._packet.get(), _len);
 }
 
@@ -53,14 +53,14 @@ bool UdpMessage::chunks(std::vector<UdpMessageChunk>& chunks) const
         std::string header(chunk_header(last_chunk + 1, chunk_count()));
 
         // the size that this chunk will be (minus the header)
-        size_t size = std::min(max_chunk_size, data_len() - (last_chunk * max_chunk_size));
+        size_t size = min(max_chunk_size, data_len() - (last_chunk * max_chunk_size));
 
         // where in the data to start
         unsigned int position = last_chunk * max_chunk_size;
 
         UdpMessageChunk chunk;
         chunk.first = size + HEADER_LEN;    // size of the chunk (including header)
-        chunk.second.reset(new unsigned char[chunk.first]);
+        chunk.second.reset(new Socket::BufferType[chunk.first]);
         std::memcpy(chunk.second.get(), header.c_str(), HEADER_LEN);
         std::memcpy(chunk.second.get() + HEADER_LEN, &(_packet.get()[position]), size);
 
@@ -82,7 +82,7 @@ std::string UdpMessage::chunk_header(unsigned int chunknum, unsigned int chunkco
 
     char buffer[HEADER_LEN+1];
     ZeroMemory(buffer, HEADER_LEN+1);
-    std::snprintf(buffer, HEADER_LEN+1, "%04d%02d%02d%02d", _packetid, chunknum, chunkcount, _ttl);
+    snprintf(buffer, HEADER_LEN+1, "%04d%02d%02d%02d", _packetid, chunknum, chunkcount, _ttl);
 
     return buffer;
 }
@@ -144,14 +144,14 @@ private:
 
         std::shared_ptr<energonsoftware::UdpMessageFactory::FactoryMessage> result(completed[0]);
         CPPUNIT_ASSERT(result->complete());
-        CPPUNIT_ASSERT(!std::memcmp(message.start(), result->message(), std::min(message.full_len(), result->message_len())));
+        CPPUNIT_ASSERT(!std::memcmp(message.start(), result->message(), min(message.full_len(), result->message_len())));
     }
 
 public:
     void test_small_message()
     {
         std::string packet("this is a small message");
-        energonsoftware::UdpMessage message(reinterpret_cast<const unsigned char*>(packet.c_str()), packet.length(), 1, 512, true);
+        energonsoftware::UdpMessage message(reinterpret_cast<const energonsoftware::Socket::BufferType*>(packet.c_str()), packet.length(), 1, 512, true);
         test_chunks(message);
     }
 
@@ -164,14 +164,14 @@ public:
         }
 
         std::string packet(scratch.str());
-        energonsoftware::UdpMessage message(reinterpret_cast<const unsigned char*>(packet.c_str()), packet.length(), 2, 512, false);
+        energonsoftware::UdpMessage message(reinterpret_cast<const energonsoftware::Socket::BufferType*>(packet.c_str()), packet.length(), 2, 512, false);
         test_chunks(message);
     }
 
     void test_invalid_packetid()
     {
         std::string packet("invalid packetid");
-        energonsoftware::UdpMessage message(reinterpret_cast<const unsigned char*>(packet.c_str()),
+        energonsoftware::UdpMessage message(reinterpret_cast<const energonsoftware::Socket::BufferType*>(packet.c_str()),
             packet.length(), energonsoftware::UdpMessage::MAX_PACKET_ID * 10, 512, true);
         test_chunks(message);
     }
@@ -179,7 +179,7 @@ public:
     void test_invalid_mtu()
     {
         std::string packet("invalid mtu");
-        energonsoftware::UdpMessage message(reinterpret_cast<const unsigned char*>(packet.c_str()),
+        energonsoftware::UdpMessage message(reinterpret_cast<const energonsoftware::Socket::BufferType*>(packet.c_str()),
             packet.length(), 3, energonsoftware::UdpMessage::HEADER_LEN, true);
         test_chunks(message);
     }

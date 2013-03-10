@@ -37,10 +37,10 @@ bool Broadcaster::on_restart()
     return true;
 }
 
-void Broadcaster::on_handle_packet(const unsigned char* packet, size_t len, std::shared_ptr<ClientSocket> socket)
+void Broadcaster::on_handle_packet(const Socket::BufferType* packet, size_t len, std::shared_ptr<ClientSocket> socket)
 {
     LOG_DEBUG("Received a packet from " << socket->host() << ":" << socket->port() << "\n");
-    LOG_DEBUG(bin2hex(packet, len) << "\n");
+    LOG_DEBUG(bin2hex(reinterpret_cast<const unsigned char*>(packet), len) << "\n");
 
     try {
         _message_parser.feed(XmlString(decode_packet((char*)packet, len)));

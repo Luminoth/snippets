@@ -2,6 +2,7 @@
 #define __BUFFEREDSENDER_H__
 
 #include "src/core/messages/BufferedMessage.h"
+#include "Socket.h"
 #include "network_util.h"
 
 namespace energonsoftware {
@@ -17,11 +18,11 @@ public:
     virtual BufferedMessageType msg_type() const { return BufferedMessageType::String; }
 
 private:
-    virtual const unsigned char* data() /*const*/ { return _message.get(); }
+    virtual const unsigned char* data() /*const*/ { return reinterpret_cast<unsigned char*>(_message.get()); }
     virtual size_t data_len() const { return _len; }
 
 private:
-    std::shared_ptr<unsigned char> _message;
+    boost::shared_array<Socket::BufferType> _message;
     size_t _len;
 
 private:
@@ -46,7 +47,7 @@ public:
     bool buffer_empty() const { return (nullptr == _current || _current->finished()) && _buffer.empty(); }
 
     void reset_buffer();
-    const unsigned char* current_buffer();
+    const Socket::BufferType* current_buffer();
     size_t current_buffer_len() const;
     bool current_buffer_encoded() const;
 

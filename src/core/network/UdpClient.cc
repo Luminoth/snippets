@@ -39,13 +39,13 @@ bool UdpClient::connect(const std::string& host, unsigned int port)
     return true;
 }
 
-void UdpClient::disconnect(const unsigned char* packet, size_t len)
+void UdpClient::disconnect(const Socket::BufferType* packet, size_t len)
 {
     if(connected()) {
         LOG_INFO("Disconnecting...\n");
         if(nullptr != packet && len > 0) {
             std::string encoded(encode_packet((char*)packet, len));
-            send(reinterpret_cast<const unsigned char*>(encoded.c_str()), encoded.length());
+            send(reinterpret_cast<const Socket::BufferType*>(encoded.c_str()), encoded.length());
         }
     }
     quit();
@@ -53,7 +53,7 @@ void UdpClient::disconnect(const unsigned char* packet, size_t len)
 
 void UdpClient::disconnect(const std::string& packet)
 {
-    disconnect(reinterpret_cast<const unsigned char*>(packet.c_str()), packet.length());
+    disconnect(reinterpret_cast<const Socket::BufferType*>(packet.c_str()), packet.length());
 }
 
 void UdpClient::run()
@@ -81,7 +81,7 @@ void UdpClient::quit()
     reset_buffer();
 }
 
-bool UdpClient::send(const unsigned char* message, size_t len)
+bool UdpClient::send(const Socket::BufferType* message, size_t len)
 {
     if(!connected())
         return false;
@@ -92,19 +92,19 @@ bool UdpClient::send(const unsigned char* message, size_t len)
         return false;
     }
 
-    LOG_DEBUG(bin2hex(message, len) << "\n");
+    LOG_DEBUG(bin2hex(reinterpret_cast<const unsigned char*>(message), len) << "\n");
     return _socket->sendto(message, len);
 }
 
 bool UdpClient::send(const std::string& message)
 {
-    return send(reinterpret_cast<const unsigned char*>(message.c_str()), message.length());
+    return send(reinterpret_cast<const Socket::BufferType*>(message.c_str()), message.length());
 }
 
 void UdpClient::buffer(BufferedMessage* message, int ttl)
 {
     message->reset();
-    BufferedSender::buffer(new UdpMessage(message->start(), message->full_len(), next_packet_id(), mtu, message->encode(), ttl));
+    BufferedSender::buffer(new UdpMessage(reinterpret_cast<const Socket::BufferType*>(message->start()), message->full_len(), next_packet_id(), mtu, message->encode(), ttl));
 }
 
 unsigned long UdpClient::next_packet_id()
@@ -131,7 +131,7 @@ void UdpClient::read_data()
         }
 
         // copy what we read into a dynamic buffer
-        std::shared_ptr<unsigned char> data(new unsigned char[len]);
+        boost::shared_array<Socket::BufferType> data(new Socket::BufferType[len]);
         std::memcpy(data.get(), buffer.data(), len);
 
         // append the chunk
@@ -162,7 +162,7 @@ bool UdpClient::send_packet(const UdpMessage& packet)
     for(const UdpMessage::UdpMessageChunk& chunk : chunks) {
         if(packet.encode()) {
             std::string encoded(encode_packet((char*)chunk.second.get(), chunk.first));
-            success &= send(reinterpret_cast<const unsigned char*>(encoded.c_str()), encoded.length());
+            success &= send(reinterpret_cast<const Socket::BufferType*>(encoded.c_str()), encoded.length());
         } else {
             success &= send(chunk.second.get(), chunk.first);
         }

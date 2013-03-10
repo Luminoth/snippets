@@ -1,10 +1,7 @@
 #if !defined __UDPMESSAGEFACTORY_H__
 #define __UDPMESSAGEFACTORY_H__
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif
-
+#include "src/core/network/Socket.h"
 #include "UdpMessage.h"
 
 namespace energonsoftware {
@@ -32,7 +29,7 @@ public:
         bool expired() const;
         bool complete() const { return total_chunks() > 0 && chunk_count() >= total_chunks(); }
 
-        const unsigned char* message() const;
+        const Socket::BufferType* message() const;
         size_t message_len() const { return _len; }
 
         void build_message();
@@ -48,7 +45,7 @@ public:
         std::unordered_map<unsigned int, UdpMessage::UdpMessageChunk> _chunks;
         double _last_chunk_time;
 
-        std::shared_ptr<unsigned char> _message;
+        boost::shared_array<Socket::BufferType> _message;
         size_t _len;
 
     private:

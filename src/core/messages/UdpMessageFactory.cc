@@ -19,7 +19,7 @@ bool UdpMessageFactory::FactoryMessage::expired() const
     return !complete() && _last_chunk_time > 0.0 && get_time() > (_last_chunk_time + _ttl);
 }
 
-const unsigned char* UdpMessageFactory::FactoryMessage::message() const
+const Socket::BufferType* UdpMessageFactory::FactoryMessage::message() const
 {
     if(!complete()) {
         return nullptr;
@@ -32,13 +32,13 @@ void UdpMessageFactory::FactoryMessage::build_message()
     boost::circular_buffer<unsigned char> message(MAX_BUFFER * 10);
     for(unsigned int i=1; i<total_chunks()+1; ++i) {
         if(_chunks.find(i) != _chunks.end()) {
-            unsigned char* scratch = _chunks[i].second.get() + UdpMessage::HEADER_LEN;
+            Socket::BufferType* scratch = _chunks[i].second.get() + UdpMessage::HEADER_LEN;
             message.insert(message.end(), scratch, scratch + _chunks[i].first - UdpMessage::HEADER_LEN);
         }
     }
 
     _len = message.size();
-    _message.reset(new unsigned char[_len]);
+    _message.reset(new Socket::BufferType[_len]);
     std::copy(message.begin(), message.end(), _message.get());
 }
 

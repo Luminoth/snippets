@@ -25,7 +25,7 @@ public:
     bool connect(const std::string& host, unsigned int port);
 
     // disconnects from teh server and quits the session
-    void disconnect(const unsigned char* packet=nullptr, size_t len=0);
+    void disconnect(const Socket::BufferType* packet=nullptr, size_t len=0);
     void disconnect(const std::string& packet);
 
     // runs the client, call each 'frame'
@@ -35,7 +35,7 @@ public:
     void quit();
 
     // sends some data
-    bool send(const unsigned char* message, size_t len);
+    bool send(const Socket::BufferType* message, size_t len);
     bool send(const std::string& message);
 
     // overriden because we encapsulate udp messages
@@ -48,7 +48,7 @@ protected:
     // override these
     virtual void on_connect() {}
     virtual void on_run() {}
-    virtual void on_packet(const unsigned char* packet, size_t len) {}
+    virtual void on_packet(const Socket::BufferType* packet, size_t len) {}
     virtual void on_quit() {}
 
 private:
