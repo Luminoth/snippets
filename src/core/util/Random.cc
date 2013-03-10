@@ -11,7 +11,7 @@ public:
 
 public:
     RandomTest() : CppUnit::TestFixture() {}
-    virtual ~RandomTest() throw() {}
+    virtual ~RandomTest() noexcept {}
 
 public:
 };

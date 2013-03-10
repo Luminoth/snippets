@@ -18,7 +18,7 @@ private:
     {
     public:
         UdpServerMessage(const Socket::BufferType* packet, size_t len, size_t packetid, size_t mtu, int ttl, std::shared_ptr<ClientSocket> socket, unsigned int resend_time, bool encode, bool ack);
-        virtual ~UdpServerMessage() throw();
+        virtual ~UdpServerMessage() noexcept;
 
     public:
         std::shared_ptr<ClientSocket> socket() { return _socket; }
@@ -48,7 +48,7 @@ private:
 
 public:
     explicit UdpServer();
-    virtual ~UdpServer() throw();
+    virtual ~UdpServer() noexcept;
 
 public:
     unsigned short port() const { return _port; }

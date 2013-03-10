@@ -9,7 +9,7 @@ class PythonObject
 {
 public:
     PythonObject() {}
-    virtual ~PythonObject() throw() {}
+    virtual ~PythonObject() noexcept {}
 
 public:
     std::string operator[](const std::string& key) const throw(std::out_of_range)

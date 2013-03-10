@@ -17,7 +17,7 @@ public:
     }
 
 public:
-    virtual ~SphereTree() throw()
+    virtual ~SphereTree() noexcept
     {
     }
 

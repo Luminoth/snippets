@@ -15,7 +15,7 @@ private:
 
 public:
     TcpSession(ClientSocket& socket, TcpServer& server, unsigned long sessionid);
-    virtual ~TcpSession() throw();
+    virtual ~TcpSession() noexcept;
 
 public:
     unsigned long sessionid() const { return _sessionid; }
@@ -77,10 +77,10 @@ class TcpSessionFactory
 {
 public:
     TcpSessionFactory();
-    virtual ~TcpSessionFactory() throw();
+    virtual ~TcpSessionFactory() noexcept;
 
 public:
-    virtual TcpSession* new_session(ClientSocket& socket, TcpServer& server, unsigned long sessionid) const throw();
+    virtual TcpSession* new_session(ClientSocket& socket, TcpServer& server, unsigned long sessionid) const noexcept;
 };
 
 }

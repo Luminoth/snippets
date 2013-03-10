@@ -15,7 +15,7 @@ class Transform final
 public:
     Transform();
     Transform(const Transform& transform);
-    virtual ~Transform() throw();
+    virtual ~Transform() noexcept;
 
 public:
     const Position& position() const { return _position; }
@@ -62,7 +62,7 @@ class Collider
 {
 public:
     Collider() {}
-    virtual ~Collider() throw() {}
+    virtual ~Collider() noexcept {}
 
 public:
     virtual void bounds(const BoundingVolume& bounds) = 0;
@@ -75,7 +75,7 @@ class AABBCollider : public Collider
 public:
     AABBCollider();
     AABBCollider(const AABBCollider& collider);
-    virtual ~AABBCollider() throw();
+    virtual ~AABBCollider() noexcept;
 
 public:
     virtual void bounds(const BoundingVolume& bounds) override;
@@ -96,7 +96,7 @@ class RigidBody final
 public:
     RigidBody();
     RigidBody(const RigidBody& rigidbody);
-    virtual ~RigidBody() throw();
+    virtual ~RigidBody() noexcept;
 
 public:
     const Vector3& velocity() const { return _velocity; }
@@ -128,7 +128,7 @@ class Physical : public Partitionable
 {
 public:
     Physical(const Physical& physical);
-    virtual ~Physical() throw();
+    virtual ~Physical() noexcept;
 
 public:
     virtual const Transform& transform() const final { return _transform; }

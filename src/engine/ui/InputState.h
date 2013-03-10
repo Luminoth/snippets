@@ -15,7 +15,7 @@ private:
         Position position, wheel_position;
 
         MouseState();
-        virtual ~MouseState() throw();
+        virtual ~MouseState() noexcept;
     };
 
     struct GamePadState
@@ -25,14 +25,14 @@ private:
         float left_trigger, right_trigger;
 
         GamePadState();
-        virtual ~GamePadState() throw();
+        virtual ~GamePadState() noexcept;
     };
 
 public:
     static void destroy(InputState* const state, MemoryAllocator* const allocator);
 
 public:
-    virtual ~InputState() throw();
+    virtual ~InputState() noexcept;
 
 public:
     void keyboard_key(InputKeySym key, bool pressed, bool alert=true);

@@ -14,7 +14,7 @@ private:
     static Logger& logger;
 
 public:
-    virtual ~StackAllocator() throw();
+    virtual ~StackAllocator() noexcept;
 
 public:
     virtual size_t total() const override { return _size; }

@@ -18,7 +18,7 @@ private:
 public:
     // session_factory must have been created with new and must not be null
     explicit TcpServer(TcpSessionFactory* session_factory);
-    virtual ~TcpServer() throw();
+    virtual ~TcpServer() noexcept;
 
 public:
     unsigned short port() const { return _port; }

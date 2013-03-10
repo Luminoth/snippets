@@ -13,7 +13,7 @@ BufferedMessage::BufferedMessage(const BufferedMessage& message)
 {
 }
 
-BufferedMessage::~BufferedMessage() throw()
+BufferedMessage::~BufferedMessage() noexcept
 {
 }
 

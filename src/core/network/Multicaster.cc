@@ -14,7 +14,7 @@ Multicaster::Multicaster(BufferedSender& server, const std::string& address)
 {
 }
 
-Multicaster::~Multicaster() throw()
+Multicaster::~Multicaster() noexcept
 {
 }
 

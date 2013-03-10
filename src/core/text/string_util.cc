@@ -60,7 +60,7 @@ public:
 
 public:
     StringTest() : CppUnit::TestFixture() {}
-    virtual ~StringTest() throw() {}
+    virtual ~StringTest() noexcept {}
 
 public:
     void test_tokenize()

@@ -15,7 +15,7 @@ public:
     explicit BoundingSphere(const Sphere& sphere=Sphere());
     explicit BoundingSphere(const Point3& center, float radius);
     explicit BoundingSphere(const AABB& aabb);
-    virtual ~BoundingSphere() throw();
+    virtual ~BoundingSphere() noexcept;
 
 public:
     void sphere(const Sphere& sphere) { _sphere = sphere; }

@@ -96,7 +96,7 @@ public:
 
 public:
     VectorTest() : CppUnit::TestFixture() {}
-    virtual ~VectorTest() throw() {}
+    virtual ~VectorTest() noexcept {}
 
 public:
     void test_allocate()

@@ -19,7 +19,7 @@ BaseThread::BaseThread(const std::string& name)
 {
 }
 
-BaseThread::~BaseThread() throw()
+BaseThread::~BaseThread() noexcept
 {
     stop();
 }
@@ -133,7 +133,7 @@ ThreadFactory::ThreadFactory()
 {
 }
 
-ThreadFactory::~ThreadFactory() throw()
+ThreadFactory::~ThreadFactory() noexcept
 {
 }
 

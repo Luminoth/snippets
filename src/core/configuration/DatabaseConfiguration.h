@@ -10,7 +10,7 @@ class DatabaseConfiguration : public Configuration
 {
 public:
     DatabaseConfiguration();
-    virtual ~DatabaseConfiguration() throw();
+    virtual ~DatabaseConfiguration() noexcept;
 
 public:
     virtual bool database_debug() const final { return to_boolean(get("database", "debug")); }

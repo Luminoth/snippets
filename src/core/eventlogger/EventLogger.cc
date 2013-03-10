@@ -21,7 +21,7 @@ EventLogger::EventLogger()
 {
 }
 
-EventLogger::~EventLogger() throw()
+EventLogger::~EventLogger() noexcept
 {
 }
 
@@ -95,7 +95,7 @@ public:
 
 public:
     EventLoggerTest() : CppUnit::TestFixture() {}
-    virtual ~EventLoggerTest() throw() {}
+    virtual ~EventLoggerTest() noexcept {}
 
 public:
     void setUp()

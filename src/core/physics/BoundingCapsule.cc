@@ -20,7 +20,7 @@ BoundingCapsule::BoundingCapsule(const AABB& aabb)
 {
 }
 
-BoundingCapsule::~BoundingCapsule() throw()
+BoundingCapsule::~BoundingCapsule() noexcept
 {
 }
 
@@ -97,7 +97,7 @@ public:
 
 public:
     BoundingCapsuleTest() : CppUnit::TestFixture() {}
-    virtual ~BoundingCapsuleTest() throw() {}
+    virtual ~BoundingCapsuleTest() noexcept {}
 
 public:
     void test_initialize()

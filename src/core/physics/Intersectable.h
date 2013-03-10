@@ -7,7 +7,7 @@ class Intersectable
 {
 public:
     Intersectable() {}
-    virtual ~Intersectable() throw() {}
+    virtual ~Intersectable() noexcept {}
 
 public:
     bool intersect(const Intersectable& other) const

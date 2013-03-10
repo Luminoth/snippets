@@ -8,7 +8,7 @@ SerializationMap::SerializationMap()
 {
 }
 
-SerializationMap::~SerializationMap() throw()
+SerializationMap::~SerializationMap() noexcept
 {
 }
 

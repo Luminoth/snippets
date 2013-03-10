@@ -89,7 +89,7 @@ Socket::Socket(const Socket& socket)
     std::memmove(&_addr, &socket._addr, sizeof(sockaddr_in));
 }
 
-Socket::~Socket() throw()
+Socket::~Socket() noexcept
 {
 }
 
@@ -348,7 +348,7 @@ ClientSocket::ClientSocket(SOCKET sockfd)
 {
 }
 
-ClientSocket::~ClientSocket() throw()
+ClientSocket::~ClientSocket() noexcept
 {
 }
 
@@ -429,7 +429,7 @@ ServerSocket::ServerSocket(SOCKET sockfd)
 {
 }
 
-ServerSocket::~ServerSocket() throw()
+ServerSocket::~ServerSocket() noexcept
 {
 }
 

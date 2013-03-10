@@ -67,7 +67,7 @@ private:
     {
     public:
         ThreadSafeLoggerMap() : mutex(), loggers() { }
-        virtual ~ThreadSafeLoggerMap() throw() { }
+        virtual ~ThreadSafeLoggerMap() noexcept { }
 
     public:
         boost::recursive_mutex mutex;
@@ -130,7 +130,7 @@ private:
     static std::ofstream& logger_file() { return *_logger_file; }
 
 public:
-    virtual ~Logger() throw();
+    virtual ~Logger() noexcept;
 
 public:
     const std::string& category() const { return _category; }

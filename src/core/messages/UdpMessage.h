@@ -25,7 +25,7 @@ public:
     // NOTE: this is slow because it has to copy the packet
     UdpMessage(const UdpMessage& message);
 
-    virtual ~UdpMessage() throw();
+    virtual ~UdpMessage() noexcept;
 
 public:
     unsigned int packetid() const { return _packetid; }

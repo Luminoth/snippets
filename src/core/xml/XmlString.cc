@@ -54,7 +54,7 @@ XmlString::XmlString(InputIterator begin, InputIterator end)
 {
 }
 
-XmlString::~XmlString() throw()
+XmlString::~XmlString() noexcept
 {
 }
 

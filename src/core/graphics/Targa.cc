@@ -24,7 +24,7 @@ Targa::Targa(size_t width, size_t height, size_t bpp, boost::shared_array<unsign
     ZeroMemory(&_header, sizeof(Header));
 }
 
-Targa::~Targa() throw()
+Targa::~Targa() noexcept
 {
 }
 
@@ -62,7 +62,7 @@ bool Targa::load(const boost::filesystem::path& filename, MemoryAllocator& alloc
     return true;
 }
 
-void Targa::unload() throw()
+void Targa::unload() noexcept
 {
     ZeroMemory(&_header, sizeof(Header));
     _width = _height = _bpp = 0;

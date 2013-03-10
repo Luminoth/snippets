@@ -12,7 +12,7 @@ class Bitmap : public Texture
 public:
     Bitmap();
     Bitmap(size_t width, size_t height, size_t bpp, boost::shared_array<unsigned char> pixels);
-    virtual ~Bitmap() throw();
+    virtual ~Bitmap() noexcept;
 
 public:
     virtual size_t width() const override { return _width; }
@@ -21,7 +21,7 @@ public:
 
 public:
     virtual bool load(const boost::filesystem::path& filename, MemoryAllocator& allocator) override;
-    virtual void unload() throw() override;
+    virtual void unload() noexcept override;
 
     virtual bool save(const boost::filesystem::path& filename) const override;
 

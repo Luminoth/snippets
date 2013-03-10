@@ -8,7 +8,7 @@ SimplePacker::SimplePacker()
 {
 }
 
-SimplePacker::~SimplePacker() throw()
+SimplePacker::~SimplePacker() noexcept
 {
 }
 
@@ -104,7 +104,7 @@ SimpleUnpacker::SimpleUnpacker(const unsigned char* obj, size_t len)
     _buffer.str(_obj);
 }
 
-SimpleUnpacker::~SimpleUnpacker() throw()
+SimpleUnpacker::~SimpleUnpacker() noexcept
 {
 }
 

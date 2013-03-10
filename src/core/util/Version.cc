@@ -27,7 +27,7 @@ Version::Version(const std::string& version)
     }
 }
 
-Version::~Version() throw()
+Version::~Version() noexcept
 {
 }
 
@@ -85,7 +85,7 @@ public:
 
 public:
     VersionTest() : CppUnit::TestFixture() {}
-    virtual ~VersionTest() throw() {}
+    virtual ~VersionTest() noexcept {}
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(VersionTest);

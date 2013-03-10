@@ -8,7 +8,7 @@ Capsule::Capsule(const Point3& center, float radius, float height)
 {
 }
 
-Capsule::~Capsule() throw()
+Capsule::~Capsule() noexcept
 {
 }
 
@@ -26,7 +26,7 @@ public:
 
 public:
     CapsuleTest() : CppUnit::TestFixture() {}
-    virtual ~CapsuleTest() throw() {}
+    virtual ~CapsuleTest() noexcept {}
 
 public:
     void test_initialize()

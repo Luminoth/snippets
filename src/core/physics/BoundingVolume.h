@@ -10,7 +10,7 @@ class BoundingVolume : public Intersectable
 {
 public:
     BoundingVolume() : Intersectable() {}
-    virtual ~BoundingVolume() throw() {}
+    virtual ~BoundingVolume() noexcept {}
 
 public:
     virtual const Point3& center() const = 0;

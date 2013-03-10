@@ -24,7 +24,7 @@ PythonScript::PythonScriptAPI::PythonScriptAPI()
 {
 }
 
-PythonScript::PythonScriptAPI::~PythonScriptAPI() throw()
+PythonScript::PythonScriptAPI::~PythonScriptAPI() noexcept
 {
 }
 
@@ -146,7 +146,7 @@ void PythonScript::error(const std::string& what) throw(PythonScriptError)
     throw PythonScriptError(what);
 }
 
-PythonScript::~PythonScript() throw()
+PythonScript::~PythonScript() noexcept
 {
 }
 

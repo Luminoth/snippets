@@ -12,7 +12,7 @@ class StringMessage : public BufferedMessage
 public:
     explicit StringMessage(const std::string& message);
     StringMessage(const unsigned char* message, size_t len);
-    virtual ~StringMessage() throw();
+    virtual ~StringMessage() noexcept;
 
 public:
     virtual BufferedMessageType msg_type() const { return BufferedMessageType::String; }
@@ -41,7 +41,7 @@ private:
 
 public:
     BufferedSender();
-    virtual ~BufferedSender() throw();
+    virtual ~BufferedSender() noexcept;
 
 public:
     bool buffer_empty() const { return (nullptr == _current || _current->finished()) && _buffer.empty(); }

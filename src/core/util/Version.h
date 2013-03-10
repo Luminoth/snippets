@@ -7,7 +7,7 @@ class Version
 {
 public:
     explicit Version(const std::string& version);
-    virtual ~Version() throw();
+    virtual ~Version() noexcept;
 
 public:
     unsigned int major() const { return _major; }

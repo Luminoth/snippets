@@ -42,7 +42,7 @@ Event::Event(std::shared_ptr<EventType> type)
 {
 }
 
-Event::~Event() throw()
+Event::~Event() noexcept
 {
 }
 
@@ -125,7 +125,7 @@ TestEvent::TestEvent()
 {
 }
 
-TestEvent::~TestEvent() throw()
+TestEvent::~TestEvent() noexcept
 {
 }
 

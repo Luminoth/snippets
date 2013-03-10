@@ -13,7 +13,7 @@ XmlContentHandler::XmlContentHandler()
 {
 }
 
-XmlContentHandler::~XmlContentHandler() throw()
+XmlContentHandler::~XmlContentHandler() noexcept
 {
     reset();
 }

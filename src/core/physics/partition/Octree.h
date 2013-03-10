@@ -16,7 +16,7 @@ public:
     }
 
 public:
-    virtual ~Octree() throw()
+    virtual ~Octree() noexcept
     {
     }
 

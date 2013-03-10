@@ -22,7 +22,7 @@ TLSSocket::TLSSocket(const ClientSocket& socket)
     init_tls();
 }
 
-TLSSocket::~TLSSocket() throw()
+TLSSocket::~TLSSocket() noexcept
 {
     boost::lock_guard<boost::mutex> guard(_tls_lock);
     gnutls_global_deinit();

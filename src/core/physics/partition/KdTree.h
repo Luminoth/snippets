@@ -42,7 +42,7 @@ public:
     }
 
 public:
-    virtual ~KdTree() throw()
+    virtual ~KdTree() noexcept
     {
     }
 
@@ -106,7 +106,7 @@ public:
     }
 
 public:
-    virtual ~KdTree3() throw()
+    virtual ~KdTree3() noexcept
     {
     }
 

@@ -10,7 +10,7 @@ SystemAllocator::SystemAllocator(size_t size)
 {
 }
 
-SystemAllocator::~SystemAllocator() throw()
+SystemAllocator::~SystemAllocator() noexcept
 {
 }
 
@@ -60,7 +60,7 @@ public:
 
 public:
     SystemAllocatorTest() : MemoryAllocatorTest(energonsoftware::MemoryAllocator::Type::System) {}
-    virtual ~SystemAllocatorTest() throw() {}
+    virtual ~SystemAllocatorTest() noexcept {}
 
 public:
     void test_unreasonable_allocation()

@@ -9,7 +9,7 @@ public:
     // expiry == -1 means no expiration
     explicit SessionId(const std::string& password, int expiry=-1);
     SessionId(const std::string& password, const std::string& sessionid, int expiry=-1);
-    virtual ~SessionId() throw();
+    virtual ~SessionId() noexcept;
 
 public:
     const std::string& password() const { return _password; }

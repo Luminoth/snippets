@@ -24,7 +24,7 @@ public:
     {
     }
 
-    virtual ~TestPartitionable() throw()
+    virtual ~TestPartitionable() noexcept
     {
     }
 
@@ -65,7 +65,7 @@ private:
 
 public:
     PartitionTest() : CppUnit::TestFixture(), _partition_types(), _allocator() {}
-    virtual ~PartitionTest() throw() {}
+    virtual ~PartitionTest() noexcept {}
 
 public:
     void setUp()

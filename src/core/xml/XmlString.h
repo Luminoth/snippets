@@ -19,7 +19,7 @@ public:
     template<typename InputIterator>
     XmlString(InputIterator begin, InputIterator end);
 
-    virtual ~XmlString() throw();
+    virtual ~XmlString() noexcept;
 
 public:
     std::string to_native() const;

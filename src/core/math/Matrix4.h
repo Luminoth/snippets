@@ -38,7 +38,7 @@ public:
     }
 #endif
 
-    virtual ~Matrix4() throw() {}
+    virtual ~Matrix4() noexcept {}
 
 public:
     const float* array() const { return _m; }

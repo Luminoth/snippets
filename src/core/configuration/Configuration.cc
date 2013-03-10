@@ -18,7 +18,7 @@ Configuration::Configuration()
     load_defaults();
 }
 
-Configuration::~Configuration() throw()
+Configuration::~Configuration() noexcept
 {
 }
 
@@ -329,7 +329,7 @@ private:
     static energonsoftware::Logger& logger;
 
 public:
-    virtual ~TestConfiguration() throw() {}
+    virtual ~TestConfiguration() noexcept {}
 
 public:
     bool load_config()
@@ -401,7 +401,7 @@ private:
 
 public:
     ConfigurationTest() : CppUnit::TestFixture() {}
-    virtual ~ConfigurationTest() throw() {}
+    virtual ~ConfigurationTest() noexcept {}
 
 public:
     void test_create()

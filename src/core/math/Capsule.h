@@ -9,7 +9,7 @@ class Capsule
 {
 public:
     explicit Capsule(const Point3& center=Point3(), float radius=1.0f, float height=1.0f);
-    virtual ~Capsule() throw();
+    virtual ~Capsule() noexcept;
 
 public:
     void center(const Point3& center) { _center = center; }

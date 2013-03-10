@@ -13,7 +13,7 @@ public:
     explicit XmlMessage(const XmlDocument& document);
     explicit XmlMessage(const XmlNode& root);
     XmlMessage(const XmlMessage& message);
-    virtual ~XmlMessage() throw();
+    virtual ~XmlMessage() noexcept;
 
 public:
     XmlString type() const { return root().name(); }

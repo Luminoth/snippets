@@ -6,9 +6,9 @@ namespace energonsoftware {
 class EventLoggerError : public std::exception
 {
 public:
-    explicit EventLoggerError(const std::string& what) throw() : _what(what) {}
-    virtual ~EventLoggerError() throw() {}
-    virtual const char* what() const throw() { return _what.c_str(); }
+    explicit EventLoggerError(const std::string& what) noexcept : _what(what) {}
+    virtual ~EventLoggerError() noexcept {}
+    virtual const char* what() const noexcept { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -25,7 +25,7 @@ private:
     static Logger& logger;
 
 public:
-    virtual ~EventLogger() throw();
+    virtual ~EventLogger() noexcept;
 
 public:
     void init(const boost::filesystem::path& filename);

@@ -9,7 +9,7 @@ class XmlPacker : public Packer
 {
 public:
     XmlPacker();
-    virtual ~XmlPacker() throw();
+    virtual ~XmlPacker() noexcept;
 
 public:
     virtual Packer& reset() override;
@@ -39,7 +39,7 @@ public:
     explicit XmlUnpacker(const std::string& obj);
     explicit XmlUnpacker(const std::vector<unsigned char>& obj);
     XmlUnpacker(const unsigned char* obj, size_t len);
-    virtual ~XmlUnpacker() throw();
+    virtual ~XmlUnpacker() noexcept;
 
 public:
     virtual unsigned int position() /*const*/ override { return _position; }

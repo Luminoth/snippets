@@ -20,7 +20,7 @@ BinaryMessage::BinaryMessage(const BinaryMessage& message)
     // NOTE: we don't need to copy the _data pointer
 }
 
-BinaryMessage::~BinaryMessage() throw()
+BinaryMessage::~BinaryMessage() noexcept
 {
 }
 
@@ -137,7 +137,7 @@ ClientBinaryMessage::ClientBinaryMessage(const ClientBinaryMessage& message)
 {
 }
 
-ClientBinaryMessage::~ClientBinaryMessage() throw()
+ClientBinaryMessage::~ClientBinaryMessage() noexcept
 {
 }
 
@@ -179,7 +179,7 @@ ServerBinaryMessage::ServerBinaryMessage(const ServerBinaryMessage& message)
 {
 }
 
-ServerBinaryMessage::~ServerBinaryMessage() throw()
+ServerBinaryMessage::~ServerBinaryMessage() noexcept
 {
 }
 
@@ -224,7 +224,7 @@ public:
 
 public:
     ClientBinaryMessageTest() : CppUnit::TestFixture() {}
-    virtual ~ClientBinaryMessageTest() throw() {}
+    virtual ~ClientBinaryMessageTest() noexcept {}
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ClientBinaryMessageTest);
@@ -237,7 +237,7 @@ public:
 
 public:
     ServerBinaryMessageTest() : CppUnit::TestFixture() {}
-    virtual ~ServerBinaryMessageTest() throw() {}
+    virtual ~ServerBinaryMessageTest() noexcept {}
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ServerBinaryMessageTest);

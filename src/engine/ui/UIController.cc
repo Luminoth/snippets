@@ -18,7 +18,7 @@ UIController::UIController()
 {
 }
 
-UIController::~UIController() throw()
+UIController::~UIController() noexcept
 {
 }
 

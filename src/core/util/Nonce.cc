@@ -24,7 +24,7 @@ Nonce::Nonce(const std::string& realm, const std::string& nonce, int expiry)
     calc_md5();
 }
 
-Nonce::~Nonce() throw()
+Nonce::~Nonce() noexcept
 {
 }
 
@@ -60,7 +60,7 @@ private:
 
 public:
     NonceTest() : CppUnit::TestFixture() {}
-    virtual ~NonceTest() throw() {}
+    virtual ~NonceTest() noexcept {}
 
 public:
     void test_expiry()

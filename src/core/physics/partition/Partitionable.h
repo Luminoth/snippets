@@ -10,7 +10,7 @@ class Partitionable
 {
 public:
     Partitionable() {}
-    virtual ~Partitionable() throw() {}
+    virtual ~Partitionable() noexcept {}
 
 public:
     virtual const Position& position() const = 0;

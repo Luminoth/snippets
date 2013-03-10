@@ -272,7 +272,7 @@ Geometry::Geometry(const Triangle* const triangles, size_t triangle_count, const
     copy_triangles(triangles, triangle_count, vertices, vertex_count, 0);
 }
 
-Geometry::~Geometry() throw()
+Geometry::~Geometry() noexcept
 {
 }
 
@@ -486,7 +486,7 @@ public:
 
 public:
     GeometryTest() : CppUnit::TestFixture() {}
-    virtual ~GeometryTest() throw() {}
+    virtual ~GeometryTest() noexcept {}
 
 public:
     void test_allocate_vertex()

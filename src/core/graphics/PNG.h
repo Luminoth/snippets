@@ -16,7 +16,7 @@ private:
 public:
     PNG();
     PNG(size_t width, size_t height, size_t bpp, boost::shared_array<unsigned char> pixels);
-    virtual ~PNG() throw();
+    virtual ~PNG() noexcept;
 
 public:
     virtual size_t width() const { return _width; }
@@ -25,7 +25,7 @@ public:
 
 public:
     virtual bool load(const boost::filesystem::path& filename, MemoryAllocator& allocator);
-    virtual void unload() throw();
+    virtual void unload() noexcept;
 
     virtual bool save(const boost::filesystem::path& filename) const;
 

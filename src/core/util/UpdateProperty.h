@@ -7,7 +7,7 @@ class UpdatePropertyContainer
 {
 public:
     UpdatePropertyContainer() {}
-    virtual ~UpdatePropertyContainer() throw() {}
+    virtual ~UpdatePropertyContainer() noexcept {}
 
 public:
     virtual bool dirty() const final { return on_dirty() || db_dirty(); }
@@ -38,7 +38,7 @@ public:
     {
     }
 
-    virtual ~UpdateProperty() throw() {}
+    virtual ~UpdateProperty() noexcept {}
 
 public:
     void clean() { _dirty = false; }

@@ -14,7 +14,7 @@ private:
 
 public:
     explicit UdpClient();
-    virtual ~UdpClient() throw();
+    virtual ~UdpClient() noexcept;
 
 public:
     const std::string& host() const { return _host; }

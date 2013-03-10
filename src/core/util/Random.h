@@ -59,7 +59,7 @@ public:
         this->seed(seed);
     }
 
-    virtual ~Random() throw()
+    virtual ~Random() noexcept
     {
     }
 

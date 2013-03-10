@@ -64,7 +64,7 @@ HttpSession::HttpSession(ClientSocket& socket, TcpServer& server, unsigned long 
 {
 }
 
-HttpSession::~HttpSession() throw()
+HttpSession::~HttpSession() noexcept
 {
 }
 
@@ -184,7 +184,7 @@ HttpSessionFactory::HttpSessionFactory()
 {
 }
 
-HttpSessionFactory::~HttpSessionFactory() throw()
+HttpSessionFactory::~HttpSessionFactory() noexcept
 {
 }
 

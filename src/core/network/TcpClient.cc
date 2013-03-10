@@ -12,7 +12,7 @@ TcpClient::TcpClient()
 {
 }
 
-TcpClient::~TcpClient() throw()
+TcpClient::~TcpClient() noexcept
 {
 }
 

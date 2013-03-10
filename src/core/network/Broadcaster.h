@@ -14,7 +14,7 @@ private:
 
 public:
     Broadcaster(BufferedSender& server, const std::string& address);
-    virtual ~Broadcaster() throw();
+    virtual ~Broadcaster() noexcept;
 
 public:
     void register_handler(MessageHandlerModule* module);

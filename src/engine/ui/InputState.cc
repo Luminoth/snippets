@@ -10,7 +10,7 @@ InputState::MouseState::MouseState()
     ZeroMemory(buttons, static_cast<unsigned int>(MouseSym::Max) * sizeof(bool));
 }
 
-InputState::MouseState::~MouseState() throw()
+InputState::MouseState::~MouseState() noexcept
 {
 }
 
@@ -21,7 +21,7 @@ InputState::GamePadState::GamePadState()
     ZeroMemory(buttons, static_cast<unsigned int>(GamePadSym::Max) * sizeof(bool));
 }
 
-InputState::GamePadState::~GamePadState() throw()
+InputState::GamePadState::~GamePadState() noexcept
 {
 }
 
@@ -37,7 +37,7 @@ InputState::InputState()
     ZeroMemory(_keyboard_state, static_cast<unsigned int>(InputKeySym::Max) * sizeof(bool));
 }
 
-InputState::~InputState() throw()
+InputState::~InputState() noexcept
 {
 }
 

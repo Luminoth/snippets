@@ -16,7 +16,7 @@ public:
     };
 
 public:
-    virtual ~Texture() throw();
+    virtual ~Texture() noexcept;
 
 public:
     boost::shared_array<unsigned char> pixels() { return _pixels; }
@@ -34,7 +34,7 @@ public:
 
 public:
     virtual bool load(const boost::filesystem::path& filename, MemoryAllocator& allocator) = 0;
-    virtual void unload() throw() = 0;
+    virtual void unload() noexcept = 0;
 
     void flip_vertical();
 

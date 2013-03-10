@@ -19,7 +19,7 @@ private:
         {
         }
 
-        virtual ~PingSent() throw() {}
+        virtual ~PingSent() noexcept {}
 
     public:
         unsigned long seqid() const { return _seqid; }
@@ -45,7 +45,7 @@ private:
 public:
     explicit PingManager(UdpClient& client);
     PingManager(UdpServer& server, const std::string& sessionid);
-    virtual ~PingManager() throw();
+    virtual ~PingManager() noexcept;
 
 public:
     bool client_send_ping(const std::string& packer_type, const std::string& sessionid);

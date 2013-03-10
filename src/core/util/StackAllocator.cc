@@ -12,7 +12,7 @@ StackAllocator::StackAllocator(size_t size)
     //LOG_DEBUG("Pool at " << reinterpret_cast<void*>(_pool.get()) << "\n");
 }
 
-StackAllocator::~StackAllocator() throw()
+StackAllocator::~StackAllocator() noexcept
 {
 }
 
@@ -61,7 +61,7 @@ public:
 
 public:
     StackAllocatorTest() : MemoryAllocatorTest(energonsoftware::MemoryAllocator::Type::Stack) {}
-    virtual ~StackAllocatorTest() throw() {}
+    virtual ~StackAllocatorTest() noexcept {}
 
 public:
     void test_unreasonable_allocation()
