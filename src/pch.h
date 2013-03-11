@@ -9,6 +9,7 @@
     #include <crtdbg.h>
 
     #define WIN32_LEAN_AND_MEAN
+    #define NOMINMAX    // fix min/max conflict
     #include <Windows.h>
     #include <Io.h>
     #include <WinSock2.h>

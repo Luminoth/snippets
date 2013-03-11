@@ -53,7 +53,7 @@ bool UdpMessage::chunks(std::vector<UdpMessageChunk>& chunks) const
         std::string header(chunk_header(last_chunk + 1, chunk_count()));
 
         // the size that this chunk will be (minus the header)
-        size_t size = min(max_chunk_size, data_len() - (last_chunk * max_chunk_size));
+        size_t size = std::min(max_chunk_size, data_len() - (last_chunk * max_chunk_size));
 
         // where in the data to start
         unsigned int position = last_chunk * max_chunk_size;
@@ -144,7 +144,7 @@ private:
 
         std::shared_ptr<energonsoftware::UdpMessageFactory::FactoryMessage> result(completed[0]);
         CPPUNIT_ASSERT(result->complete());
-        CPPUNIT_ASSERT(!std::memcmp(message.start(), result->message(), min(message.full_len(), result->message_len())));
+        CPPUNIT_ASSERT(!std::memcmp(message.start(), result->message(), std::min(message.full_len(), result->message_len())));
     }
 
 public:
