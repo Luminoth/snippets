@@ -82,7 +82,11 @@ std::string UdpMessage::chunk_header(unsigned int chunknum, unsigned int chunkco
 
     char buffer[HEADER_LEN+1];
     ZeroMemory(buffer, HEADER_LEN+1);
+#if defined WIN32
+    _snprintf_s(buffer, HEADER_LEN+1, HEADER_LEN, "%04d%02d%02d%02d", _packetid, chunknum, chunkcount, _ttl);
+#else
     snprintf(buffer, HEADER_LEN+1, "%04d%02d%02d%02d", _packetid, chunknum, chunkcount, _ttl);
+#endif
 
     return buffer;
 }

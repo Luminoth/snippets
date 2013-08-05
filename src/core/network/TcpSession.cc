@@ -117,7 +117,7 @@ void TcpSession::write_data()
     while(connected() && !buffer_empty()) {
         bool success = false;
 
-        const unsigned char* message = current_buffer();
+        const Socket::BufferType* message = current_buffer();
         if(current_buffer_encoded()) {
             std::string encoded(encode_packet((char*)message, current_buffer_len()));
             success = send(reinterpret_cast<const Socket::BufferType*>(encoded.c_str()), encoded.length());

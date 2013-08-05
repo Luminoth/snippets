@@ -105,6 +105,8 @@ TypeName(const TypeName&); \
 TypeName(TypeName&&); \
 TypeName& operator=(const TypeName&); \
 TypeName& operator=(TypeName&&)
+
+#define noexcept throw()
 #else
 // NOTE: also disables move operations
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
