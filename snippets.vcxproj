@@ -39,12 +39,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;C:\openssl-1.0.1c\include;C:\gnutls-3.0.22\include;C:\mysql-connector-c-6.1.0-win32\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;C:\openssl-1.0.1c\lib;C:\gnutls-3.0.22\lib;C:\mysql-connector-c-6.1.0-win32\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\boost_1_55_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;C:\openssl-1.0.1c\include;C:\gnutls-3.0.22\include;C:\mysql-connector-c-6.1.0-win32\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_55_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;C:\openssl-1.0.1c\lib;C:\gnutls-3.0.22\lib;C:\mysql-connector-c-6.1.0-win32\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\boost_1_52_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;C:\openssl-1.0.1c\include;C:\gnutls-3.0.22\include;C:\mysql-connector-c-6.1.0-win32\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\boost_1_52_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;C:\openssl-1.0.1c\lib;C:\gnutls-3.0.22\lib;C:\mysql-connector-c-6.1.0-win32\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\boost_1_55_0;C:\cppunit-1.12.1\include;C:\xerces-c-3.1.1-x86-windows-vc-10.0\include;C:\lpng1513;C:\openssl-1.0.1c\include;C:\gnutls-3.0.22\include;C:\mysql-connector-c-6.1.0-win32\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\boost_1_55_0\stage\lib;C:\cppunit-1.12.1\lib;C:\xerces-c-3.1.1-x86-windows-vc-10.0\lib;C:\lpng1513\projects\vstudio\Release;C:\openssl-1.0.1c\lib;C:\gnutls-3.0.22\lib;C:\mysql-connector-c-6.1.0-win32\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
