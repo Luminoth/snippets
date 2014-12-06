@@ -70,7 +70,7 @@ struct Edge
     std::string str() const;
 };
 
-void compute_tangents(boost::shared_array<Triangle> triangles, size_t triange_count, boost::shared_array<Vertex> vertices, size_t vertex_count, MemoryAllocator& allocator, bool smooth=false);
+void compute_tangents(Triangle* const triangles, size_t triange_count, Vertex* const vertices, size_t vertex_count, MemoryAllocator& allocator, bool smooth=false);
 
 class Geometry
 {
@@ -93,20 +93,20 @@ public:
 
     // NOTE: must lock before using these!
     size_t vertex_buffer_size() const { return _vertex_buffer_size; }
-    boost::shared_array<float> vertex_buffer() const { return _vertex_buffer; }
+    const float* const vertex_buffer() const { return _vertex_buffer.get(); }
 
     size_t normal_buffer_size() const { return _normal_buffer_size; }
-    boost::shared_array<float> normal_buffer() const { return _normal_buffer; }
+    const float* const normal_buffer() const { return _normal_buffer.get(); }
 
     size_t tangent_buffer_size() const { return _tangent_buffer_size; }
-    boost::shared_array<float> tangent_buffer() const { return _tangent_buffer; }
+    const float* const tangent_buffer() const { return _tangent_buffer.get(); }
 
     size_t texture_buffer_size() const { return _texture_buffer_size; }
-    boost::shared_array<float> texture_buffer() const { return _texture_buffer; }
+    const float* const texture_buffer() const { return _texture_buffer.get(); }
 
     // for debugging
-    boost::shared_array<float> normal_line_buffer() const { return _normal_line_buffer; }
-    boost::shared_array<float> tangent_line_buffer() const { return _tangent_line_buffer; }
+    const float* const normal_line_buffer() const { return _normal_line_buffer.get(); }
+    const float* const tangent_line_buffer() const { return _tangent_line_buffer.get(); }
 
     void copy_vertices(const Vertex* const vertices, size_t vertex_count, size_t start=0);
     void copy_triangles(const Triangle* const triangles, size_t triangle_count, const Vertex* const vertices, size_t vertex_count, size_t start=0);

@@ -88,7 +88,7 @@ DatabaseKey MySQLDatabaseConnection::on_insert_id() throw(DatabaseConnectionErro
 
 void MySQLDatabaseConnection::on_escape(const std::string& from, std::string& to) throw(DatabaseConnectionError)
 {
-    boost::shared_array<char> buffer(new char[from.length() * 2 + 1]);
+    std::unique_ptr<char[]> buffer(new char[from.length() * 2 + 1]);
     mysql_real_escape_string(_mysql, buffer.get(), from.c_str(), from.length());
     to = std::string(buffer.get());
 }

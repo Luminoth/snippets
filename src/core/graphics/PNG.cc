@@ -40,8 +40,8 @@ PNG::PNG()
 {
 }
 
-PNG::PNG(size_t width, size_t height, size_t bpp, boost::shared_array<unsigned char> pixels)
-    : Texture(pixels), _width(width), _height(height), _bpp(bpp)
+PNG::PNG(size_t width, size_t height, size_t bpp, const unsigned char* const pixels)
+    : Texture(pixels, width * height), _width(width), _height(height), _bpp(bpp)
 {
 }
 
@@ -195,7 +195,7 @@ bool PNG::save(const boost::filesystem::path& filename) const
     png_write_info(png_ptr, info_ptr);
     png_set_packing(png_ptr);
 
-    boost::shared_array<png_bytep> row_pointers(new png_bytep[height()]);
+    std::unique_ptr<png_bytep[]> row_pointers(new png_bytep[height()]);
     for(size_t i=0; i<height(); ++i) {
         row_pointers[i] = (png_bytep)(pixels().get() + (i * pitch()));
     }

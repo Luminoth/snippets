@@ -266,7 +266,7 @@ std::string bin2hex(const unsigned char* bytes, size_t len, size_t maxlen)
     const size_t size = columns * rows;
 
     size_t pos=0;
-    boost::scoped_array<char> ret(new char[size + 1]);
+    std::unique_ptr<char[]> ret(new char[size + 1]);
     for(size_t row=0; row<rows; ++row) {
         // hex
         for(size_t col=0; col<cpr; ++col) {

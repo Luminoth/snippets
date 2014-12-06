@@ -17,8 +17,8 @@ Targa::Targa()
     ZeroMemory(&_header, sizeof(Header));
 }
 
-Targa::Targa(size_t width, size_t height, size_t bpp, boost::shared_array<unsigned char> pixels)
-    : Texture(pixels), _header(), _width(width), _height(height), _bpp(bpp)
+Targa::Targa(size_t width, size_t height, size_t bpp, const unsigned char* const pixels)
+    : Texture(pixels, width * height), _header(), _width(width), _height(height), _bpp(bpp)
 {
     // TODO: replace with a Header constructor
     ZeroMemory(&_header, sizeof(Header));
@@ -56,7 +56,7 @@ bool Targa::load(const boost::filesystem::path& filename, MemoryAllocator& alloc
     f.seekg(_header.idlen, std::ios::cur);
 
     allocate(allocator, size());
-    f.read(reinterpret_cast<char*>(pixels().get()), size());
+    f.read(reinterpret_cast<char*>(pixels()), size());
 
     flip_vertical();
     return true;

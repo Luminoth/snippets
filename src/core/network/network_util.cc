@@ -36,7 +36,7 @@ static std::string encode_packet(char* input, size_t& ilen, const char* tocode, 
     // 4x the data storage... that *should* work for most conversions
     size_t len = ilen << 2;
     size_t olen = len;
-    boost::shared_array<char> container(new char[olen]);
+    std::unique_ptr<char[]> container(new char[olen]);
     char* output = container.get();
     ZeroMemory(output, olen);
 
@@ -60,7 +60,7 @@ static std::string encode_packet(char* input, size_t& ilen, const char* tocode, 
 
 std::string encode_packet(const char* input, size_t ilen/*, const char* tocode, const char* fromcode*/)
 {
-    boost::shared_array<char> scratch(new char[ilen+1]);
+    std::unique_ptr<char[]> scratch(new char[ilen+1]);
     strncpy_s(scratch.get(), ilen, input, ilen);
     scratch.get()[ilen] = 0;
     return encode_packet(scratch.get(), ilen, "UTF-8", "ASCII");
@@ -68,7 +68,7 @@ std::string encode_packet(const char* input, size_t ilen/*, const char* tocode, 
 
 std::string decode_packet(const char* input, size_t ilen/*, const char* tocode, const char* fromcode*/)
 {
-    boost::shared_array<char> scratch(new char[ilen+1]);
+    std::unique_ptr<char[]> scratch(new char[ilen+1]);
     strncpy_s(scratch.get(), ilen, input, ilen);
     scratch.get()[ilen] = 0;
     return encode_packet(scratch.get(), ilen, "ASCII", "UTF-8");

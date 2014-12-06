@@ -84,7 +84,6 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/shared_array.hpp>
-#include <boost/scoped_array.hpp>
 #include <boost/thread.hpp>
 
 #if defined HAS_CALLGRIND_H

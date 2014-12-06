@@ -11,7 +11,7 @@ class Bitmap : public Texture
 {
 public:
     Bitmap();
-    Bitmap(size_t width, size_t height, size_t bpp, boost::shared_array<unsigned char> pixels);
+    Bitmap(size_t width, size_t height, size_t bpp, const unsigned char* const pixels);
     virtual ~Bitmap() noexcept;
 
 public:

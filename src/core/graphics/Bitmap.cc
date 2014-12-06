@@ -9,8 +9,8 @@ Bitmap::Bitmap()
 {
 }
 
-Bitmap::Bitmap(size_t width, size_t height, size_t bpp, boost::shared_array<unsigned char> pixels)
-    : Texture(pixels), _width(width), _height(height), _bpp(bpp)
+Bitmap::Bitmap(size_t width, size_t height, size_t bpp, const unsigned char* const pixels)
+    : Texture(pixels, width * height), _width(width), _height(height), _bpp(bpp)
 {
 }
 

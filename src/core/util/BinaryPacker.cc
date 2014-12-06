@@ -234,7 +234,7 @@ Unpacker& BinaryUnpacker::unpack(std::string& v, const std::string& name) throw(
     uint32_t len;
     unpack(len, name + "_length");
 
-    boost::shared_array<char> n(new char[len]);
+    std::unique_ptr<char[]> n(new char[len]);
     for(uint32_t i=0; i<len; ++i) {
         char byte;
         _buffer.read(&byte, 1);

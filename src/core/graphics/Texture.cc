@@ -8,9 +8,11 @@ Texture::Texture()
 {
 }
 
-Texture::Texture(boost::shared_array<unsigned char> pixels)
-    : _pixels(pixels)
+// TODO: allocator?
+Texture::Texture(const unsigned char* const pixels, int count)
+    : _pixels(new unsigned char[count])
 {
+    std::memcpy(_pixels.get(), pixels, count);
 }
 
 Texture::~Texture() noexcept
@@ -20,13 +22,13 @@ Texture::~Texture() noexcept
 void Texture::flip_vertical()
 {
     // TODO: put this on an allocator!
-    boost::scoped_array<unsigned char> scratch(new unsigned char[size()]);
+    std::unique_ptr<unsigned char[]> scratch(new unsigned char[size()]);
     for(size_t i=0; i<height(); ++i) {
         const size_t dst = i * pitch();
         const size_t src = (height() - i - 1) * pitch();
-        std::memcpy(scratch.get() + dst, pixels().get() + src, pitch());
+        std::memcpy(scratch.get() + dst, pixels() + src, pitch());
     }
-    std::memcpy(pixels().get(), scratch.get(), size());
+    std::memcpy(pixels(), scratch.get(), size());
 }
 
 void Texture::allocate(MemoryAllocator& allocator, size_t size)

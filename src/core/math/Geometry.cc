@@ -152,7 +152,7 @@ std::string Edge::str() const
     return ss.str();
 }
 
-void compute_tangents(boost::shared_array<Triangle> triangles, size_t triangle_count, boost::shared_array<Vertex> vertices, size_t vertex_count, MemoryAllocator& allocator, bool smooth)
+void compute_tangents(Triangle* const triangles, size_t triangle_count, Vertex* const vertices, size_t vertex_count, MemoryAllocator& allocator, bool smooth)
 {
     boost::shared_array<Vector3> narray(Vector3::create_array(vertex_count, allocator),
         std::bind(&Vector::destroy_array, std::placeholders::_1, vertex_count, &allocator));

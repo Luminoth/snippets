@@ -19,8 +19,8 @@ public:
     virtual ~Texture() noexcept;
 
 public:
-    boost::shared_array<unsigned char> pixels() { return _pixels; }
-    const boost::shared_array<unsigned char> pixels() const { return _pixels; }
+    unsigned char* pixels() { return _pixels.get(); }
+    const unsigned char* pixels() const { return _pixels.get(); }
 
     virtual size_t width() const = 0;
     virtual size_t pitch() const final { return width() * Bpp(); }
@@ -49,7 +49,7 @@ private:
 
 protected:
     Texture();
-    explicit Texture(boost::shared_array<unsigned char> pixels);
+    Texture(const unsigned char* const pixels, int count);
 
 private:
     DISALLOW_COPY_AND_ASSIGN(Texture);

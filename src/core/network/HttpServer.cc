@@ -18,7 +18,7 @@ HttpServer::~HttpServer() noexcept
 
 void HttpServer::on_packet(TcpSession& session)
 {
-    boost::shared_array<Socket::BufferType> packet(new Socket::BufferType[session.read_buffer().size()]);
+    std::unique_ptr<Socket::BufferType[]> packet(new Socket::BufferType[session.read_buffer().size()]);
     std::copy(session.read_buffer().begin(), session.read_buffer().end(), packet.get());
 
     LOG_DEBUG("Session " << session.sessionid() << " received a packet (" << session.read_buffer().size() << ")\n");

@@ -15,7 +15,7 @@ private:
 
 public:
     PNG();
-    PNG(size_t width, size_t height, size_t bpp, boost::shared_array<unsigned char> pixels);
+    PNG(size_t width, size_t height, size_t bpp, const unsigned char* const pixels);
     virtual ~PNG() noexcept;
 
 public:
