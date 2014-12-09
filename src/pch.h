@@ -99,21 +99,15 @@ static const int MAX_BUFFER = 1024;
 
 #if defined WIN32
  // can remove this once VC++ gets its shit together
-#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
-TypeName(const TypeName&); \
-TypeName(TypeName&&); \
-TypeName& operator=(const TypeName&); \
-TypeName& operator=(TypeName&&)
-
 #define noexcept throw()
-#else
+#endif
+
 // NOTE: also disables move operations
 #define DISALLOW_COPY_AND_ASSIGN(TypeName) \
 TypeName(const TypeName&) = delete; \
 TypeName(TypeName&&) = delete; \
 TypeName& operator=(const TypeName&) = delete; \
 TypeName& operator=(TypeName&&) = delete
-#endif
 
 // NOTE: also defaults move operations
 #define DEFAULT_COPY_AND_ASSIGN(TypeName) \
@@ -129,11 +123,8 @@ TypeName& operator=(TypeName&&) = default
 #define BUFFER_OFFSET(i) (reinterpret_cast<char*>(0) + (i))
 
 #if defined WIN32
-    #define stdext std
-
     #define ALIGN(s) __declspec(align(s))
 #else
-    #define stdext __gnu_cxx
     #define __declspec(t)
 
     #define ALIGN(s) __attribute__((aligned(s)))
