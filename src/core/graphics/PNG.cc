@@ -27,12 +27,6 @@ void png_user_error(png_structp ctx, png_const_charp str)
     std::cerr << "libpng: error: " << str << "\n";
 }
 
-void PNG::destroy(PNG* const texture, MemoryAllocator* const allocator)
-{
-    texture->~PNG();
-    operator delete(texture, *allocator);
-}
-
 Logger& PNG::logger(Logger::instance("energonsoftware.core.graphics.PNG"));
 
 PNG::PNG()

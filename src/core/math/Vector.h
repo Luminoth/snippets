@@ -34,10 +34,6 @@ public:
     static const Vector WAXIS;
 
 public:
-    static void destroy(Vector* const vector, MemoryAllocator* const allocator);
-    static Vector* create_array(size_t count, MemoryAllocator& allocator);
-    static void destroy_array(Vector* const vectors, size_t count, MemoryAllocator* const allocator);
-
     static Vector random(float length=1.0f);
 
 public:

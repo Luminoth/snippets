@@ -45,7 +45,7 @@ protected:
     void release();
 
 private:
-    boost::shared_array<unsigned char> _pixels;
+    std::shared_ptr<unsigned char> _pixels;
 
 protected:
     Texture();

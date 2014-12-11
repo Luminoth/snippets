@@ -24,7 +24,7 @@ UdpMessage::UdpMessage(const Socket::BufferType* packet, size_t len, unsigned in
         throw std::runtime_error("MTU is too small!");
     }
 
-    _packet.reset(new Socket::BufferType[_len]);
+    _packet.reset(new Socket::BufferType[_len], std::default_delete<Socket::BufferType[]>());
     std::memmove(_packet.get(), packet, _len);
 
     calculate_chunkcounts();
@@ -34,7 +34,7 @@ UdpMessage::UdpMessage(const UdpMessage& message)
     : BufferedMessage(message), _packet(), _len(message._len), _packetid(message._packetid),
         _mtu(message._mtu), _ttl(message._ttl), _chunkcount(message._chunkcount)
 {
-    _packet.reset(new Socket::BufferType[_len]);
+    _packet.reset(new Socket::BufferType[_len], std::default_delete<Socket::BufferType[]>());
     std::memmove(_packet.get(), message._packet.get(), _len);
 }
 
@@ -60,7 +60,7 @@ bool UdpMessage::chunks(std::vector<UdpMessageChunk>& chunks) const
 
         UdpMessageChunk chunk;
         chunk.first = size + HEADER_LEN;    // size of the chunk (including header)
-        chunk.second.reset(new Socket::BufferType[chunk.first]);
+        chunk.second.reset(new Socket::BufferType[chunk.first], std::default_delete<Socket::BufferType[]>());
         std::memcpy(chunk.second.get(), header.c_str(), HEADER_LEN);
         std::memcpy(chunk.second.get() + HEADER_LEN, &(_packet.get()[position]), size);
 

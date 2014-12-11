@@ -74,7 +74,7 @@ protected:
 
 private:
     bool _encode;
-    boost::shared_array<unsigned char> _data;
+    std::shared_ptr<unsigned char> _data;
     const unsigned char* _data_ptr;
     size_t _data_len;
     long _seqid;

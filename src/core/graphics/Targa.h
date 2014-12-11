@@ -42,9 +42,6 @@ private:
     };
 
 public:
-    static void destroy(Targa* const texture, MemoryAllocator* const allocator);
-
-public:
     Targa();
     Targa(size_t width, size_t height, size_t bpp, const unsigned char* const pixels);
     virtual ~Targa() noexcept;

@@ -15,13 +15,6 @@ public:
     typedef std::list<Subtree> Subtrees;
 
 public:
-    static void destroy(TreePartition* const partition, MemoryAllocator* const allocator)
-    {
-        partition->~TreePartition();
-        operator delete(partition, 16, *allocator);
-    }
-
-public:
     virtual ~TreePartition() noexcept
     {
     }
@@ -169,11 +162,11 @@ protected:
         // subtrees always calculate their container
         std::list<std::shared_ptr<T>> subtree(data.begin(), data.begin() + median);
         _subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(new(16, *allocator) TreePartition(allocator, subtree, depth() - 1),
-            std::bind(&TreePartition<T, B>::destroy, std::placeholders::_1, allocator)));
+            MemoryAllocator_delete_aligned<TreePartition<T, B>, 16>(allocator)));
 
         subtree = std::list<std::shared_ptr<T>>(data.begin() + median, data.end());
         _subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(new(16, *allocator) TreePartition(allocator, subtree, depth() - 1),
-            std::bind(&TreePartition<T, B>::destroy, std::placeholders::_1, allocator)));
+            MemoryAllocator_delete_aligned<TreePartition<T, B>, 16>(allocator)));
     }
 
 protected:

@@ -35,13 +35,6 @@ template<typename T, typename B, size_t Dim>
 class KdTree : public TreePartition<T, B>
 {
 public:
-    static void destroy(KdTree* const partition, MemoryAllocator* const allocator)
-    {
-        partition->~KdTree();
-        operator delete(partition, 16, *allocator);
-    }
-
-public:
     virtual ~KdTree() noexcept
     {
     }
@@ -82,12 +75,12 @@ private:
         std::list<std::shared_ptr<T>> subtree(data.begin(), data.begin() + median);
         TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
             new(16, *allocator) KdTree<T, B, Dim>(allocator, subtree, TreePartition<T, B>::depth() - 1),
-            std::bind(&KdTree<T, B, Dim>::destroy, std::placeholders::_1, allocator)));
+            MemoryAllocator_delete_aligned<KdTree<T, B, Dim>, 16>(allocator)));
 
         subtree = std::list<std::shared_ptr<T>>(data.begin() + median + 1, data.end());
         TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
             new(16, *allocator) KdTree<T, B, Dim>(allocator, subtree, TreePartition<T, B>::depth() - 1),
-            std::bind(&KdTree<T, B, Dim>::destroy, std::placeholders::_1, allocator)));
+            MemoryAllocator_delete_aligned<KdTree<T, B, Dim>, 16>(allocator)));
     }
 
 private:
@@ -98,13 +91,6 @@ private:
 template<typename T, typename B>
 class KdTree3 : public KdTree<T, B, 3>
 {
-public:
-    static void destroy(KdTree3* const partition, MemoryAllocator* const allocator)
-    {
-        partition->~KdTree3();
-        operator delete(partition, 16, *allocator);
-    }
-
 public:
     virtual ~KdTree3() noexcept
     {

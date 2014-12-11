@@ -9,9 +9,6 @@ namespace energonsoftware {
 class Matrix4
 {
 public:
-    static void destroy(Matrix4* const matrix, MemoryAllocator* const allocator);
-
-public:
     // gluPerspective
     static Matrix4 perspective(float fov, float aspect, float near=0.1f, float far=1000.0f);
 

@@ -3,34 +3,6 @@
 
 namespace energonsoftware {
 
-void Vertex::destroy(Vertex* const vertex, MemoryAllocator* const allocator)
-{
-    vertex->~Vertex();
-    operator delete(vertex, 16, *allocator);
-}
-
-Vertex* Vertex::create_array(size_t count, MemoryAllocator& allocator)
-{
-    Vertex* vertices = reinterpret_cast<Vertex*>(allocator.allocate_aligned(sizeof(Vertex) * count, 16));
-
-    Vertex *vertex = vertices, *end = vertices + count;
-    while(vertex != end) {
-        new(vertex) Vertex();
-        vertex++;
-    }
-
-    return vertices;
-}
-
-void Vertex::destroy_array(Vertex* const vertices, size_t count, MemoryAllocator* const allocator)
-{
-    Vertex* vertex = vertices + count;
-    while(vertex > vertices) {
-        (--vertex)->~Vertex();
-    }
-    operator delete[](vertices, 16, *allocator);
-}
-
 Vertex::Vertex()
     : index(-1), position(), normal(), tangent(), bitangent(), texture_coords(),
         weight_start(0), weight_count(0)
@@ -44,66 +16,10 @@ std::string Vertex::str() const
     return ss.str();
 }
 
-void Triangle::destroy(Triangle* const triangle, MemoryAllocator* const allocator)
-{
-    triangle->~Triangle();
-    operator delete(triangle, 16, *allocator);
-}
-
-Triangle* Triangle::create_array(size_t count, MemoryAllocator& allocator)
-{
-    Triangle* triangles = reinterpret_cast<Triangle*>(allocator.allocate_aligned(sizeof(Triangle) * count, 16));
-
-    Triangle *triangle = triangles, *end = triangles + count;
-    while(triangle != end) {
-        new(triangle) Triangle();
-        triangle++;
-    }
-
-    return triangles;
-}
-
-void Triangle::destroy_array(Triangle* const triangles, size_t count, MemoryAllocator* const allocator)
-{
-    Triangle* triangle = triangles + count;
-    while(triangle > triangles) {
-        (--triangle)->~Triangle();
-    }
-    operator delete[](triangle, 16, *allocator);
-}
-
 Triangle::Triangle()
     : index(-1), v1(-1), v2(-1), v3(-1),
         normal()
 {
-}
-
-void Weight::destroy(Weight* const weight, MemoryAllocator* const allocator)
-{
-    weight->~Weight();
-    operator delete(weight, 16, *allocator);
-}
-
-Weight* Weight::create_array(size_t count, MemoryAllocator& allocator)
-{
-    Weight* weights = reinterpret_cast<Weight*>(allocator.allocate_aligned(sizeof(Weight) * count, 16));
-
-    Weight *weight = weights, *end = weights + count;
-    while(weight != end) {
-        new(weight) Weight();
-        weight++;
-    }
-
-    return weights;
-}
-
-void Weight::destroy_array(Weight* const weights, size_t count, MemoryAllocator* const allocator)
-{
-    Weight* weight = weights + count;
-    while(weight > weights) {
-        (--weight)->~Weight();
-    }
-    operator delete[](weights, 16, *allocator);
 }
 
 Weight::Weight()
@@ -111,34 +27,6 @@ Weight::Weight()
         position(), normal(), tangent(), bitangent()
 {
 }
-
-/*void Edge::destroy(Edge* const edge, MemoryAllocator* const allocator)
-{
-    edge->~Edge();
-    operator delete(edge, 16, *allocator);
-}
-
-Edge* Edge::create_array(size_t count, MemoryAllocator& allocator)
-{
-    Edge* edges = reinterpret_cast<Edge*>(allocator.allocate_aligned(sizeof(Edge) * count, 16));
-
-    Edge *edge = edges, *end = edges + count;
-    while(edge != end) {
-        new(edge) Edge();
-        edge++;
-    }
-
-    return edges;
-}
-
-void Edge::destroy_array(Edge* const edges, size_t count, MemoryAllocator* const allocator)
-{
-    Edge* edge = edges + count;
-    while(edge > edges) {
-        (--edge)->~Edge();
-    }
-    operator delete[](edges, 16, *allocator);
-}*/
 
 Edge::Edge()
     : v1(-1), v2(-1), t1(-1), t2(-1)
@@ -154,12 +42,12 @@ std::string Edge::str() const
 
 void compute_tangents(Triangle* const triangles, size_t triangle_count, Vertex* const vertices, size_t vertex_count, MemoryAllocator& allocator, bool smooth)
 {
-    boost::shared_array<Vector3> narray(Vector3::create_array(vertex_count, allocator),
-        std::bind(&Vector::destroy_array, std::placeholders::_1, vertex_count, &allocator));
-    boost::shared_array<Vector3> tarray(Vector3::create_array(vertex_count, allocator),
-        std::bind(&Vector::destroy_array, std::placeholders::_1, vertex_count, &allocator));
-    boost::shared_array<Vector3> btarray(Vector3::create_array(vertex_count, allocator),
-        std::bind(&Vector::destroy_array, std::placeholders::_1, vertex_count, &allocator));
+    std::shared_ptr<Vector3> narray(MemoryAllocator_new_aligned<Vector3, 16>(vertex_count, allocator),
+        MemoryAllocator_delete_aligned<Vector[], 16>(vertex_count, &allocator));
+    std::shared_ptr<Vector3> tarray(MemoryAllocator_new_aligned<Vector3, 16>(vertex_count, allocator),
+        MemoryAllocator_delete_aligned<Vector[], 16>(vertex_count, &allocator));
+    std::shared_ptr<Vector3> btarray(MemoryAllocator_new_aligned<Vector3, 16>(vertex_count, allocator),
+        MemoryAllocator_delete_aligned<Vector[], 16>(vertex_count, &allocator));
 
     // calculate the vertex normals and tangents (sum of each face normal/tangent)
     // Mathematics for 3D Game Programming and Computer Graphics, section 7.8.3
@@ -177,9 +65,9 @@ void compute_tangents(Triangle* const triangles, size_t triangle_count, Vertex* 
         }
         triangle.normal = normal.normalized();
 
-        narray[idx0] += normal;
-        narray[idx1] += normal;
-        narray[idx2] += normal;
+        narray.get()[idx0] += normal;
+        narray.get()[idx1] += normal;
+        narray.get()[idx2] += normal;
 
         const float s1 = p1.texture_coords.x() - p0.texture_coords.x(), t1 = p1.texture_coords.y() - p0.texture_coords.y();
         const float s2 = p2.texture_coords.x() - p0.texture_coords.x(), t2 = p2.texture_coords.y() - p0.texture_coords.y();
@@ -197,33 +85,27 @@ void compute_tangents(Triangle* const triangles, size_t triangle_count, Vertex* 
             object_tangent.normalize();
         }
 
-        tarray[idx0] += object_tangent;
-        tarray[idx1] += object_tangent;
-        tarray[idx2] += object_tangent;
+        tarray.get()[idx0] += object_tangent;
+        tarray.get()[idx1] += object_tangent;
+        tarray.get()[idx2] += object_tangent;
 
         Vector3 bitangent(coef * Vector3(s1 * q2.x() - s2 * q1.x(), s1 * q2.y() - s2 * q1.y(), s1 * q2.z() - s2 * q1.z()));
         if(smooth) {
             bitangent.normalize();
         }
 
-        btarray[idx0] += bitangent;
-        btarray[idx1] += bitangent;
-        btarray[idx2] += bitangent;
+        btarray.get()[idx0] += bitangent;
+        btarray.get()[idx1] += bitangent;
+        btarray.get()[idx2] += bitangent;
     }
 
     // store the vertex data
     for(size_t i=0; i<vertex_count; ++i) {
         Vertex& vertex(vertices[i]);
-        vertex.normal = narray[i].normalized();
-        vertex.tangent = tarray[i].normalized();
-        vertex.bitangent = btarray[i].normalized();
+        vertex.normal = narray.get()[i].normalized();
+        vertex.tangent = tarray.get()[i].normalized();
+        vertex.bitangent = btarray.get()[i].normalized();
     }
-}
-
-void Geometry::destroy(Geometry* const geometry, MemoryAllocator* const allocator)
-{
-    geometry->~Geometry();
-    operator delete(geometry, *allocator);
 }
 
 Geometry::Geometry(size_t vertex_count, MemoryAllocator& allocator)
@@ -456,9 +338,9 @@ std::string Geometry::str() const
     std::stringstream ss;
     ss << "Geometry vertex_count=" << _vertex_count << "\nVertices (" << _vertex_buffer_size << "):\n";
     for(size_t i=0; i<_vertex_buffer_size; i+=3) {
-        ss << "(" << _vertex_buffer[i+0]
-            << ", " << _vertex_buffer[i+1]
-            << ", " << _vertex_buffer[i+2] << "), ";
+        ss << "(" << _vertex_buffer.get()[i+0]
+            << ", " << _vertex_buffer.get()[i+1]
+            << ", " << _vertex_buffer.get()[i+2] << "), ";
     }
     return ss.str();
 }
@@ -493,17 +375,17 @@ public:
     {
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 50 * 1024));
         std::shared_ptr<energonsoftware::Vertex> v1(new(16, *allocator) energonsoftware::Vertex(),
-            std::bind(energonsoftware::Vertex::destroy, std::placeholders::_1, allocator.get()));
+            energonsoftware::MemoryAllocator_delete_aligned<energonsoftware::Vertex, 16>(allocator.get()));
         check_vertex_defaults(*v1);
 
         v1.reset();
 
         static const size_t COUNT = 100;
-        boost::shared_array<energonsoftware::Vertex> vertices(energonsoftware::Vertex::create_array(COUNT, *allocator),
-            std::bind(energonsoftware::Vertex::destroy_array, std::placeholders::_1, COUNT, allocator.get()));
+        std::shared_ptr<energonsoftware::Vertex> vertices(energonsoftware::MemoryAllocator_new_aligned<energonsoftware::Vertex, 16>(COUNT, *allocator),
+            energonsoftware::MemoryAllocator_delete_aligned<energonsoftware::Vertex[], 16>(COUNT, allocator.get()));
         CPPUNIT_ASSERT(vertices);
         for(size_t i=0; i<COUNT; ++i) {
-            check_vertex_defaults(vertices[i]);
+            check_vertex_defaults(vertices.get()[i]);
         }
         vertices.reset();
     }
@@ -516,17 +398,17 @@ public:
     {
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 50 * 1024));
         std::shared_ptr<energonsoftware::Triangle> t1(new(16, *allocator) energonsoftware::Triangle(),
-            std::bind(energonsoftware::Triangle::destroy, std::placeholders::_1, allocator.get()));
+            energonsoftware::MemoryAllocator_delete_aligned<energonsoftware::Triangle, 16>(allocator.get()));
         check_triangle_defaults(*t1);
 
         t1.reset();
 
         static const size_t COUNT = 100;
-        boost::shared_array<energonsoftware::Triangle> triangles(energonsoftware::Triangle::create_array(COUNT, *allocator),
-            std::bind(energonsoftware::Triangle::destroy_array, std::placeholders::_1, COUNT, allocator.get()));
+        std::shared_ptr<energonsoftware::Triangle> triangles(energonsoftware::MemoryAllocator_new_aligned<energonsoftware::Triangle, 16>(COUNT, *allocator),
+            energonsoftware::MemoryAllocator_delete_aligned<energonsoftware::Triangle[], 16>(COUNT, allocator.get()));
         CPPUNIT_ASSERT(triangles);
         for(size_t i=0; i<COUNT; ++i) {
-            check_triangle_defaults(triangles[i]);
+            check_triangle_defaults(triangles.get()[i]);
         }
         triangles.reset();
     }
@@ -535,17 +417,17 @@ public:
     {
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 50 * 1024));
         std::shared_ptr<energonsoftware::Weight> w1(new(16, *allocator) energonsoftware::Weight(),
-            std::bind(energonsoftware::Weight::destroy, std::placeholders::_1, allocator.get()));
+            energonsoftware::MemoryAllocator_delete_aligned<energonsoftware::Weight, 16>(allocator.get()));
         check_weight_defaults(*w1);
 
         w1.reset();
 
         static const size_t COUNT = 100;
-        boost::shared_array<energonsoftware::Weight> weights(energonsoftware::Weight::create_array(COUNT, *allocator),
-            std::bind(energonsoftware::Weight::destroy_array, std::placeholders::_1, COUNT, allocator.get()));
+        std::shared_ptr<energonsoftware::Weight> weights(energonsoftware::MemoryAllocator_new_aligned<energonsoftware::Weight, 16>(COUNT, *allocator),
+            energonsoftware::MemoryAllocator_delete_aligned<energonsoftware::Weight[], 16>(COUNT, allocator.get()));
         CPPUNIT_ASSERT(weights);
         for(size_t i=0; i<COUNT; ++i) {
-            check_weight_defaults(weights[i]);
+            check_weight_defaults(weights.get()[i]);
         }
         weights.reset();
     }
@@ -565,7 +447,7 @@ public:
         static const size_t COUNT = 100;
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 50 * 1024));
         std::shared_ptr<energonsoftware::Geometry> g(new(*allocator) energonsoftware::Geometry(COUNT, *allocator),
-            std::bind(energonsoftware::Geometry::destroy, std::placeholders::_1, allocator.get()));
+            energonsoftware::MemoryAllocator_delete<energonsoftware::Geometry>(allocator.get()));
 
         g.reset();
     }
@@ -580,7 +462,7 @@ public:
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 50 * 1024));
         // vertex_count here is actually ignored
         std::shared_ptr<energonsoftware::Geometry> g(new(*allocator) energonsoftware::Geometry(COUNT, 0, *allocator),
-            std::bind(energonsoftware::Geometry::destroy, std::placeholders::_1, allocator.get()));
+            energonsoftware::MemoryAllocator_delete<energonsoftware::Geometry>(allocator.get()));
 
         g.reset();
     }

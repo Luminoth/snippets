@@ -150,62 +150,6 @@ const std::string TestObject::BUFFER("object test buffer");
 class DerivedObject : public TestObject
 {
 public:
-    static void destroy(DerivedObject* const obj, energonsoftware::MemoryAllocator* const allocator)
-    {
-        obj->~DerivedObject();
-        operator delete(obj, *allocator);
-    }
-
-    static void destroy_aligned(DerivedObject* const obj, size_t alignment, energonsoftware::MemoryAllocator* const allocator)
-    {
-        obj->~DerivedObject();
-        operator delete(obj, alignment, *allocator);
-    }
-
-    static DerivedObject* create_array(size_t count, energonsoftware::MemoryAllocator& allocator)
-    {
-        DerivedObject* objs = reinterpret_cast<DerivedObject*>(allocator.allocate(sizeof(DerivedObject) * count));
-
-        DerivedObject *obj = objs, *end = objs + count;
-        while(obj != end) {
-            new(obj) DerivedObject();
-            obj++;
-        }
-
-        return objs;
-    }
-
-    static DerivedObject* create_array_aligned(size_t count, size_t alignment, energonsoftware::MemoryAllocator& allocator)
-    {
-        DerivedObject* objs = reinterpret_cast<DerivedObject*>(allocator.allocate_aligned(sizeof(DerivedObject) * count, alignment));
-
-        DerivedObject *obj = objs, *end = objs + count;
-        while(obj != end) {
-            new(obj) DerivedObject();
-            obj++;
-        }
-
-        return objs;
-    }
-
-    static void destroy_array(DerivedObject* const objs, size_t count, energonsoftware::MemoryAllocator* const allocator)
-    {
-        DerivedObject* obj = objs + count;
-        while(obj > objs) {
-            (--obj)->~DerivedObject();
-        }
-        operator delete[](objs, *allocator);
-    }
-
-    static void destroy_array_aligned(DerivedObject* const objs, size_t count, size_t alignment, energonsoftware::MemoryAllocator* const allocator)
-    {
-        DerivedObject* obj = objs + count;
-        while(obj > objs) {
-            (--obj)->~DerivedObject();
-        }
-        operator delete[](objs, alignment, *allocator);
-    }
-public:
     DerivedObject()
         : TestObject(), _did_stuff(false)
     {
@@ -267,7 +211,7 @@ void MemoryAllocatorTest::check_buffer(char* const buffer)
     }
 }
 
-void MemoryAllocatorTest::test_allocate()
+void MemoryAllocatorTest::test_allocate_nosmart()
 {
     int* value = new(*_allocator) int;
     check_value(value);
@@ -290,10 +234,56 @@ void MemoryAllocatorTest::test_allocate()
     //CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_bytes());
 }
 
+void MemoryAllocatorTest::test_allocate_shared()
+{
+    std::shared_ptr<int> value(new(*_allocator) int, std::bind(&energonsoftware::MemoryAllocator::release, _allocator.get(), std::placeholders::_1));
+    check_value(value.get());
+    CPPUNIT_ASSERT_EQUAL(1U, _allocator->allocation_count());
+    //CPPUNIT_ASSERT_EQUAL(sizeof(int), _allocator->allocation_bytes());
+
+    value.reset();
+    CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_count());
+    //CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_bytes());
+
+    std::shared_ptr<char> buffer(new(*_allocator) char[MAX_BUFFER], std::bind(&energonsoftware::MemoryAllocator::release, _allocator.get(), std::placeholders::_1));
+    check_buffer(buffer.get());
+    CPPUNIT_ASSERT_EQUAL(1U, _allocator->allocation_count());
+    //CPPUNIT_ASSERT_EQUAL(MAX_BUFFER * sizeof(char), _allocator->allocation_bytes());
+
+    buffer.reset();
+    CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_count());
+    //CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_bytes());
+}
+
+void MemoryAllocatorTest::test_allocate_unique()
+{
+// TODO: unique pointers with non-class types doesn't work yet
+#if 0
+    std::unique_ptr<int> value(new(*_allocator) int, std::bind(&energonsoftware::MemoryAllocator::release, _allocator.get(), std::placeholders::_1));
+    check_value(value.get());
+    CPPUNIT_ASSERT_EQUAL(1U, _allocator->allocation_count());
+    //CPPUNIT_ASSERT_EQUAL(sizeof(int), _allocator->allocation_bytes());
+
+    value.reset();
+    CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_count());
+    //CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_bytes());
+
+    std::unique_ptr<char[]> buffer(new(*_allocator) char[MAX_BUFFER], std::bind(&energonsoftware::MemoryAllocator::release, _allocator.get(), std::placeholders::_1));
+    check_buffer(buffer.get());
+    CPPUNIT_ASSERT_EQUAL(1U, _allocator->allocation_count());
+    //CPPUNIT_ASSERT_EQUAL(MAX_BUFFER * sizeof(char), _allocator->allocation_bytes());
+
+    buffer.reset();
+    CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_count());
+    //CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_bytes());
+#endif
+throw energonsoftware::NotImplementedError("MemoryAllocatorTest::test_allocate_unique");
+}
+
 void MemoryAllocatorTest::test_allocate_object()
 {
     std::shared_ptr<TestObject> obj(new(*_allocator) DerivedObject(),
-        std::bind(&DerivedObject::destroy, std::placeholders::_1, _allocator.get()));
+        energonsoftware::MemoryAllocator_delete<DerivedObject>(_allocator.get()));
     CPPUNIT_ASSERT(obj);
     obj->do_stuff();
     obj->check_data();
@@ -306,13 +296,12 @@ void MemoryAllocatorTest::test_allocate_object()
 
     static const int OBJ_COUNT = 100;
 
-    // TODO: not sure why this has to be an array of DerivedObjects and not TestObjects
-    boost::shared_array<DerivedObject> objs(DerivedObject::create_array(OBJ_COUNT, *_allocator),
-        std::bind(&DerivedObject::destroy_array, std::placeholders::_1, OBJ_COUNT, _allocator.get()));
+    std::shared_ptr<TestObject> objs(energonsoftware::MemoryAllocator_new<DerivedObject>(OBJ_COUNT, *_allocator),
+        energonsoftware::MemoryAllocator_delete<DerivedObject[]>(OBJ_COUNT, _allocator.get()));
     CPPUNIT_ASSERT(objs);
     for(int i=0; i<OBJ_COUNT; ++i) {
-        objs[i].do_stuff();
-        objs[i].check_data();
+        objs.get()[i].do_stuff();
+        objs.get()[i].check_data();
     }
     CPPUNIT_ASSERT_EQUAL(1U, _allocator->allocation_count());
     //CPPUNIT_ASSERT_EQUAL(OBJ_COUNT * sizeof(DerivedObject), _allocator->allocation_bytes());
@@ -322,7 +311,7 @@ void MemoryAllocatorTest::test_allocate_object()
     //CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_bytes());
 }
 
-void MemoryAllocatorTest::test_allocate_aligned()
+void MemoryAllocatorTest::test_allocate_aligned_nosmart()
 {
     static const size_t ALIGNMENT = 4;
 
@@ -345,12 +334,22 @@ void MemoryAllocatorTest::test_allocate_aligned()
     //CPPUNIT_ASSERT_EQUAL(0U, _allocator->allocation_bytes());
 }
 
+void MemoryAllocatorTest::test_allocate_aligned_shared()
+{
+    throw energonsoftware::NotImplementedError("MemoryAllocatorTest::test_allocate_aligned_shared");
+}
+
+void MemoryAllocatorTest::test_allocate_aligned_unique()
+{
+    throw energonsoftware::NotImplementedError("MemoryAllocatorTest::test_allocate_aligned_unique");
+}
+
 void MemoryAllocatorTest::test_allocate_object_aligned()
 {
     static const size_t alignment = 4;
 
     std::shared_ptr<TestObject> obj(new(alignment, *_allocator) DerivedObject(),
-        std::bind(&DerivedObject::destroy_aligned, std::placeholders::_1, alignment, _allocator.get()));
+        energonsoftware::MemoryAllocator_delete_aligned<DerivedObject, alignment>(_allocator.get()));
     CPPUNIT_ASSERT(obj);
     CPPUNIT_ASSERT_EQUAL(0U, reinterpret_cast<size_t>(obj.get()) % alignment);
     obj->do_stuff();
@@ -362,14 +361,13 @@ void MemoryAllocatorTest::test_allocate_object_aligned()
 
     static const int OBJ_COUNT = 100;
 
-    // TODO: not sure why this has to be an array of DerivedObjects and not TestObjects
-    boost::shared_array<DerivedObject> objs(DerivedObject::create_array_aligned(OBJ_COUNT, alignment, *_allocator),
-        std::bind(&DerivedObject::destroy_array_aligned, std::placeholders::_1, OBJ_COUNT, alignment, _allocator.get()));
+    std::shared_ptr<TestObject> objs(energonsoftware::MemoryAllocator_new_aligned<DerivedObject, alignment>(OBJ_COUNT, *_allocator),
+        energonsoftware::MemoryAllocator_delete_aligned<DerivedObject[], alignment>(OBJ_COUNT, _allocator.get()));
     CPPUNIT_ASSERT(objs);
     CPPUNIT_ASSERT_EQUAL(0U, reinterpret_cast<size_t>(objs.get()) % alignment);
     for(int i=0; i<OBJ_COUNT; ++i) {
-        objs[i].do_stuff();
-        objs[i].check_data();
+        objs.get()[i].do_stuff();
+        objs.get()[i].check_data();
     }
 
     objs.reset();

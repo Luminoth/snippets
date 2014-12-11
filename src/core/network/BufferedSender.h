@@ -22,7 +22,7 @@ private:
     virtual size_t data_len() const { return _len; }
 
 private:
-    boost::shared_array<Socket::BufferType> _message;
+    std::shared_ptr<Socket::BufferType> _message;
     size_t _len;
 
 private:

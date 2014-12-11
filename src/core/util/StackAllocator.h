@@ -31,7 +31,7 @@ private:
     explicit StackAllocator(size_t size);
 
 private:
-    boost::shared_array<unsigned char> _pool;
+    std::unique_ptr<unsigned char[]> _pool;
     uint32_t _size, _marker;
 
 private:

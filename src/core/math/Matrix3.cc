@@ -4,12 +4,6 @@
 
 namespace energonsoftware {
 
-void Matrix3::destroy(Matrix3* const matrix, MemoryAllocator* const allocator)
-{
-    matrix->~Matrix3();
-    operator delete(matrix, 16, *allocator);
-}
-
 std::string Matrix3::str() const
 {
     std::stringstream ss;
@@ -52,7 +46,7 @@ public:
     {
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 10 * 1024));
         std::shared_ptr<energonsoftware::Matrix3> m1(new(16, *allocator) energonsoftware::Matrix3(),
-            std::bind(energonsoftware::Matrix3::destroy, std::placeholders::_1, allocator.get()));
+            energonsoftware::MemoryAllocator_delete_aligned<energonsoftware::Matrix3, 16>(allocator.get()));
         CPPUNIT_ASSERT(m1);
         CPPUNIT_ASSERT(m1->is_identity());
 

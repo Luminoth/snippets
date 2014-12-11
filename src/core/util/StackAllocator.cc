@@ -6,9 +6,8 @@ namespace energonsoftware {
 Logger& StackAllocator::logger(Logger::instance("energonsoftware.core.util.StackAllocator"));
 
 StackAllocator::StackAllocator(size_t size)
-    : MemoryAllocator(), _pool(), _size(size), _marker(0)
+    : MemoryAllocator(), _pool(new unsigned char[_size]), _size(size), _marker(0)
 {
-    _pool.reset(new unsigned char[_size]);
     //LOG_DEBUG("Pool at " << reinterpret_cast<void*>(_pool.get()) << "\n");
 }
 
@@ -52,10 +51,18 @@ class StackAllocatorTest : public MemoryAllocatorTest
 {
 public:
     CPPUNIT_TEST_SUITE(StackAllocatorTest);
-        CPPUNIT_TEST(test_allocate);
+        CPPUNIT_TEST(test_allocate_nosmart);
+        CPPUNIT_TEST(test_allocate_shared);
+        CPPUNIT_TEST(test_allocate_unique);
+
         CPPUNIT_TEST(test_allocate_object);
-        CPPUNIT_TEST(test_allocate_aligned);
+
+        CPPUNIT_TEST(test_allocate_aligned_nosmart);
+        CPPUNIT_TEST(test_allocate_aligned_shared);
+        CPPUNIT_TEST(test_allocate_aligned_unique);
+
         CPPUNIT_TEST(test_allocate_object_aligned);
+
         CPPUNIT_TEST_EXCEPTION(test_unreasonable_allocation, std::bad_alloc);
     CPPUNIT_TEST_SUITE_END();
 

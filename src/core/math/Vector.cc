@@ -18,34 +18,6 @@ const Vector Vector::YAXIS(0.0f, 1.0f, 0.0f);
 const Vector Vector::ZAXIS(0.0f, 0.0f, 1.0f);
 const Vector Vector::WAXIS(0.0f, 0.0f, 0.0f, 1.0f);
 
-void Vector::destroy(Vector* const vector, MemoryAllocator* const allocator)
-{
-    vector->~Vector();
-    operator delete(vector, 16, *allocator);
-}
-
-Vector* Vector::create_array(size_t count, MemoryAllocator& allocator)
-{
-    Vector* vectors = reinterpret_cast<Vector*>(allocator.allocate_aligned(sizeof(Vector) * count, 16));
-
-    Vector *vector = vectors, *end = vectors + count;
-    while(vector != end) {
-        new(vector) Vector();
-        vector++;
-    }
-
-    return vectors;
-}
-
-void Vector::destroy_array(Vector* const vectors, size_t count, MemoryAllocator* const allocator)
-{
-    Vector* vector = vectors + count;
-    while(vector > vectors) {
-        (--vector)->~Vector();
-    }
-    operator delete[](vectors, 16, *allocator);
-}
-
 Vector Vector::random(float length)
 {
     Vector v(Random<>::uniform_std<float>(-0.5f, 0.5f),
@@ -103,7 +75,7 @@ public:
     {
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 10 * 1024));
         std::shared_ptr<energonsoftware::Vector> v1(new(16, *allocator) energonsoftware::Vector(10.0f, 123.123f, 25.75f),
-            std::bind(energonsoftware::Vector::destroy, std::placeholders::_1, allocator.get()));
+            energonsoftware::MemoryAllocator_delete_aligned<energonsoftware::Vector, 16>(allocator.get()));
         CPPUNIT_ASSERT(v1);
         CPPUNIT_ASSERT_EQUAL(10.0f, v1->x());
         CPPUNIT_ASSERT_EQUAL(123.123f, v1->y());
@@ -112,11 +84,11 @@ public:
         v1.reset();
 
         static const size_t COUNT = 100;
-        boost::shared_array<energonsoftware::Vector> vectors(energonsoftware::Vector::create_array(COUNT, *allocator),
-            std::bind(energonsoftware::Vector::destroy_array, std::placeholders::_1, COUNT, allocator.get()));
+        std::shared_ptr<energonsoftware::Vector> vectors(energonsoftware::MemoryAllocator_new_aligned<energonsoftware::Vector, 16>(COUNT, *allocator),
+            energonsoftware::MemoryAllocator_delete_aligned<energonsoftware::Vector[], 16>(COUNT, allocator.get()));
         CPPUNIT_ASSERT(vectors);
         for(size_t i=0; i<COUNT; ++i) {
-            CPPUNIT_ASSERT(vectors[i].is_zero());
+            CPPUNIT_ASSERT(vectors.get()[i].is_zero());
         }
         vectors.reset();
     }

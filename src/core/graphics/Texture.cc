@@ -10,7 +10,7 @@ Texture::Texture()
 
 // TODO: allocator?
 Texture::Texture(const unsigned char* const pixels, int count)
-    : _pixels(new unsigned char[count])
+    : _pixels(new unsigned char[count], std::default_delete<unsigned char[]>())
 {
     std::memcpy(_pixels.get(), pixels, count);
 }

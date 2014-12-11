@@ -9,13 +9,6 @@ template<typename T, typename B>
 class Octree : public TreePartition<T, B>
 {
 public:
-    static void destroy(Octree* const partition, MemoryAllocator* const allocator)
-    {
-        partition->~Octree();
-        operator delete(partition, 16, *allocator);
-    }
-
-public:
     virtual ~Octree() noexcept
     {
     }
@@ -57,7 +50,7 @@ private:
             if(it->size() > 0) {
                 TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
                     new(16, *allocator) Octree(allocator, *it, TreePartition<T, B>::depth() - 1),
-                    std::bind(&Octree<T, B>::destroy, std::placeholders::_1, allocator)));
+                    energonsoftware::MemoryAllocator_delete_aligned<Octree<T, B>, 16>(allocator)));
             }
         }
     }

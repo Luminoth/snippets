@@ -25,7 +25,7 @@ void BufferedMessage::reset()
     _data_len = data_len();
 
     // copy the current data
-    _data.reset(new unsigned char[_data_len]);
+    _data.reset(new unsigned char[_data_len], std::default_delete<unsigned char[]>());
     std::memcpy(_data.get(), d, _data_len);
 
     // set the data pointer

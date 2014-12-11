@@ -10,13 +10,6 @@ template<typename T, typename B>
 class SphereTree : public TreePartition<T, B>
 {
 public:
-    static void destroy(SphereTree* const partition, MemoryAllocator* const allocator)
-    {
-        partition->~SphereTree();
-        operator delete(partition, 16, *allocator);
-    }
-
-public:
     virtual ~SphereTree() noexcept
     {
     }
@@ -65,13 +58,13 @@ private:
         if(left.size() > 0) {
             TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
                 new(16, *allocator) SphereTree(allocator, left, TreePartition<T, B>::depth() - 1),
-                std::bind(&SphereTree<T, B>::destroy, std::placeholders::_1, allocator)));
+                MemoryAllocator_delete_aligned<SphereTree<T, B>, 16>(allocator)));
         }
 
         if(right.size() > 0) {
             TreePartition<T, B>::_subtrees.push_back(std::shared_ptr<TreePartition<T, B>>(
                 new(16, *allocator) SphereTree(allocator, right, TreePartition<T, B>::depth() - 1),
-                std::bind(&SphereTree<T, B>::destroy, std::placeholders::_1, allocator)));
+                MemoryAllocator_delete_aligned<SphereTree<T, B>, 16>(allocator)));
         }
     }
 

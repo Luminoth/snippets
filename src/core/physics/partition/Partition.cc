@@ -12,13 +12,6 @@
 class TestPartitionable : public energonsoftware::Partitionable
 {
 public:
-    static void destroy(TestPartitionable* const partitionable, energonsoftware::MemoryAllocator* const allocator)
-    {
-        partitionable->~TestPartitionable();
-        operator delete(partitionable, 16, *allocator);
-    }
-
-public:
     TestPartitionable(const energonsoftware::Position& position, float radius, const std::string& name)
         : Partitionable(), _position(position), _relative_bounds(energonsoftware::Point3(), radius), _absolute_bounds(position, radius), _name(name)
     {
@@ -87,7 +80,7 @@ public:
         std::list<std::shared_ptr<TestPartitionable>> data;
         data.push_back(std::shared_ptr<TestPartitionable>(
             new(16, *_allocator) TestPartitionable(energonsoftware::Point3(0.0f, 0.0f, 0.0f), 3.0f, "Jonah"),
-            std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
+            energonsoftware::MemoryAllocator_delete_aligned<TestPartitionable, 16>(_allocator.get())));
 
         // test each partition type
         for(const std::string& type : _partition_types) {
@@ -110,16 +103,16 @@ public:
         std::list<std::shared_ptr<TestPartitionable>> data;
         data.push_back(std::shared_ptr<TestPartitionable>(
             new(16, *_allocator) TestPartitionable(energonsoftware::Point3(100.0f, 0.0f, 100.0f), 1.0f, "Adam"),
-            std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
+            energonsoftware::MemoryAllocator_delete_aligned<TestPartitionable, 16>(_allocator.get())));
         data.push_back(std::shared_ptr<TestPartitionable>(
             new(16, *_allocator) TestPartitionable(energonsoftware::Point3(-100.0f, 0.0f, 100.0f), 1.0f, "Pete"),
-            std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
+            energonsoftware::MemoryAllocator_delete_aligned<TestPartitionable, 16>(_allocator.get())));
         data.push_back(std::shared_ptr<TestPartitionable>(
             new(16, *_allocator) TestPartitionable(energonsoftware::Point3(100.0f, 0.0f, -100.0f), 1.0f, "Mitchell"),
-            std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
+            energonsoftware::MemoryAllocator_delete_aligned<TestPartitionable, 16>(_allocator.get())));
         data.push_back(std::shared_ptr<TestPartitionable>(
             new(16, *_allocator) TestPartitionable(energonsoftware::Point3(-100.0f, 0.0f, -100.0f), 1.0f, "Thomas"),
-            std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
+            energonsoftware::MemoryAllocator_delete_aligned<TestPartitionable, 16>(_allocator.get())));
 
         // test each partition type
         for(const std::string& type : _partition_types) {
@@ -166,7 +159,7 @@ public:
                         energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f)),
                     energonsoftware::Random<>::uniform_std<float>(0.0f, 3.0f),
                     "G_" + i),
-                std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
+                energonsoftware::MemoryAllocator_delete_aligned<TestPartitionable, 16>(_allocator.get())));
         }
 
         // test each partition type
@@ -196,7 +189,7 @@ public:
                         energonsoftware::Random<>::uniform_std<float>(0.0f, 1000.0f)),
                     energonsoftware::Random<>::uniform_std<float>(0.0f, 3.0f),
                     "G_" + i),
-                std::bind(&TestPartitionable::destroy, std::placeholders::_1, _allocator.get())));
+                energonsoftware::MemoryAllocator_delete_aligned<TestPartitionable, 16>(_allocator.get())));
         }
 
         // create the intersect set

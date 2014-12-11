@@ -38,7 +38,7 @@ void UdpMessageFactory::FactoryMessage::build_message()
     }
 
     _len = message.size();
-    _message.reset(new Socket::BufferType[_len]);
+    _message.reset(new Socket::BufferType[_len], std::default_delete<Socket::BufferType[]>());
     std::copy(message.begin(), message.end(), _message.get());
 }
 

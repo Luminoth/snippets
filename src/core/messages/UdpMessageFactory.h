@@ -45,7 +45,7 @@ public:
         std::unordered_map<unsigned int, UdpMessage::UdpMessageChunk> _chunks;
         double _last_chunk_time;
 
-        boost::shared_array<Socket::BufferType> _message;
+        std::shared_ptr<Socket::BufferType> _message;
         size_t _len;
 
     private:

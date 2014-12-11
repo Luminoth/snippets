@@ -9,7 +9,7 @@ StringMessage::StringMessage(const std::string& message)
 {
     Socket::BufferType* scratch = new Socket::BufferType[_len];
     std::memcpy(scratch, message.c_str(), _len);
-    _message.reset(scratch);
+    _message.reset(scratch, std::default_delete<Socket::BufferType[]>());
 }
 
 StringMessage::StringMessage(const unsigned char* message, size_t len)
@@ -17,7 +17,7 @@ StringMessage::StringMessage(const unsigned char* message, size_t len)
 {
     Socket::BufferType* scratch = new Socket::BufferType[_len];
     std::memcpy(scratch, message, _len);
-    _message.reset(scratch);
+    _message.reset(scratch, std::default_delete<Socket::BufferType[]>());
 }
 
 StringMessage::~StringMessage() noexcept

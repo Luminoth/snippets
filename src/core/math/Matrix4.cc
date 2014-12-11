@@ -4,12 +4,6 @@
 
 namespace energonsoftware {
 
-void Matrix4::destroy(Matrix4* const matrix, MemoryAllocator* const allocator)
-{
-    matrix->~Matrix4();
-    operator delete(matrix, 16, *allocator);
-}
-
 Matrix4 Matrix4::perspective(float fov, float aspect, float n, float f)
 {
     assert(aspect != 0.0f);
@@ -315,7 +309,7 @@ public:
     {
         std::shared_ptr<energonsoftware::MemoryAllocator> allocator(energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 10 * 1024));
         std::shared_ptr<energonsoftware::Matrix4> m1(new(16, *allocator) energonsoftware::Matrix4(),
-            std::bind(energonsoftware::Matrix4::destroy, std::placeholders::_1, allocator.get()));
+            energonsoftware::MemoryAllocator_delete_aligned<energonsoftware::Matrix4, 16>(allocator.get()));
         CPPUNIT_ASSERT(m1);
         CPPUNIT_ASSERT(m1->is_identity());
 

@@ -19,19 +19,19 @@ public:
         std::string scratch(boost::algorithm::to_lower_copy(type));
         if("octree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Octree<T, B>(allocator, data, container, pruned, depth),
-                std::bind(&Octree<T, B>::destroy, std::placeholders::_1, allocator));
+                MemoryAllocator_delete_aligned<Octree<T, B>, 16>(allocator));
         } else if("spheretree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) SphereTree<T, B>(allocator, data, container, pruned, depth),
-                std::bind(&SphereTree<T, B>::destroy, std::placeholders::_1, allocator));
+                MemoryAllocator_delete_aligned<SphereTree<T, B>, 16>(allocator));
         } else if("kdtree3" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) KdTree3<T, B>(allocator, data, container, pruned, depth),
-                std::bind(&KdTree3<T, B>::destroy, std::placeholders::_1, allocator));
+                MemoryAllocator_delete_aligned<KdTree3<T, B>, 16>(allocator));
         } else if("tree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) TreePartition<T, B>(allocator, data, container, pruned, depth),
-                std::bind(&TreePartition<T, B>::destroy, std::placeholders::_1, allocator));
+                MemoryAllocator_delete_aligned<TreePartition<T, B>, 16>(allocator));
         } else if("flat" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Partition<T, B>(data, container, pruned),
-                std::bind(&Partition<T, B>::destroy, std::placeholders::_1, allocator));
+                MemoryAllocator_delete_aligned<Partition<T, B>, 16>(allocator));
         }
         throw PartitionError("Unknown partition type: " + type);
     }
@@ -47,19 +47,19 @@ public:
         std::string scratch(boost::algorithm::to_lower_copy(type));
         if("octree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Octree<T, B>(allocator, data, depth),
-                std::bind(&Octree<T, B>::destroy, std::placeholders::_1, allocator));
+                energonsoftware::MemoryAllocator_delete_aligned<Octree<T, B>, 16>(allocator));
         } else if("spheretree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) SphereTree<T, B>(allocator, data, depth),
-                std::bind(&SphereTree<T, B>::destroy, std::placeholders::_1, allocator));
+                energonsoftware::MemoryAllocator_delete_aligned<SphereTree<T, B>, 16>(allocator));
         } else if("kdtree3" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) KdTree3<T, B>(allocator, data, depth),
-                std::bind(&KdTree3<T, B>::destroy, std::placeholders::_1, allocator));
+                energonsoftware::MemoryAllocator_delete_aligned<KdTree3<T, B>, 16>(allocator));
         } else if("tree" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) TreePartition<T, B>(allocator, data, depth),
-                std::bind(&TreePartition<T, B>::destroy, std::placeholders::_1, allocator));
+                energonsoftware::MemoryAllocator_delete_aligned<TreePartition<T, B>, 16>(allocator));
         } else if("flat" == scratch) {
             return std::shared_ptr<Partition<T, B>>(new(16, *allocator) Partition<T, B>(data),
-                std::bind(&Partition<T, B>::destroy, std::placeholders::_1, allocator));
+                energonsoftware::MemoryAllocator_delete_aligned<Partition<T, B>, 16>(allocator));
         }
         throw PartitionError("Unknown partition type: " + type);
     }

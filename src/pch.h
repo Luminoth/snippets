@@ -7,23 +7,6 @@
     #define _CRTDBG_MAP_ALLOC
     #include <cstdlib>
     #include <crtdbg.h>
-
-    #define WIN32_LEAN_AND_MEAN
-    #define NOMINMAX    // fix min/max conflict
-    #include <Windows.h>
-    #include <Io.h>
-    #include <WinSock2.h>
-    #include <UserEnv.h>
-#else
-    #if defined __APPLE__
-        #include <AvailabilityMacros.h>
-    #endif
-
-    #include <sys/types.h>
-    #include <sys/stat.h>
-    #include <sys/time.h>
-    #include <unistd.h>
-    #include <strings.h>
 #endif
 
 #if defined _MSC_VER
@@ -83,7 +66,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/mpl/if.hpp>
-#include <boost/shared_array.hpp>
 #include <boost/thread.hpp>
 
 #if defined HAS_CALLGRIND_H
@@ -93,6 +75,29 @@
 #if defined USE_SSE
     // SSE3
     #include <pmmintrin.h>
+#endif
+
+#if defined WIN32
+    // fix min/max conflict
+    #define NOMINMAX
+    using std::min;
+    using std::max;
+
+    #define WIN32_LEAN_AND_MEAN
+    #include <Windows.h>
+    #include <Io.h>
+    #include <WinSock2.h>
+    #include <UserEnv.h>
+#else
+    #if defined __APPLE__
+        #include <AvailabilityMacros.h>
+    #endif
+
+    #include <sys/types.h>
+    #include <sys/stat.h>
+    #include <sys/time.h>
+    #include <unistd.h>
+    #include <strings.h>
 #endif
 
 static const int MAX_BUFFER = 1024;

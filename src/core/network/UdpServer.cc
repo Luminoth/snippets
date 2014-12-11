@@ -144,7 +144,7 @@ void UdpServer::read_data()
         }
 
         // copy what we read into a dynamic buffer
-        boost::shared_array<Socket::BufferType> data(new Socket::BufferType[recvd.first]);
+        std::shared_ptr<Socket::BufferType> data(new Socket::BufferType[recvd.first]);
         std::memcpy(data.get(), buffer.data(), recvd.first);
 
         // append the chunk

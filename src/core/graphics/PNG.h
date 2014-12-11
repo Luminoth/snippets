@@ -7,9 +7,6 @@ namespace energonsoftware {
 
 class PNG : public Texture
 {
-public:
-    static void destroy(PNG* const texture, MemoryAllocator* const allocator);
-
 private:
     static Logger& logger;
 

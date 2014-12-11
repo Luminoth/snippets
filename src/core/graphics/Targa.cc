@@ -4,12 +4,6 @@
 
 namespace energonsoftware {
 
-void Targa::destroy(Targa* const texture, MemoryAllocator* const allocator)
-{
-    texture->~Targa();
-    operator delete(texture, *allocator);
-}
-
 Targa::Targa()
     : Texture(), _header(), _width(0), _height(0), _bpp(0)
 {

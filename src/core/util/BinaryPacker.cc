@@ -380,7 +380,7 @@ Unpacker& BinaryUnpacker::unpack(bool& v, const std::string& name) throw(PackerE
 {
     int b;
     unpack(b, name);
-    v = static_cast<bool>(b);
+    v = 0 != b;
     return *this;
 }
 

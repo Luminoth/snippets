@@ -1,41 +1,6 @@
 #if !defined __MEMORYALLOCATOR_H__
 #define __MEMORYALLOCATOR_H__
 
-/*
-Example:
-
-Object::destroy/destroy_array calls the appropriate destructor and delete operator
-* allocator is held as a pointer (required for std::bind)
-    eg - Object->~Object(); operator delete(obj, *allocator)
-    eg - for(object : objs) { object->~Object(); } operator delete[](objs, *allocator)
-        * NOTE: this should ideally be done in reverse order to match creation semantics
-    eg - Object->~Object(); operator delete(obj, alignment, *allocator)
-    eg - for(object : objs) { object->~Object(); } operator delete[](objs, alignment, *allocator)
-        * NOTE: this should ideally be done in reverse order to match creation semantics
-
-DerivedAllocator allocator(500 * 1024 * 1024);    // allocate 500MB
-std::shared_ptr<Object> obj1(new(allocator) Object(), std::bind(&Object::destroy_object, std::placeholders::_1, &allocator));
-std::shared_ptr<Object> obj2(new(alignment, allocator) Object(), std::bind(&Object::destroy_object, std::placeholders::_1, alignment, &allocator));
-...
-obj2.reset();
-obj1.reset();
-allocator.reset();
-
-Arrays of objects must be allocated specially:
-    boost::shared_array<Object> objects1(reinterpret_cast<Object*>(allocator.allocate(sizeof(Object) * count)),
-        std::bind(&Object::destroy_array, std::placeholders::_1, count, &allocator));
-    Object::assign_array(objects1.get(), count);
-
-    boost::shared_array<Object> objects2(reinterpret_cast<Object*>(allocator.allocate_aligned(sizeof(Object) * count, alignment)),
-        std::bind(&Object::destroy_array, std::placeholders::_1, count, alignment, &allocator));
-    Object::assign_array(objects2.get(), count);
-
-This is necessary to work around compilers storing the size of the array in memory.
-
-For objects that don't require a destructor call, allocator.release() may be called directly:
-    boost::shared_array<unsigned char> data(new(allocator) unsigned char[size], std::bind(&MemoryAllocator::release, &allocator, std::placeholders::_1));
-*/
-
 namespace energonsoftware {
 
 class MemoryAllocator
@@ -103,6 +68,148 @@ private:
     DISALLOW_COPY_AND_ASSIGN(MemoryAllocator);
 };
 
+// unaligned allocators/deleters
+template<typename T>
+T* MemoryAllocator_new(size_t count, MemoryAllocator& allocator)
+{
+    T* objs = reinterpret_cast<T*>(allocator.allocate(sizeof(T) * count));
+
+    T *obj = objs, *end = objs + count;
+    while(obj != end) {
+        new(obj) T();
+        obj++;
+    }
+
+    return objs;
+}
+
+template<typename T, typename E=void>
+class MemoryAllocator_delete;
+
+template<typename T>
+class MemoryAllocator_delete<T, typename std::enable_if<std::is_class<T>::value>::type>
+{
+public:
+    explicit MemoryAllocator_delete(MemoryAllocator* allocator)
+        : _allocator(allocator)
+    {
+    }
+
+public:
+    void operator()(T* ptr) const
+    {
+        ptr->~T();
+        operator delete(ptr, *_allocator);
+    }
+
+private:
+    MemoryAllocator* _allocator;
+
+private:
+    MemoryAllocator_delete() = delete;
+};
+
+template<typename T>
+class MemoryAllocator_delete<T[], typename std::enable_if<std::is_class<T>::value>::type>
+{
+public:
+    MemoryAllocator_delete(size_t count, MemoryAllocator* allocator)
+        : _count(count), _allocator(allocator)
+    {
+    }
+
+public:
+    void operator()(T* ptr) const
+    {
+        T* current = ptr + _count;
+        while(current > ptr) {
+            (--current)->~T();
+        }
+        operator delete[](ptr, *_allocator);
+    }
+
+    template<typename U>
+    void operator()(U* ptr) const = delete;
+
+private:
+    size_t _count;
+    MemoryAllocator* _allocator;
+
+private:
+    MemoryAllocator_delete() = delete;
+};
+
+// aligned allocators/deleters
+template<typename T, size_t align>
+T* MemoryAllocator_new_aligned(size_t count, MemoryAllocator& allocator)
+{
+    T* objs = reinterpret_cast<T*>(allocator.allocate_aligned(sizeof(T) * count, align));
+
+    T *obj = objs, *end = objs + count;
+    while(obj != end) {
+        new(obj) T();
+        obj++;
+    }
+
+    return objs;
+}
+
+template<typename T, size_t align, typename E=void>
+class MemoryAllocator_delete_aligned;
+
+template<typename T, size_t align>
+class MemoryAllocator_delete_aligned<T, align, typename std::enable_if<std::is_class<T>::value>::type>
+{
+public:
+    explicit MemoryAllocator_delete_aligned(MemoryAllocator* allocator)
+        : _allocator(allocator)
+    {
+    }
+
+public:
+    void operator()(T* ptr) const
+    {
+        ptr->~T();
+        operator delete(ptr, align, *_allocator);
+    }
+
+private:
+    MemoryAllocator* _allocator;
+
+private:
+    MemoryAllocator_delete_aligned() = delete;
+};
+
+template<typename T, size_t align>
+class MemoryAllocator_delete_aligned<T[], align, typename std::enable_if<std::is_class<T>::value>::type>
+{
+public:
+    MemoryAllocator_delete_aligned(size_t count, MemoryAllocator* allocator)
+        : _count(count), _allocator(allocator)
+    {
+    }
+
+public:
+    void operator()(T* ptr) const
+    {
+        T* current = ptr + _count;
+        while(current > ptr) {
+            (--current)->~T();
+        }
+        operator delete[](ptr, align, *_allocator);
+    }
+
+    template<class U>
+    void operator()(U* ptr) const = delete;
+
+private:
+    size_t _count;
+    MemoryAllocator* _allocator;
+
+private:
+    MemoryAllocator_delete_aligned() = delete;
+};
+
 }
 
 // NOTE: these only free the *memory*, not the *object* (if there is one)
@@ -159,9 +266,16 @@ inline void operator delete[](void* mem, size_t alignment, energonsoftware::Memo
 /*
 Implementers should implement the following tests:
 
-CPPUNIT_TEST(test_allocate);
+CPPUNIT_TEST(test_allocate_nosmart);
+CPPUNIT_TEST(test_allocate_shared);
+CPPUNIT_TEST(test_allocate_unique);
+
 CPPUNIT_TEST(test_allocate_object);
-CPPUNIT_TEST(test_allocate_aligned);
+
+CPPUNIT_TEST(test_allocate_aligned_nosmart);
+CPPUNIT_TEST(test_allocate_aligned_shared);
+CPPUNIT_TEST(test_allocate_aligned_unique);
+
 CPPUNIT_TEST(test_allocate_object_aligned);
 */
 
@@ -175,9 +289,16 @@ public:
     void setUp();
     void tearDown();
 
-    void test_allocate();
+    void test_allocate_nosmart();
+    void test_allocate_shared();
+    void test_allocate_unique();
+
     void test_allocate_object();
-    void test_allocate_aligned();
+
+    void test_allocate_aligned_nosmart();
+    void test_allocate_aligned_shared();
+    void test_allocate_aligned_unique();
+
     void test_allocate_object_aligned();
 
 private:

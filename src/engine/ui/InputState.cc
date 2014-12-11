@@ -25,12 +25,6 @@ InputState::GamePadState::~GamePadState() noexcept
 {
 }
 
-void InputState::destroy(InputState* const state, MemoryAllocator* const allocator)
-{
-    state->~InputState();
-    operator delete(state, 16, *allocator);
-}
-
 InputState::InputState()
     : _mouse_state(), _gamepad_state()
 {

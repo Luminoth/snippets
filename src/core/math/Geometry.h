@@ -7,10 +7,6 @@ namespace energonsoftware {
 
 struct Vertex
 {
-    static void destroy(Vertex* const vertex, MemoryAllocator* const allocator);
-    static Vertex* create_array(size_t count, MemoryAllocator& allocator);
-    static void destroy_array(Vertex* const vertices, size_t count, MemoryAllocator* const allocator);
-
     int index;
     Position position;
     Vector3 normal, tangent, bitangent;
@@ -27,10 +23,6 @@ struct Vertex
 
 struct Triangle
 {
-    static void destroy(Triangle* const triangle, MemoryAllocator* const allocator);
-    static Triangle* create_array(size_t count, MemoryAllocator& allocator);
-    static void destroy_array(Triangle* const triangles, size_t count, MemoryAllocator* const allocator);
-
     int index;
     int v1, v2, v3;
     Vector3 normal;
@@ -41,10 +33,6 @@ struct Triangle
 
 struct Weight
 {
-    static void destroy(Weight* const weight, MemoryAllocator* const allocator);
-    static Weight* create_array(size_t count, MemoryAllocator& allocator);
-    static void destroy_array(Weight* const weight, size_t count, MemoryAllocator* const allocator);
-
     int index;
     int joint;
     float weight;
@@ -57,10 +45,6 @@ struct Weight
 
 struct Edge
 {
-    /*static void destroy(Edge* const edge, MemoryAllocator* const allocator);
-    static Edge* create_array(size_t count, MemoryAllocator& allocator);
-    static void destroy_array(Edge* const edge, size_t count, MemoryAllocator* const allocator);*/
-
     int v1, v2;
     int t1, t2;
 
@@ -74,9 +58,6 @@ void compute_tangents(Triangle* const triangles, size_t triange_count, Vertex* c
 
 class Geometry
 {
-public:
-    static void destroy(Geometry* const weight, MemoryAllocator* const allocator);
-
 public:
     explicit Geometry(size_t vertex_count, MemoryAllocator& allocator);
     Geometry(const Vertex* const vertices, size_t vertex_count, MemoryAllocator& allocator);
@@ -123,20 +104,20 @@ private:
     size_t _vertex_count;
 
     size_t _vertex_buffer_size;
-    boost::shared_array<float> _vertex_buffer;
+    std::shared_ptr<float> _vertex_buffer;
 
     size_t _normal_buffer_size;
-    boost::shared_array<float> _normal_buffer;
+    std::shared_ptr<float> _normal_buffer;
 
     size_t _tangent_buffer_size;
-    boost::shared_array<float> _tangent_buffer;
+    std::shared_ptr<float> _tangent_buffer;
 
     size_t _texture_buffer_size;
-    boost::shared_array<float> _texture_buffer;
+    std::shared_ptr<float> _texture_buffer;
 
     // debugging stuffs
-    boost::shared_array<float> _normal_line_buffer;
-    boost::shared_array<float> _tangent_line_buffer;
+    std::shared_ptr<float> _normal_line_buffer;
+    std::shared_ptr<float> _tangent_line_buffer;
 
 private:
     Geometry();

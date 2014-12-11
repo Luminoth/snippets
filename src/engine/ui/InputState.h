@@ -29,9 +29,6 @@ private:
     };
 
 public:
-    static void destroy(InputState* const state, MemoryAllocator* const allocator);
-
-public:
     virtual ~InputState() noexcept;
 
 public:

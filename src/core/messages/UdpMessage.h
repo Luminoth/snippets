@@ -10,7 +10,7 @@ namespace energonsoftware {
 class UdpMessage : public BufferedMessage
 {
 public:
-    typedef std::pair<size_t, boost::shared_array<Socket::BufferType> > UdpMessageChunk;
+    typedef std::pair<size_t, std::shared_ptr<Socket::BufferType>> UdpMessageChunk;
 
 public:
     static const unsigned int MAX_PACKET_ID;
@@ -45,7 +45,7 @@ private:
     void calculate_chunkcounts();
 
 private:
-    boost::shared_array<Socket::BufferType> _packet;
+    boost::shared_ptr<Socket::BufferType> _packet;
     size_t _len;
     unsigned int _packetid;
     unsigned int _mtu;

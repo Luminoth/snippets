@@ -51,10 +51,18 @@ class SystemAllocatorTest : public MemoryAllocatorTest
 {
 public:
     CPPUNIT_TEST_SUITE(SystemAllocatorTest);
-        CPPUNIT_TEST(test_allocate);
+        CPPUNIT_TEST(test_allocate_nosmart);
+        CPPUNIT_TEST(test_allocate_shared);
+        CPPUNIT_TEST(test_allocate_unique);
+
         CPPUNIT_TEST(test_allocate_object);
-        CPPUNIT_TEST(test_allocate_aligned);
+
+        CPPUNIT_TEST(test_allocate_aligned_nosmart);
+        CPPUNIT_TEST(test_allocate_aligned_shared);
+        CPPUNIT_TEST(test_allocate_aligned_unique);
+
         CPPUNIT_TEST(test_allocate_object_aligned);
+
         CPPUNIT_TEST_EXCEPTION(test_unreasonable_allocation, std::bad_alloc);
     CPPUNIT_TEST_SUITE_END();
 
