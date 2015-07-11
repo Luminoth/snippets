@@ -47,15 +47,15 @@ public:
     virtual ~Targa() noexcept;
 
 public:
-    virtual size_t width() const { return _width; }
-    virtual size_t height() const { return _height; }
-    virtual size_t bpp() const { return _bpp; }
+    virtual size_t width() const override { return _width; }
+    virtual size_t height() const override { return _height; }
+    virtual size_t bpp() const override { return _bpp; }
 
 public:
-    virtual bool load(const boost::filesystem::path& filename, MemoryAllocator& allocator);
-    virtual void unload() noexcept;
+    virtual bool load(const boost::filesystem::path& filename, MemoryAllocator& allocator) override;
+    virtual void unload() noexcept override;
 
-    virtual bool save(const boost::filesystem::path& filename) const;
+    virtual bool save(const boost::filesystem::path& filename) const override;
 
 private:
     Header _header;

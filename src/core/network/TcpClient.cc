@@ -45,7 +45,7 @@ void TcpClient::disconnect(const Socket::BufferType* packet, size_t len)
     if(connected()) {
         LOG_INFO("Disconnecting...\n");
         if(nullptr != packet && len > 0) {
-            std::string encoded(encode_packet((char*)packet, len));
+            std::string encoded(encode_packet(const_cast<char*>(packet), len));
             _socket.send(reinterpret_cast<const Socket::BufferType*>(encoded.c_str()), encoded.length());
         }
     }
@@ -130,11 +130,11 @@ void TcpClient::read_data()
 void TcpClient::write_data()
 {
     while(connected() && !buffer_empty()) {
-        bool success = false;
+        bool success;
 
         const Socket::BufferType* message = current_buffer();
         if(current_buffer_encoded()) {
-            std::string encoded(encode_packet((char*)message, current_buffer_len()));
+            std::string encoded(encode_packet(const_cast<char*>(message), current_buffer_len()));
             success = send(reinterpret_cast<const Socket::BufferType*>(encoded.c_str()), encoded.length());
         } else {
             success = send(reinterpret_cast<const Socket::BufferType*>(message), current_buffer_len());

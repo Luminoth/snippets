@@ -1,6 +1,5 @@
 #include "src/pch.h"
 #include "src/core/util/Packer.h"
-#include "src/core/util/util.h"
 #include "BinaryMessage.h"
 
 namespace energonsoftware {

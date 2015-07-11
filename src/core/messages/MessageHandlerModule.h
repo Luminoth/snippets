@@ -1,7 +1,6 @@
 #if !defined __MESSAGEHANDLERMODULE_H__
 #define __MESSAGEHANDLERMODULE_H__
 
-#include "BinaryMessage.h"
 #include "BufferedMessage.h"
 #include "MessageHandler.h"
 
@@ -41,7 +40,7 @@ public:
     virtual ~XmlMessageHandlerModule() noexcept {}
 
 public:
-    virtual BufferedMessageType msg_type() const { return BufferedMessageType::Xml; }
+    virtual BufferedMessageType msg_type() const override { return BufferedMessageType::Xml; }
     virtual std::string xml_type() const = 0;
 
 private:
@@ -55,7 +54,7 @@ public:
     virtual ~BinaryMessageHandlerModule() noexcept {}
 
 public:
-    virtual BufferedMessageType msg_type() const { return BufferedMessageType::Binary; }
+    virtual BufferedMessageType msg_type() const override { return BufferedMessageType::Binary; }
     virtual uint32_t bin_type() const = 0;
 
 private:
@@ -72,10 +71,10 @@ public:
     virtual ~TestMessageHandlerModule() noexcept {}
 
 public:
-    virtual std::string xml_type() const { return "test"; }
+    virtual std::string xml_type() const override { return "test"; }
 
     virtual bool handle_message(const energonsoftware::BufferedMessage& message, energonsoftware::MessageHandler& handler,
-        energonsoftware::BufferedSender* session=nullptr) throw(energonsoftware::MessageHandlerModuleError)
+        energonsoftware::BufferedSender* session=nullptr) throw(energonsoftware::MessageHandlerModuleError) override
     { return true; }
 
 private:

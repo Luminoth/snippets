@@ -43,7 +43,7 @@ public:
 
     Point3 closest_point(const Point3& point) const;
 
-    std::string str() const;
+    std::string str() const override;
 
 public:
     friend AABB operator+(const Position& lhs, const AABB& rhs) { return AABB(lhs + rhs._minimum, lhs + rhs._maximum); }

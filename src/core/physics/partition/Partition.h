@@ -11,7 +11,7 @@ class PartitionError : public std::exception
 public:
     explicit PartitionError(const std::string& what) noexcept : _what(what) { }
     virtual ~PartitionError() noexcept {}
-    virtual const char* what() const noexcept { return _what.c_str(); }
+    virtual const char* what() const noexcept override { return _what.c_str(); }
 
 protected:
     std::string _what;
@@ -175,7 +175,7 @@ private:
     B _container;
 
 private:
-    Partition();
+    Partition() = delete;
     DISALLOW_COPY_AND_ASSIGN(Partition);
 };
 

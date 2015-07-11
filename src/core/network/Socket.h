@@ -15,7 +15,7 @@ class SocketError : public std::exception
 public:
     explicit SocketError(const std::string& what) noexcept : _what(what) {}
     virtual ~SocketError() noexcept {}
-    virtual const char* what() const noexcept { return _what.c_str(); }
+    virtual const char* what() const noexcept override { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -149,7 +149,7 @@ public:
 
 public:
     // calls ::connect()
-    bool connect(const std::string& host, unsigned short port) throw(SocketError);
+    virtual bool connect(const std::string& host, unsigned short port) throw(SocketError);
 
     // these assume connect() has been called (they use a nullptr dest address)
     // and compensates for incomplete sends
@@ -181,7 +181,7 @@ public:
     virtual ~ServerSocket() noexcept;
 
 public:
-    bool connect(const std::string& host, unsigned short port) throw(SocketError)
+    virtual bool connect(const std::string& host, unsigned short port) throw(SocketError) override
         { throw SocketError("Invalid connect() on a server socket"); }
 
     // calls ::bind()

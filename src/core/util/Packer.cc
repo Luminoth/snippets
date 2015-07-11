@@ -30,13 +30,13 @@ std::shared_ptr<Packer> Packer::new_packer(PackerType type, const boost::any& da
     switch(type)
     {
     case PackerType::Simple:
-        return std::shared_ptr<Packer>(new SimplePacker());
+        return std::static_pointer_cast<Packer>(std::make_shared<SimplePacker>());
     case PackerType::Binary:
-        return std::shared_ptr<Packer>(new BinaryPacker());
+        return std::static_pointer_cast<Packer>(std::make_shared<BinaryPacker>());
     /*case PackerType::Protobuf:
         return std::shared_ptr<Packer>(new ProtoBufPacker(boost::any_cast<ProtoBufPackerType>(data)));*/
     case PackerType::XML:
-        return std::shared_ptr<Packer>(new XmlPacker());
+        return std::static_pointer_cast<Packer>(std::make_shared<XmlPacker>());
     }
 
     LOG_ERROR("Unknown packer type: " << type_to_str(type) << "\n");
@@ -56,13 +56,13 @@ std::shared_ptr<Unpacker> Unpacker::new_unpacker(const std::string& obj, PackerT
     switch(type)
     {
     case PackerType::Simple:
-        return std::shared_ptr<Unpacker>(new SimpleUnpacker(obj));
+        return std::static_pointer_cast<Unpacker>(std::make_shared<SimpleUnpacker>(obj));
     case PackerType::Binary:
-        return std::shared_ptr<Unpacker>(new BinaryUnpacker(obj));
+        return std::static_pointer_cast<Unpacker>(std::make_shared<BinaryUnpacker>(obj));
     /*case PackerType::Protobuf:
         return std::shared_ptr<Unpacker>(new ProtoBufUnpacker(boost::any_cast<ProtoBufPackerType>(data), obj));*/
     case PackerType::XML:
-        return std::shared_ptr<Unpacker>(new XmlUnpacker(obj));
+        return std::static_pointer_cast<Unpacker>(std::make_shared<XmlUnpacker>(obj));
     }
 
     LOG_ERROR("Unknown packer type: " << Packer::type_to_str(type) << "\n");
@@ -74,13 +74,13 @@ std::shared_ptr<Unpacker> Unpacker::new_unpacker(const unsigned char* obj, size_
     switch(type)
     {
     case PackerType::Simple:
-        return std::shared_ptr<Unpacker>(new SimpleUnpacker(obj, len));
+        return std::static_pointer_cast<Unpacker>(std::make_shared<SimpleUnpacker>(obj, len));
     case PackerType::Binary:
-        return std::shared_ptr<Unpacker>(new BinaryUnpacker(obj, len));
+        return std::static_pointer_cast<Unpacker>(std::make_shared<BinaryUnpacker>(obj, len));
     /*case PackerType::Protobuf:
         return std::shared_ptr<Unpacker>(new ProtoBufUnpacker(boost::any_cast<ProtoBufPackerType>(data), obj, len));*/
     case PackerType::XML:
-        return std::shared_ptr<Unpacker>(new XmlUnpacker(obj, len));
+        return std::static_pointer_cast<Unpacker>(std::make_shared<XmlUnpacker>(obj, len));
     }
 
     LOG_ERROR("Unknown packer type: " << Packer::type_to_str(type) << "\n");
@@ -158,7 +158,7 @@ private:
         CPPUNIT_ASSERT(static_cast<bool>(packer));
 
         packer->pack(std::string("std::string"), "test_string1");
-        packer->pack((const char*)"oh hi", "test_string2");
+        packer->pack(static_cast<const char*>("oh hi"), "test_string2");
         packer->pack(static_cast<int32_t>(-20), "test_int");
         packer->pack(static_cast<uint32_t>(12), "test_uint");
         packer->pack(static_cast<int64_t>(-100), "test_long");

@@ -2,7 +2,6 @@
 #if defined WITH_TLS
 //#include <gnutls/extra.h>
 #include "TLSSocket.h"
-#include "network_util.h"
 
 static const int KX_PRIORITIES[] = { GNUTLS_KX_SRP, 0 };
 
@@ -24,13 +23,13 @@ TLSSocket::TLSSocket(const ClientSocket& socket)
 
 TLSSocket::~TLSSocket() noexcept
 {
-    boost::lock_guard<boost::mutex> guard(_tls_lock);
+    std::lock_guard<std::mutex> guard(_tls_lock);
     gnutls_global_deinit();
 }
 
 bool TLSSocket::handshake_srp_client(const std::string& username, const std::string& password)
 {
-    boost::lock_guard<boost::mutex> guard(_tls_lock);
+    std::lock_guard<std::mutex> guard(_tls_lock);
 
     // set the credentials
     gnutls_srp_client_credentials_t credentials;
@@ -47,7 +46,7 @@ bool TLSSocket::handshake_srp_client(const std::string& username, const std::str
     // set the credentials
     gnutls_credentials_set(_tls_session, GNUTLS_CRD_SRP, credentials);
 
-    gnutls_transport_set_ptr(_tls_session, (gnutls_transport_ptr_t)socket());
+    gnutls_transport_set_ptr(_tls_session, reinterpret_cast<gnutls_transport_ptr_t>(socket()));
 
     // handshake the server
     int ret = gnutls_handshake(_tls_session);
@@ -69,7 +68,7 @@ bool TLSSocket::handshake_srp_client(const std::string& username, const std::str
 
 bool TLSSocket::handshake_srp_server(const boost::filesystem::path& password_file, const boost::filesystem::path& password_conf_file)
 {
-    boost::lock_guard<boost::mutex> guard(_tls_lock);
+    std::lock_guard<std::mutex> guard(_tls_lock);
 
     // set the credentials
     gnutls_srp_server_credentials_t credentials;
@@ -89,7 +88,7 @@ bool TLSSocket::handshake_srp_server(const boost::filesystem::path& password_fil
     // set the credentials
     gnutls_credentials_set(_tls_session, GNUTLS_CRD_SRP, credentials);
 
-    gnutls_transport_set_ptr(_tls_session, (gnutls_transport_ptr_t)socket());
+    gnutls_transport_set_ptr(_tls_session, reinterpret_cast<gnutls_transport_ptr_t>(socket()));
 
     // handshake the client
     int ret = gnutls_handshake(_tls_session);
@@ -112,7 +111,7 @@ bool TLSSocket::handshake_srp_server(const boost::filesystem::path& password_fil
 size_t TLSSocket::do_send(const Socket::BufferType* buffer, size_t len, int flags)
 {
     if(encrypted()) {
-        boost::lock_guard<boost::mutex> guard(_tls_lock);
+        std::lock_guard<std::mutex> guard(_tls_lock);
         do {
             int rval = gnutls_record_send(_tls_session, buffer, len);
             if(rval == GNUTLS_E_INTERRUPTED || rval == GNUTLS_E_AGAIN) {
@@ -127,7 +126,7 @@ size_t TLSSocket::do_send(const Socket::BufferType* buffer, size_t len, int flag
 size_t TLSSocket::do_recv(Socket::BufferType* buffer, size_t len, int flags)
 {
     if(encrypted()) {
-        boost::lock_guard<boost::mutex> guard(_tls_lock);
+        std::lock_guard<std::mutex> guard(_tls_lock);
         do {
             int rval = gnutls_record_recv(_tls_session, buffer, len);
             if(rval == GNUTLS_E_INTERRUPTED || rval == GNUTLS_E_AGAIN) {
@@ -142,7 +141,7 @@ size_t TLSSocket::do_recv(Socket::BufferType* buffer, size_t len, int flags)
 int TLSSocket::do_shutdown(int how)
 {
     if(encrypted()) {
-        boost::lock_guard<boost::mutex> guard(_tls_lock);
+        std::lock_guard<std::mutex> guard(_tls_lock);
         int ret = gnutls_bye(_tls_session, GNUTLS_SHUT_RDWR);   // TODO: don't ignore how
         gnutls_deinit(_tls_session);
         _encrypted = false;
@@ -153,7 +152,7 @@ int TLSSocket::do_shutdown(int how)
 
 void TLSSocket::init_tls() //throw(SocketError);
 {
-    boost::lock_guard<boost::mutex> guard(_tls_lock);
+    std::lock_guard<std::mutex> guard(_tls_lock);
     /*if(!gnutls_check_version(LIBGNUTLS_VERSION)) {
         throw SocketError("Incorrect GnuTLS version!");
     }*/

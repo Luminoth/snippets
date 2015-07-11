@@ -67,7 +67,7 @@ public:
     bool operator==(unsigned long lhs) { return _sessionid == lhs; }
 
 private:
-    TcpSession();
+    TcpSession() = delete;
     DISALLOW_COPY_AND_ASSIGN(TcpSession);
 };
 

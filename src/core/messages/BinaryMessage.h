@@ -37,7 +37,7 @@ public:
     uint32_t type() const { return _type; }
     const Payload& payload() const { return _payload; }
 
-    virtual BufferedMessageType msg_type() const { return BufferedMessageType::Binary; }
+    virtual BufferedMessageType msg_type() const override { return BufferedMessageType::Binary; }
 
     virtual void serialize(Packer& packer) const throw(SerializationError) override;
     virtual void deserialize(Unpacker& unpacker) throw(SerializationError) override;
@@ -62,8 +62,8 @@ protected:
 private:
     size_t unpack_message_len(Unpacker& unpacker) const;
     void complete(bool complete) { _complete = complete; }
-    virtual const unsigned char* data() /*const*/;
-    virtual size_t data_len() const;
+    virtual const unsigned char* data() /*const*/ override;
+    virtual size_t data_len() const override;
 
 protected:
     Payload _payload;

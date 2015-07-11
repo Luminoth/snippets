@@ -49,7 +49,7 @@ public:
         size_t _len;
 
     private:
-        FactoryMessage();
+        FactoryMessage() = delete;
         DISALLOW_COPY_AND_ASSIGN(FactoryMessage);
     };
 

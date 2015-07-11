@@ -10,7 +10,7 @@ class ConfigurationError : public std::exception
 public:
     explicit ConfigurationError(const std::string& what) noexcept : _what(what) {}
     virtual ~ConfigurationError() noexcept {}
-    virtual const char* what() const noexcept { return _what.c_str(); }
+    virtual const char* what() const noexcept override { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -134,7 +134,7 @@ public:
 
     virtual uint32_t logging_type() const final;
     virtual Logger::Level logging_level() const final;
-    virtual const boost::filesystem::path logging_filename() const final { return get("logging", "filename"); }
+    virtual boost::filesystem::path logging_filename() const final { return get("logging", "filename"); }
 
     virtual iterator begin() final { return _map.begin(); }
     virtual iterator end() final { return _map.end(); }

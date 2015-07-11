@@ -7,7 +7,7 @@ namespace energonsoftware {
 Logger& ThreadPool::logger(Logger::instance("energonsoftware.core.thread.ThreadPool"));
 
 ThreadPool::ThreadPool(size_t size)
-    : boost::recursive_mutex(), _size(size), _thread_group(), _threads(), _running(false), _work()
+    : std::recursive_mutex(), _size(size), _threads(), _running(false), _work()
 {
 }
 
@@ -18,7 +18,7 @@ ThreadPool::~ThreadPool() noexcept
 
 void ThreadPool::start(const ThreadFactory& factory)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     stop();
 
@@ -31,8 +31,7 @@ void ThreadPool::start(const ThreadFactory& factory)
         std::shared_ptr<BaseThread> thread(factory.new_thread(this));
         thread->start();
 
-        std::shared_ptr<boost::thread> native(thread->release());
-        _thread_group.add_thread(native.get());
+        std::shared_ptr<std::thread> native(thread->release());
         _threads.push_back(native);
     }
     _running = true;
@@ -40,21 +39,21 @@ void ThreadPool::start(const ThreadFactory& factory)
 
 void ThreadPool::push_work(std::shared_ptr<BaseJob> job)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     _work.push(job);
 }
 
 bool ThreadPool::has_work()
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     return !_work.empty();
 }
 
 std::shared_ptr<BaseJob> ThreadPool::pop_work()
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     std::shared_ptr<BaseJob> ret(_work.top());
     _work.pop();
@@ -63,12 +62,13 @@ std::shared_ptr<BaseJob> ThreadPool::pop_work()
 
 void ThreadPool::stop()
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     if(running()) {
         LOG_INFO("Waiting for " << _size << " threads to finish...\n");
-        _thread_group.interrupt_all();
-        _thread_group.join_all();
+        for(auto thread : _threads) {
+            thread->join();
+        }
         LOG_DEBUG("Finished!\n");
     }
     _running = false;

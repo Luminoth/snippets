@@ -10,7 +10,7 @@ class PackerError : public std::exception
 public:
     explicit PackerError(const std::string& what) noexcept : _what(what) {}
     virtual ~PackerError() noexcept {}
-    virtual const char* what() const noexcept { return _what.c_str(); }
+    virtual const char* what() const noexcept override { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -119,7 +119,7 @@ public:
     virtual Packer& pack(float v, const std::string& name) throw(PackerError) = 0;
     virtual Packer& pack(double v, const std::string& name) throw(PackerError) = 0;
     virtual Packer& pack(bool v, const std::string& name) throw(PackerError) = 0;
-    virtual const std::string buffer() const = 0;
+    virtual std::string buffer() const = 0;
 
 private:
     DISALLOW_COPY_AND_ASSIGN(Packer);
@@ -262,7 +262,7 @@ protected:
     std::string _obj;
 
 private:
-    Unpacker();
+    Unpacker() = delete;
     DISALLOW_COPY_AND_ASSIGN(Unpacker);
 };
 

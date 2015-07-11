@@ -17,10 +17,10 @@ public:
     virtual ~HttpServer() noexcept;
 
 private:
-    virtual void on_packet(TcpSession& session);
+    virtual void on_packet(TcpSession& session) override;
 
 private:
-    HttpServer();
+    HttpServer() = delete;
     DISALLOW_COPY_AND_ASSIGN(HttpServer);
 };
 

@@ -1,5 +1,4 @@
 #include "src/pch.h"
-#include "src/core/util/util.h"
 #include "Event.h"
 
 namespace energonsoftware {
@@ -32,13 +31,13 @@ std::atomic_uint_least64_t Event::_next_id(0UL);
 
 Event::Event()
     : Serializable(), _id(0UL),
-        _timestamp(boost::posix_time::microsec_clock::universal_time()), _type()
+        _timestamp(std::chrono::system_clock::now()), _type()
 {
 }
 
 Event::Event(std::shared_ptr<EventType> type)
     : Serializable(), _id(next_id()),
-        _timestamp(boost::posix_time::microsec_clock::universal_time()), _type(type)
+        _timestamp(std::chrono::system_clock::now()), _type(type)
 {
 }
 
@@ -55,7 +54,8 @@ void Event::serialize(Packer& packer) const throw(SerializationError)
     Header().serialize(packer);
 
     packer.pack(_id, "id");
-    packer.pack(static_cast<uint64_t>(get_time(_timestamp)), "timestamp");
+    // TODO: fix this!
+    //packer.pack(static_cast<uint64_t>(get_time(_timestamp)), "timestamp");
 
     packer.pack(_type->type(), "type");
     packer.pack(_type->version(), "type_version");
@@ -68,9 +68,10 @@ void Event::deserialize(Unpacker& unpacker) throw(SerializationError)
 
     unpacker.unpack(_id, "id");
 
-    uint64_t timestamp;
+    // TODO: fix this!
+    /*uint64_t timestamp;
     unpacker.unpack(timestamp, "timestamp");
-    _timestamp = from_time(timestamp);
+    _timestamp = from_time(timestamp);*/
 
     uint32_t type;
     unpacker.unpack(type, "type");
@@ -94,7 +95,8 @@ void Event::deserialize(Unpacker& unpacker) throw(SerializationError)
 std::string Event::str() const
 {
     std::stringstream ss;
-    ss << "Event(id:" << _id << ", timestamp:" << boost::posix_time::to_simple_string(_timestamp);
+    // TODO: fix this!
+    ss << "Event(id:" << _id << ", timestamp:" << /*boost::posix_time::to_simple_string(_timestamp)*/"Not Available!";
     if(_type) {
         ss << ", type:" << _type->str();
     } else {

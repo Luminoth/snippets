@@ -24,7 +24,7 @@ class XmlNode final
 public:
     explicit XmlNode(const XmlString& name, const XmlAttributeMap& attributes=XmlAttributeMap());
     XmlNode(const XmlString& name, const XmlString& data, const XmlAttributeMap& attributes=XmlAttributeMap());
-    virtual ~XmlNode() noexcept;
+    ~XmlNode() noexcept;
 
     // NOTE: this sets the node's parent to nullptr
     // and copies the children and siblings of the node
@@ -79,7 +79,7 @@ private:
     XmlNode* _parent;
 
 private:
-    XmlNode();
+    XmlNode() = delete;
 
 public:
     friend xercesc::XMLFormatter& operator<<(xercesc::XMLFormatter& lhs, const XmlNode& rhs);

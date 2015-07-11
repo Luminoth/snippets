@@ -3,7 +3,6 @@
 
 #include "src/core/messages/BufferedMessage.h"
 #include "Socket.h"
-#include "network_util.h"
 
 namespace energonsoftware {
 
@@ -15,11 +14,11 @@ public:
     virtual ~StringMessage() noexcept;
 
 public:
-    virtual BufferedMessageType msg_type() const { return BufferedMessageType::String; }
+    virtual BufferedMessageType msg_type() const override { return BufferedMessageType::String; }
 
 private:
-    virtual const unsigned char* data() /*const*/ { return reinterpret_cast<unsigned char*>(_message.get()); }
-    virtual size_t data_len() const { return _len; }
+    virtual const unsigned char* data() /*const*/ override { return reinterpret_cast<unsigned char*>(_message.get()); }
+    virtual size_t data_len() const override { return _len; }
 
 private:
     std::shared_ptr<Socket::BufferType> _message;

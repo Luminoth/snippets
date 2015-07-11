@@ -1,10 +1,9 @@
 #include "src/pch.h"
-#include "src/core/network/network_util.h"
+#include "src/core/network/BufferedSender.h"
 #include "UdpMessage.h"
 
 namespace energonsoftware {
 
-const unsigned int UdpMessage::MAX_PACKET_ID = 9999;
 const unsigned int UdpMessage::MAX_CHUNKS = 99;
 const unsigned int UdpMessage::MAX_TTL = 99;
 
@@ -16,7 +15,7 @@ UdpMessage::UdpMessage(const Socket::BufferType* packet, size_t len, unsigned in
     : BufferedMessage(encode), _packet(), _len(len), _packetid(packetid),
         _mtu(mtu), _ttl(ttl), _chunkcount(0)
 {
-    if(_packetid > MAX_PACKET_ID) {
+    if(_packetid > BufferedSender::MAX_PACKET_ID) {
         throw std::runtime_error("Packet ids cannot be more than 4 digits");
     }
 
@@ -176,7 +175,7 @@ public:
     {
         std::string packet("invalid packetid");
         energonsoftware::UdpMessage message(reinterpret_cast<const energonsoftware::Socket::BufferType*>(packet.c_str()),
-            packet.length(), energonsoftware::UdpMessage::MAX_PACKET_ID * 10, 512, true);
+            packet.length(), energonsoftware::BufferedSender::MAX_PACKET_ID * 10, 512, true);
         test_chunks(message);
     }
 

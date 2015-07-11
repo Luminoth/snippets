@@ -231,7 +231,6 @@ def CheckCommonConfiguration(env, check_libs):
             CheckLibOrExit(conf, "boost_filesystem")
             CheckLibOrExit(conf, "boost_regex")
             CheckLibOrExit(conf, "boost_system")
-            CheckLibOrExit(conf, "boost_thread")
 
             if "unittest" in build_meta_targets:
                 CheckLibOrExit(conf, "cppunit")

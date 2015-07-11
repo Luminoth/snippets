@@ -38,7 +38,7 @@ public:
     {
     }
 
-    virtual ~UpdateProperty() noexcept {}
+    ~UpdateProperty() noexcept {}
 
 public:
     void clean() { _dirty = false; }

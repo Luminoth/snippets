@@ -31,7 +31,7 @@ private:
     uint32_t _size, _used;
 
 private:
-    SystemAllocator();
+    SystemAllocator() = delete;
     DISALLOW_COPY_AND_ASSIGN(SystemAllocator);
 };
 

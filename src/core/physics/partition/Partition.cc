@@ -33,7 +33,7 @@ private:
     std::string _name;
 
 private:
-    TestPartitionable();
+    TestPartitionable() = delete;
     DISALLOW_COPY_AND_ASSIGN(TestPartitionable);
 };
 
@@ -61,7 +61,7 @@ public:
     virtual ~PartitionTest() noexcept {}
 
 public:
-    void setUp()
+    void setUp() override
     {
         _allocator = energonsoftware::MemoryAllocator::new_allocator(energonsoftware::MemoryAllocator::Type::System, 100 * 1024 * 1024);
 

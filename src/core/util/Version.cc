@@ -13,17 +13,17 @@ Version::Version(const std::string& version)
     boost::tokenizer<boost::char_separator<char>>::iterator it = tok.begin();
     if(it != tok.end()) {
         _major = std::atoi(it->c_str());
-        it++;
+        ++it;
     }
 
     if(it != tok.end()) {
         _minor = std::atoi(it->c_str());
-        it++;
+        ++it;
     }
 
     if(it != tok.end()) {
         _maintenance = std::atoi(it->c_str());
-        it++;
+        ++it;
     }
 }
 

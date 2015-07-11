@@ -68,26 +68,26 @@ public:
     virtual ~Geometry() noexcept;
 
 public:
-    boost::recursive_mutex& mutex() { return _mutex; }
+    std::recursive_mutex& mutex() { return _mutex; }
 
     size_t vertex_count() const { return _vertex_count; }
 
     // NOTE: must lock before using these!
     size_t vertex_buffer_size() const { return _vertex_buffer_size; }
-    const float* const vertex_buffer() const { return _vertex_buffer.get(); }
+    const float* vertex_buffer() const { return _vertex_buffer.get(); }
 
     size_t normal_buffer_size() const { return _normal_buffer_size; }
-    const float* const normal_buffer() const { return _normal_buffer.get(); }
+    const float* normal_buffer() const { return _normal_buffer.get(); }
 
     size_t tangent_buffer_size() const { return _tangent_buffer_size; }
-    const float* const tangent_buffer() const { return _tangent_buffer.get(); }
+    const float* tangent_buffer() const { return _tangent_buffer.get(); }
 
     size_t texture_buffer_size() const { return _texture_buffer_size; }
-    const float* const texture_buffer() const { return _texture_buffer.get(); }
+    const float* texture_buffer() const { return _texture_buffer.get(); }
 
     // for debugging
-    const float* const normal_line_buffer() const { return _normal_line_buffer.get(); }
-    const float* const tangent_line_buffer() const { return _tangent_line_buffer.get(); }
+    const float* normal_line_buffer() const { return _normal_line_buffer.get(); }
+    const float* tangent_line_buffer() const { return _tangent_line_buffer.get(); }
 
     void copy_vertices(const Vertex* const vertices, size_t vertex_count, size_t start=0);
     void copy_triangles(const Triangle* const triangles, size_t triangle_count, const Vertex* const vertices, size_t vertex_count, size_t start=0);
@@ -99,7 +99,7 @@ private:
     void allocate_buffers(size_t triangle_count, size_t vertex_count, MemoryAllocator& allocator);
 
 private:
-    boost::recursive_mutex _mutex;
+    std::recursive_mutex _mutex;
 
     size_t _vertex_count;
 
@@ -120,7 +120,7 @@ private:
     std::shared_ptr<float> _tangent_line_buffer;
 
 private:
-    Geometry();
+    Geometry() = delete;
     DISALLOW_COPY_AND_ASSIGN(Geometry);
 };
 

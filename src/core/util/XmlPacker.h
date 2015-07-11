@@ -24,7 +24,7 @@ public:
     virtual Packer& pack(float v, const std::string& name) throw(PackerError) override;
     virtual Packer& pack(double v, const std::string& name) throw(PackerError) override;
     virtual Packer& pack(bool v, const std::string& name) throw(PackerError) override;
-    virtual const std::string buffer() const override { return _buffer.str(); }
+    virtual std::string buffer() const override { return _buffer.str(); }
 
 private:
     std::stringstream _buffer;
@@ -58,7 +58,7 @@ public:
     virtual bool done() const override;
 
 private:
-    virtual Unpacker& on_reset();
+    virtual Unpacker& on_reset() override;
 
 private:
     void whitespace();
@@ -70,7 +70,7 @@ private:
     unsigned int _position;
 
 private:
-    XmlUnpacker();
+    XmlUnpacker() = delete;
     DISALLOW_COPY_AND_ASSIGN(XmlUnpacker);
 };
 

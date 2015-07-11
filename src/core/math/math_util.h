@@ -5,8 +5,6 @@
 #define _USE_MATH_DEFINES
 #endif
 
-#include <cmath>
-
 namespace energonsoftware {
 
 // determine if a number is odd

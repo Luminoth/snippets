@@ -8,7 +8,7 @@ class Nonce final
 public:
     Nonce(const std::string& realm, int expiry);
     Nonce(const std::string& realm, const std::string& nonce, int expiry);
-    virtual ~Nonce() noexcept;
+    ~Nonce() noexcept;
 
 public:
     const std::string& realm() const { return _realm; }
@@ -29,7 +29,7 @@ private:
     long _creation_time;
 
 private:
-    Nonce();
+    Nonce() = delete;
 };
 
 }

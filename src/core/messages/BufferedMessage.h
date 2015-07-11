@@ -80,7 +80,7 @@ private:
     long _seqid;
 
 private:
-    BufferedMessage();
+    BufferedMessage() = delete;
 };
 
 }

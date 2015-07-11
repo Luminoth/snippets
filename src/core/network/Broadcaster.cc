@@ -43,7 +43,7 @@ void Broadcaster::on_handle_packet(const Socket::BufferType* packet, size_t len,
     LOG_DEBUG(bin2hex(reinterpret_cast<const unsigned char*>(packet), len) << "\n");
 
     try {
-        _message_parser.feed(XmlString(decode_packet((char*)packet, len)));
+        _message_parser.feed(XmlString(decode_packet(const_cast<char*>(packet), len)));
         if(!_message_parser.complete())
             return;
 

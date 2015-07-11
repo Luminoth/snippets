@@ -56,7 +56,7 @@ private:
     }
 
 private:
-    Octree();
+    Octree() = delete;
     DISALLOW_COPY_AND_ASSIGN(Octree);
 };
 

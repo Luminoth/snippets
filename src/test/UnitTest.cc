@@ -5,9 +5,7 @@
 #else
 #include <curses.h>
 #endif
-#include "src/core/common.h"
 #include "src/core/util/Random.h"
-#include "UnitTest.h"
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/TestResult.h>

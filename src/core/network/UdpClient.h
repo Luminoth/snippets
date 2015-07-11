@@ -42,8 +42,6 @@ public:
     // message should have been declared with new
     void buffer(BufferedMessage* message, int ttl=1);
 
-    unsigned long next_packet_id();
-
 protected:
     // override these
     virtual void on_connect() {}

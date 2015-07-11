@@ -84,7 +84,7 @@ private:
     }
 
 private:
-    KdTree();
+    KdTree() = delete;
     DISALLOW_COPY_AND_ASSIGN(KdTree);
 };
 
@@ -110,7 +110,7 @@ private:
     }
 
 private:
-    KdTree3();
+    KdTree3() = delete;
     DISALLOW_COPY_AND_ASSIGN(KdTree3);
 };
 

@@ -74,9 +74,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\common.cc">
-      <Filter>Source Files\core</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\logging\Logger.cc">
       <Filter>Source Files\core\logging</Filter>
     </ClCompile>

@@ -42,15 +42,18 @@
 #include <algorithm>
 #include <array>
 #include <atomic>
+#include <chrono>
 #include <functional>
 #include <iosfwd>
 #include <list>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <new>
 #include <queue>
 #include <sstream>
 #include <string>
+#include <thread>
 #include <type_traits>
 #include <unordered_map>
 #include <vector>
@@ -66,7 +69,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/mpl/if.hpp>
-#include <boost/thread.hpp>
 
 #if defined HAS_CALLGRIND_H
     #include <valgrind/callgrind.h>
@@ -103,7 +105,7 @@
 static const int MAX_BUFFER = 1024;
 
 #if defined WIN32
- // can remove this once VC++ gets its shit together
+// can remove this once VC++ gets its shit together (VS 2015!)
 #define noexcept throw()
 #endif
 
@@ -141,8 +143,8 @@ TypeName& operator=(TypeName&&) = default
     #define strcasecmp _stricmp
     //#define getcwd _getcwd
     #define chmod _chmod
-    //#define sleep(s) boost::this_thread::sleep(boost::posix_time::seconds(s))     // can't define this because sleep is a name in other places
-    #define usleep(u) boost::this_thread::sleep(boost::posix_time::microseconds(u))
+    //#define sleep(s) std::this_thread::sleep_for(std::chrono::seconds(s))       // can't define this because sleep is a name in other places
+    #define usleep(u) std::this_thread::sleep_for(std::chrono::microseconds(u))
 
     // guess we can't be thread-safe...
     #define asctime_r(t, b) asctime((t))
@@ -198,7 +200,6 @@ TypeName& operator=(TypeName&&) = default
     #define DIR_SEPARATOR "\\"
     #define EOL "\r\n"
 
-    // how stupid is this shit?
     #define POINT_IN 72     // 1 point = 1/72 inch
     #define TWIP_PT 20      // 1 twip = 1/20 point
     #define TWIP_IN 1440    // 1 twip = 1/1440 inch

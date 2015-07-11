@@ -8,7 +8,7 @@ class EventLoggerError : public std::exception
 public:
     explicit EventLoggerError(const std::string& what) noexcept : _what(what) {}
     virtual ~EventLoggerError() noexcept {}
-    virtual const char* what() const noexcept { return _what.c_str(); }
+    virtual const char* what() const noexcept override { return _what.c_str(); }
 
 private:
     std::string _what;

@@ -36,7 +36,7 @@ private:
         double _send_time;
 
     private:
-        UdpServerMessage();
+        UdpServerMessage() = delete;
         DISALLOW_COPY_AND_ASSIGN(UdpServerMessage);
     };
 
@@ -70,8 +70,6 @@ public:
     bool send(const std::string& message, ClientSocket& socket);
 
     void ack(unsigned long seqid);
-
-    unsigned long next_packet_id();
 
 protected:
     // override these

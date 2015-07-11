@@ -23,9 +23,9 @@ public:
     void buffer(BufferedMessage* message, int ttl=1, bool ack=false, unsigned int resend_time=0);
 
 protected:
-    virtual bool reuse_port() const { return true; }
-    virtual bool on_restart();
-    virtual void on_handle_packet(const Socket::BufferType* packet, size_t len, std::shared_ptr<ClientSocket> socket);
+    virtual bool reuse_port() const override { return true; }
+    virtual bool on_restart() override;
+    virtual void on_handle_packet(const Socket::BufferType* packet, size_t len, std::shared_ptr<ClientSocket> socket) override;
 
     // override this
     virtual bool enable_broadcast();
@@ -39,7 +39,7 @@ private:
     MessageHandler _message_handler;
 
 private:
-    Broadcaster();
+    Broadcaster() = delete;
     DISALLOW_COPY_AND_ASSIGN(Broadcaster);
 };
 

@@ -52,7 +52,8 @@ const DatabaseKey INVALID_DATABASE_KEY = 0;
 class ConnectionPool;
 class DatabaseConfiguration;
 
-class DatabaseConnection : public boost::recursive_mutex, public std::enable_shared_from_this<DatabaseConnection>
+// TODO: this should *not* inherit from std::recursive_mutex
+class DatabaseConnection : public std::recursive_mutex, public std::enable_shared_from_this<DatabaseConnection>
 {
 private:
     static Logger& logger;
@@ -124,7 +125,7 @@ private:
     std::shared_ptr<ConnectionPool> _pool;
 
 private:
-    DatabaseConnection();
+    DatabaseConnection() = delete;
     DISALLOW_COPY_AND_ASSIGN(DatabaseConnection);
 };
 

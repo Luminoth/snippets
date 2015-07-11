@@ -9,7 +9,7 @@ namespace energonsoftware {
 Logger& DatabaseConnection::logger(Logger::instance("energonsoftware.core.database.DatabaseConnection"));
 
 DatabaseConnection::DatabaseConnection(int64_t id, const DatabaseConfiguration& config, std::shared_ptr<ConnectionPool> pool) throw(DatabaseConnectionError)
-    : boost::recursive_mutex(), std::enable_shared_from_this<DatabaseConnection>(),
+    : std::recursive_mutex(), std::enable_shared_from_this<DatabaseConnection>(),
         _host(), _port(0), _id(id), _connected(false), _config(config), _pool(pool)
 {
     std::string vendor(this->config().database_vendor());
@@ -23,7 +23,7 @@ DatabaseConnection::~DatabaseConnection() noexcept
 
 void DatabaseConnection::connect() throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     if(!connected()) {
         std::string database(config().database_database());
@@ -45,7 +45,7 @@ void DatabaseConnection::connect() throw(DatabaseConnectionError)
 
 void DatabaseConnection::disconnect() throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     if(config().database_debug()) {
         LOG_DEBUG("Closing database (" << _id << ") connection...\n");
@@ -59,28 +59,28 @@ void DatabaseConnection::disconnect() throw(DatabaseConnectionError)
 
 bool DatabaseConnection::begin_transaction() throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     return on_begin_transaction();
 }
 
 bool DatabaseConnection::commit() throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     return on_commit();
 }
 
 bool DatabaseConnection::rollback() throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     return on_rollback();
 }
 
 bool DatabaseConnection::query(const std::string& query, std::pair<int, DatabaseResults>& results, bool silent) throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     if(!connected()) {
         return false;
@@ -105,7 +105,7 @@ bool DatabaseConnection::query(const std::string& query, std::pair<int, Database
 
 bool DatabaseConnection::query(const std::string& query, const std::vector<DatabaseValue>& params, std::pair<int, DatabaseResults>& results, bool silent) throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     if(!connected()) {
         return false;
@@ -130,7 +130,7 @@ bool DatabaseConnection::query(const std::string& query, const std::vector<Datab
 
 bool DatabaseConnection::execute(const std::string& query, bool silent) throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     std::pair<int, DatabaseResults> results;
     return this->query(query, results, silent);
@@ -138,7 +138,7 @@ bool DatabaseConnection::execute(const std::string& query, bool silent) throw(Da
 
 bool DatabaseConnection::execute(const std::string& query, const std::vector<DatabaseValue>& params, bool silent) throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     std::pair<int, DatabaseResults> results;
     return this->query(query, params, results, silent);
@@ -146,14 +146,14 @@ bool DatabaseConnection::execute(const std::string& query, const std::vector<Dat
 
 DatabaseKey DatabaseConnection::insert_id() throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     return on_insert_id();
 }
 
 void DatabaseConnection::escape(const std::string& from, std::string& to) throw(DatabaseConnectionError)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     on_escape(from, to);
 }

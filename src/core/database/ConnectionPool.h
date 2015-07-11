@@ -14,7 +14,8 @@ public:
 
 class DatabaseConnection;
 
-class ConnectionPool : public boost::recursive_mutex
+// TODO: this should *not* inherit from std::recursive_mutex
+class ConnectionPool : public std::recursive_mutex
 {
 private:
     static Logger& logger;
@@ -44,7 +45,7 @@ private:
     friend class DatabaseConnectionFactory;
     explicit ConnectionPool(size_t size) throw(ConnectionPoolError);
 
-    ConnectionPool();
+    ConnectionPool() = delete;
     DISALLOW_COPY_AND_ASSIGN(ConnectionPool);
 };
 

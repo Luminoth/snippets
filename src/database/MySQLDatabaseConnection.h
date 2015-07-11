@@ -13,7 +13,7 @@ class MySQLDatabaseConnection : public DatabaseConnection
 private:
     static Logger& logger;
     static size_t connection_count;
-    static boost::recursive_mutex init_mutex;
+    static std::recursive_mutex init_mutex;
 
 public:
     virtual ~MySQLDatabaseConnection() noexcept;

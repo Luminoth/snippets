@@ -93,13 +93,6 @@ void UdpServer::buffer(BufferedMessage* message, std::shared_ptr<ClientSocket> s
         _mtu, ttl, socket, resend_time, message->encode(), ack));
 }
 
-unsigned long UdpServer::next_packet_id()
-{
-    if(_packet_count >= UdpMessage::MAX_PACKET_ID)
-        _packet_count = 0;
-    return ++_packet_count;
-}
-
 bool UdpServer::send(const Socket::BufferType* message, size_t len, ClientSocket& socket)
 {
     if(!running()) {
@@ -181,7 +174,7 @@ bool UdpServer::send_packet(const UdpMessage& packet, ClientSocket& socket)
     bool success = true;
     for(const UdpMessage::UdpMessageChunk& chunk : chunks) {
         if(packet.encode()) {
-            std::string encoded(encode_packet((char*)chunk.second.get(), chunk.first));
+            std::string encoded(encode_packet(static_cast<char*>(chunk.second.get()), chunk.first));
             success &= send(reinterpret_cast<const Socket::BufferType*>(encoded.c_str()), encoded.length(), socket);
         } else {
             success &= send(chunk.second.get(), chunk.first, socket);

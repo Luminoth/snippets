@@ -13,7 +13,8 @@ struct base_job_less : public std::binary_function<std::shared_ptr<BaseJob>, std
     { return lhs->priority() < rhs->priority(); }
 };
 
-class ThreadPool : public boost::recursive_mutex
+// TODO: this should *not* inherit from std::recursive_mutex
+class ThreadPool : public std::recursive_mutex
 {
 private:
     static Logger& logger;
@@ -41,13 +42,12 @@ public:
 
 private:
     size_t _size;
-    boost::thread_group _thread_group;
-    std::list<std::shared_ptr<boost::thread>> _threads;
+    std::list<std::shared_ptr<std::thread>> _threads;
     bool _running;
     std::priority_queue<std::shared_ptr<BaseJob>, std::deque<std::shared_ptr<BaseJob>>, base_job_less > _work;
 
 private:
-    ThreadPool();
+    ThreadPool() = delete;
     DISALLOW_COPY_AND_ASSIGN(ThreadPool);
 };
 

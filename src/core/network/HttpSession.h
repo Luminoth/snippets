@@ -55,7 +55,7 @@ private:
     std::string _version;
 
 private:
-    HttpSession();
+    HttpSession() = delete;
     DISALLOW_COPY_AND_ASSIGN(HttpSession);
 };
 

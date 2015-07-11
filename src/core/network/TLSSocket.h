@@ -34,7 +34,7 @@ private:
 
 private:
     bool _encrypted;
-    boost::mutex _tls_lock;
+    std::mutex _tls_lock;
     gnutls_session_t _tls_session;
 
 private:

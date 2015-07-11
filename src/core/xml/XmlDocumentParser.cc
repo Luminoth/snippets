@@ -68,7 +68,6 @@ XmlDocument* XmlDocumentParser::document() const
 
 #if defined WITH_UNIT_TESTS
 #include "src/test/UnitTest.h"
-#include "src/core/util/util.h"
 #include "XmlNode.h"
 
 class XmlDocumentParserTest : public CppUnit::TestFixture
@@ -93,13 +92,13 @@ public:
     virtual ~XmlDocumentParserTest() noexcept {}
 
 public:
-    void setUp()
+    void setUp() override
     {
         energonsoftware::XmlUtil::initialize();
         _parser.reset(new energonsoftware::XmlDocumentParser());
     }
 
-    void tearDown()
+    void tearDown() override
     {
         _parser.reset();
         energonsoftware::XmlUtil::cleanup();

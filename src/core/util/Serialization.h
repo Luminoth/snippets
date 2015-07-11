@@ -10,7 +10,7 @@ class SerializationError : public std::exception
 public:
     explicit SerializationError(const std::string& what) noexcept : _what(what) {}
     virtual ~SerializationError() noexcept {}
-    virtual const char* what() const noexcept { return _what.c_str(); }
+    virtual const char* what() const noexcept override { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -27,6 +27,7 @@ public:
     virtual void deserialize(Unpacker& unpacker) throw(SerializationError) = 0;
 };
 
+// TODO: this should *not* inherit from std::map
 class SerializationMap : public std::map<std::string, std::string>, public Serializable
 {
 public:
@@ -34,8 +35,8 @@ public:
     virtual ~SerializationMap() noexcept;
 
 public:
-    virtual void serialize(Packer& packer) const throw(SerializationError);
-    virtual void deserialize(Unpacker& unpacker) throw(SerializationError);
+    virtual void serialize(Packer& packer) const throw(SerializationError) override;
+    virtual void deserialize(Unpacker& unpacker) throw(SerializationError) override;
 
 public:
     template <typename T>

@@ -1,5 +1,7 @@
 ﻿* C++11 compiler
 ** g++ 4.7.1 and Scons 2.3.0
+*** export PYTHONPATH="$PYTHONPATH:/usr/lib/python2.7/site-packages/scons-2.3.0-py2.7.egg/scons-2.3.0"
+**** Adjust the path as necessary
 ** Visual Studio 2013 Update 4
 * boost 1.55.0 - http://www.boost.org/
 ** For Win32, follow the Getting Started instructions

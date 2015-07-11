@@ -1,6 +1,5 @@
 #include "src/pch.h"
 #include "AABB.h"
-#include "BoundingSphere.h"
 #include "BoundingCapsule.h"
 
 namespace energonsoftware {

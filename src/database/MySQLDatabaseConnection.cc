@@ -8,12 +8,12 @@ namespace energonsoftware {
 
 Logger& MySQLDatabaseConnection::logger(Logger::instance("energonsoftware.database.MySQLDatabaseConnection"));
 size_t MySQLDatabaseConnection::connection_count = 0;
-boost::recursive_mutex MySQLDatabaseConnection::init_mutex;
+std::recursive_mutex MySQLDatabaseConnection::init_mutex;
 
 MySQLDatabaseConnection::MySQLDatabaseConnection(long id, const DatabaseConfiguration& config, std::shared_ptr<ConnectionPool> pool) throw(DatabaseConnectionError)
     : DatabaseConnection(id, config, pool), _mysql(nullptr)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(init_mutex);
+    std::lock_guard<std::recursive_mutex> guard(init_mutex);
 
     if(!connection_count) {
         if(mysql_library_init(0, nullptr, nullptr)) {
@@ -25,7 +25,7 @@ MySQLDatabaseConnection::MySQLDatabaseConnection(long id, const DatabaseConfigur
 
 MySQLDatabaseConnection::~MySQLDatabaseConnection() noexcept
 {
-    boost::lock_guard<boost::recursive_mutex> guard(init_mutex);
+    std::lock_guard<std::recursive_mutex> guard(init_mutex);
 
     connection_count--;
     if(!connection_count) {

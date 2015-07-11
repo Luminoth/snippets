@@ -10,7 +10,7 @@ class XmlDocumentParserError : public std::exception
 public:
     explicit XmlDocumentParserError(const std::string& what) noexcept : _what(what) { }
     virtual ~XmlDocumentParserError() noexcept {}
-    virtual const char* what() const noexcept { return _what.c_str(); }
+    virtual const char* what() const noexcept override { return _what.c_str(); }
 
 private:
     std::string _what;
@@ -27,7 +27,7 @@ public:
     virtual ~XmlElementMismatchError() noexcept {}
 
 private:
-    XmlElementMismatchError(const std::string& what);
+    XmlElementMismatchError(const std::string& what) = delete;
 };
 
 class XmlContentHandler;
@@ -41,7 +41,7 @@ private:
 
 public:
     XmlDocumentParser();
-    virtual ~XmlDocumentParser() noexcept;
+    ~XmlDocumentParser() noexcept;
 
 public:
     bool parse(const boost::filesystem::path& filename) throw(XmlDocumentParserError);

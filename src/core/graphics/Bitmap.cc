@@ -28,8 +28,6 @@ bool Bitmap::load(const boost::filesystem::path& filename, MemoryAllocator& allo
     }
 
     throw NotImplementedError("Bitmap::load()");
-
-    return false;
 }
 
 void Bitmap::unload() noexcept
@@ -41,8 +39,6 @@ void Bitmap::unload() noexcept
 bool Bitmap::save(const boost::filesystem::path& filename) const
 {
     throw NotImplementedError("Bitmap::save()");
-
-    return false;
 }
 
 }

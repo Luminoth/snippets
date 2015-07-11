@@ -8,50 +8,50 @@
 /*<< __FILE__ << "[" << __LINE__ << "] " \*/
 
 #define LOG_DEBUG(e) do { \
-    boost::lock_guard<boost::recursive_mutex> guard(energonsoftware::Logger::logger_mutex); \
+    std::lock_guard<std::recursive_mutex> guard(energonsoftware::Logger::logger_mutex); \
     logger << energonsoftware::Logger::Level::Debug \
         << boost::posix_time::to_simple_string(boost::posix_time::second_clock::local_time()) << " " \
-        << "[" << boost::this_thread::get_id() << "] " \
+        << "[" << std::this_thread::get_id() << "] " \
         << logger.category() << " " \
         << energonsoftware::Logger::level(energonsoftware::Logger::Level::Debug) << ": " \
         << e; \
 } while(false)
 
 #define LOG_INFO(e) do { \
-    boost::lock_guard<boost::recursive_mutex> guard(energonsoftware::Logger::logger_mutex); \
+    std::lock_guard<std::recursive_mutex> guard(energonsoftware::Logger::logger_mutex); \
     logger << energonsoftware::Logger::Level::Info \
         << boost::posix_time::to_simple_string(boost::posix_time::second_clock::local_time()) << " " \
-        << "[" << boost::this_thread::get_id() << "] " \
+        << "[" << std::this_thread::get_id() << "] " \
         << logger.category() << " " \
         << energonsoftware::Logger::level(energonsoftware::Logger::Level::Info) << ": " \
         << e; \
 } while(false)
 
 #define LOG_WARNING(e) do { \
-    boost::lock_guard<boost::recursive_mutex> guard(energonsoftware::Logger::logger_mutex); \
+    std::lock_guard<std::recursive_mutex> guard(energonsoftware::Logger::logger_mutex); \
     logger << energonsoftware::Logger::Level::Warning \
         << boost::posix_time::to_simple_string(boost::posix_time::second_clock::local_time()) << " " \
-        << "[" << boost::this_thread::get_id() << "] " \
+        << "[" << std::this_thread::get_id() << "] " \
         << logger.category() << " " \
         << energonsoftware::Logger::level(energonsoftware::Logger::Level::Warning) << ": " \
         << e; \
 } while(false)
 
 #define LOG_ERROR(e) do { \
-    boost::lock_guard<boost::recursive_mutex> guard(energonsoftware::Logger::logger_mutex); \
+    std::lock_guard<std::recursive_mutex> guard(energonsoftware::Logger::logger_mutex); \
     logger << energonsoftware::Logger::Level::Error \
         << boost::posix_time::to_simple_string(boost::posix_time::second_clock::local_time()) << " " \
-        << "[" << boost::this_thread::get_id() << "] " \
+        << "[" << std::this_thread::get_id() << "] " \
         << logger.category() << " " \
         << energonsoftware::Logger::level(energonsoftware::Logger::Level::Error) << ": " \
         << e; \
 } while(false)
 
 #define LOG_CRITICAL(e) do { \
-    boost::lock_guard<boost::recursive_mutex> guard(energonsoftware::Logger::logger_mutex); \
+    std::lock_guard<std::recursive_mutex> guard(energonsoftware::Logger::logger_mutex); \
     logger <<energonsoftware:: Logger::Level::Critical \
         << boost::posix_time::to_simple_string(boost::posix_time::second_clock::local_time()) << " " \
-        << "[" << boost::this_thread::get_id() << "] " \
+        << "[" << std::this_thread::get_id() << "] " \
         << logger.category() << " " \
         << energonsoftware::Logger::level(energonsoftware::Logger::Level::Critical) << ": " \
         << e; \
@@ -70,7 +70,7 @@ private:
         virtual ~ThreadSafeLoggerMap() noexcept { }
 
     public:
-        boost::recursive_mutex mutex;
+        std::recursive_mutex mutex;
         LoggerMap loggers;
 
     private:
@@ -96,7 +96,7 @@ public:
     };
 
 public:
-    static boost::recursive_mutex logger_mutex;
+    static std::recursive_mutex logger_mutex;
 
 private:
     static std::shared_ptr<ThreadSafeLoggerMap> _loggers;
@@ -130,7 +130,7 @@ private:
     static std::ofstream& logger_file() { return *_logger_file; }
 
 public:
-    virtual ~Logger() noexcept;
+    ~Logger() noexcept;
 
 public:
     const std::string& category() const { return _category; }
@@ -142,7 +142,7 @@ public:
 
     template<typename T> friend Logger& operator<<(Logger& lhs, const T& rhs)
     {
-        boost::lock_guard<boost::recursive_mutex> guard(Logger::logger_mutex);
+        std::lock_guard<std::recursive_mutex> guard(Logger::logger_mutex);
 
         if(lhs.level() >= _logger_level) {
             if(Logger::config_stdout()) {
@@ -169,7 +169,7 @@ private:
     Level _level;
 
 private:
-    Logger();
+    Logger() = delete;
     explicit Logger(const std::string& category);
     DISALLOW_COPY_AND_ASSIGN(Logger);
 };

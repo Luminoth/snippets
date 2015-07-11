@@ -29,7 +29,7 @@ void TcpSession::disconnect(const Socket::BufferType* packet, size_t len)
     if(connected()) {
         LOG_INFO("Session " << sessionid() << " is disconnecting...\n");
         if(nullptr != packet && len > 0) {
-            std::string encoded(encode_packet((char*)packet, len));
+            std::string encoded(encode_packet(const_cast<char*>(packet), len));
             send(reinterpret_cast<const Socket::BufferType*>(encoded.c_str()), encoded.length());
         }
     }
@@ -73,7 +73,7 @@ bool TcpSession::send(const std::string& message)
 
 bool TcpSession::start_tls(const Socket::BufferType* packet, size_t len, const boost::filesystem::path& password_file, const boost::filesystem::path& password_conf_file)
 {
-    std::string encoded(encode_packet((char*)packet, len));
+    std::string encoded(encode_packet(const_cast<char*>(packet), len));
     send(reinterpret_cast<const Socket::BufferType*>(encoded.c_str()), encoded.length());
 
     LOG_INFO("Session " << sessionid() << " is negotiating TLS...\n");
@@ -115,11 +115,11 @@ void TcpSession::read_data()
 void TcpSession::write_data()
 {
     while(connected() && !buffer_empty()) {
-        bool success = false;
+        bool success;
 
         const Socket::BufferType* message = current_buffer();
         if(current_buffer_encoded()) {
-            std::string encoded(encode_packet((char*)message, current_buffer_len()));
+            std::string encoded(encode_packet(const_cast<char*>(message), current_buffer_len()));
             success = send(reinterpret_cast<const Socket::BufferType*>(encoded.c_str()), encoded.length());
         } else {
             success = send(reinterpret_cast<const Socket::BufferType*>(message), current_buffer_len());

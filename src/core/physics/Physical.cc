@@ -1,5 +1,4 @@
 #include "src/pch.h"
-#include "src/core/math/math_util.h"
 #include "src/core/math/Matrix4.h"
 #include "src/core/util/util.h"
 #include "Physical.h"
@@ -22,19 +21,19 @@ Transform::~Transform() noexcept
 
 void Transform::position(const Position& position)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
     _position = position;
 }
 
 void Transform::orientation(const Quaternion& orientation)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
     _orientation = orientation;
 }
 
 void Transform::rotate(float angle, const Vector3& around)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     Quaternion q(Quaternion::new_axis(angle, around));
     _orientation = q * _orientation;
@@ -42,7 +41,7 @@ void Transform::rotate(float angle, const Vector3& around)
 
 void Transform::pitch(float angle)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     // need to pitch against our local x-axis
     // TODO: need a better explanation for why this is a special case!
@@ -62,7 +61,7 @@ void Transform::roll(float angle)
 
 void Transform::scale(float scale)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
     _scale = scale;
 }
 
@@ -82,7 +81,7 @@ std::string Transform::str() const
 
 Transform& Transform::operator=(const Transform& transform)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     _position = transform._position;
     _orientation = transform._orientation;
@@ -93,7 +92,7 @@ Transform& Transform::operator=(const Transform& transform)
 
 void Transform::update(const Vector3& velocity, double dt)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
     _position += velocity * dt;
 }
 
@@ -113,7 +112,7 @@ AABBCollider::~AABBCollider() noexcept
 
 void AABBCollider::bounds(const BoundingVolume& bounds)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     // TODO: typeof check this and convert if necessary!
     _bounds = dynamic_cast<const AABB&>(bounds);
@@ -128,7 +127,7 @@ std::string AABBCollider::str() const
 
 AABBCollider& AABBCollider::operator=(const AABBCollider& collider)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     _bounds = collider._bounds;
 
@@ -151,19 +150,19 @@ RigidBody::~RigidBody() noexcept
 
 void RigidBody::velocity(const Vector3& velocity)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
     _velocity = velocity;
 }
 
 void RigidBody::acceleration(const Vector3& acceleration)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
     _acceleration = acceleration;
 }
 
 void RigidBody::mass(float mass)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
     _mass = mass;
 }
 
@@ -176,7 +175,7 @@ std::string RigidBody::str() const
 
 RigidBody& RigidBody::operator=(const RigidBody& rigidbody)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     _velocity = rigidbody._velocity;
     _acceleration = rigidbody._acceleration;
@@ -187,7 +186,7 @@ RigidBody& RigidBody::operator=(const RigidBody& rigidbody)
 
 void RigidBody::update(double dt)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
     _velocity += _acceleration * dt;
 }
 
@@ -213,7 +212,7 @@ Physical::~Physical() noexcept
 
 void Physical::simulate()
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     const double now = get_time();
     const double dt = now - _last_simulate;
@@ -230,7 +229,7 @@ void Physical::simulate()
 
 void Physical::absolute_bounds(const BoundingVolume& bounds)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     _collider->bounds(bounds);
 
@@ -247,7 +246,7 @@ std::string Physical::str() const
 
 Physical& Physical::operator=(const Physical& rhs)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     _transform = rhs._transform;
     _collider.reset(new AABBCollider(dynamic_cast<const AABBCollider&>(*rhs._collider)));

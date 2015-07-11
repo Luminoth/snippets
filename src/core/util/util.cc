@@ -1,8 +1,6 @@
 #include "src/pch.h"
 #include <iostream>
 #include <iomanip>
-#include <errno.h>
-#include <fcntl.h>
 #if defined USE_OPENSSL
     #include <openssl/bio.h>
     #include <openssl/buffer.h>
@@ -168,7 +166,7 @@ void md5sum_hex(const unsigned char* input, size_t len, char* output)
     // write it out as hex
     std::stringstream str;
     for(int i=0; i<MD5_DIGEST_LENGTH; ++i) {
-        str << std::hex << std::setfill('0') << std::setw(2) << (int)scratch[i];
+        str << std::hex << std::setfill('0') << std::setw(2) << static_cast<int>(scratch[i]);
     }
 
     // copy to the output

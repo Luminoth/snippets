@@ -65,7 +65,7 @@ public:
     }
 
 private:
-    PartitionFactory();
+    PartitionFactory() = delete;
 
     virtual ~PartitionFactory() noexcept
     {

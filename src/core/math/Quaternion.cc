@@ -43,9 +43,7 @@ Quaternion::Quaternion(const Matrix4& matrix)
         const float s = std::sqrt((matrix(i, i) - (matrix(j, j) + matrix(k, k))) + 1.0f);
         (*this)[i] = s * 0.5f;
 
-        float t = 0.0f;
-        if(0.0f != s) t = 0.5f / s;
-        else t = s;
+        float t = (0.0f != s) ? (0.5f / s) : s;
 
         (*this)[3] = (matrix(k, j) - matrix(j, k)) * t;
         (*this)[j] = (matrix(j, i) + matrix(i, j)) * t;

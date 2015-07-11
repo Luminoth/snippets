@@ -26,6 +26,7 @@ protected:
         : Partition<T, B>(data, container, pruned), _subtrees(), _depth(depth), _count(0)
     {
         if(_depth >= 1 && Partition<T, B>::size() > 1) {
+            // TODO: virtual call from constructor!
             on_build_subtrees(allocator);
         }
         _count = Partition<T, B>::_data.size();
@@ -35,6 +36,7 @@ protected:
         : Partition<T, B>(data), _subtrees(), _depth(depth), _count(0)
     {
         if(_depth >= 1 && Partition<T, B>::size() > 1) {
+            // TODO: virtual call from constructor!
             on_build_subtrees(allocator);
         }
         _count = Partition<T, B>::_data.size();
@@ -177,7 +179,7 @@ private:
     size_t _count;
 
 private:
-    TreePartition();
+    TreePartition() = delete;
     DISALLOW_COPY_AND_ASSIGN(TreePartition);
 };
 

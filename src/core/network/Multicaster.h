@@ -15,10 +15,10 @@ public:
     virtual ~Multicaster() noexcept;
 
 private:
-    virtual bool enable_broadcast();
+    virtual bool enable_broadcast() override;
 
 private:
-    Multicaster();
+    Multicaster() = delete;
     DISALLOW_COPY_AND_ASSIGN(Multicaster);
 };
 

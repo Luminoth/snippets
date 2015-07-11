@@ -16,7 +16,7 @@ SystemAllocator::~SystemAllocator() noexcept
 
 void* SystemAllocator::allocate(size_t bytes)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     assert(_used + bytes < _size);
 
@@ -32,7 +32,7 @@ void* SystemAllocator::allocate(size_t bytes)
 
 void SystemAllocator::release(void* ptr)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     _allocation_count--;
     /*_allocation_bytes -= ???;

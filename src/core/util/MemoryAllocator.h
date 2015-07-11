@@ -32,7 +32,7 @@ public:
     //virtual size_t allocation_bytes() const final { return _allocation_bytes; }
 
     // NOTE: all of the allocation() and release() overrides
-    // must lock the allocator with a boost::lock_guard
+    // must lock the allocator with a std::lock_guard
 
     // allocate unaligned memory
     // NOTE: overriding classes *must* maintain
@@ -60,7 +60,7 @@ protected:
     MemoryAllocator();
 
 protected:
-    boost::recursive_mutex _mutex;
+    std::recursive_mutex _mutex;
     size_t _allocation_count;
     unsigned int _allocation_bytes;
 
@@ -77,7 +77,7 @@ T* MemoryAllocator_new(size_t count, MemoryAllocator& allocator)
     T *obj = objs, *end = objs + count;
     while(obj != end) {
         new(obj) T();
-        obj++;
+        ++obj;
     }
 
     return objs;
@@ -148,7 +148,7 @@ T* MemoryAllocator_new_aligned(size_t count, MemoryAllocator& allocator)
     T *obj = objs, *end = objs + count;
     while(obj != end) {
         new(obj) T();
-        obj++;
+        ++obj;
     }
 
     return objs;
@@ -286,8 +286,8 @@ public:
     virtual ~MemoryAllocatorTest() noexcept {}
 
 public:
-    void setUp();
-    void tearDown();
+    void setUp() override;
+    void tearDown() override;
 
     void test_allocate_nosmart();
     void test_allocate_shared();
@@ -310,7 +310,7 @@ private:
     std::shared_ptr<energonsoftware::MemoryAllocator> _allocator;
 
 private:
-    MemoryAllocatorTest();
+    MemoryAllocatorTest() = delete;
 };
 #endif
 

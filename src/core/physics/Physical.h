@@ -15,7 +15,7 @@ class Transform final
 public:
     Transform();
     Transform(const Transform& transform);
-    virtual ~Transform() noexcept;
+    ~Transform() noexcept;
 
 public:
     const Position& position() const { return _position; }
@@ -51,7 +51,7 @@ private:
     void update(const Vector3& velocity, double dt);
 
 private:
-    boost::recursive_mutex _mutex;
+    std::recursive_mutex _mutex;
 
     Position _position;
     Quaternion _orientation;
@@ -80,13 +80,13 @@ public:
 public:
     virtual void bounds(const BoundingVolume& bounds) override;
     virtual const BoundingVolume& bounds() const override { return _bounds; }
-    virtual std::string str() const;
+    virtual std::string str() const override;
 
 public:
     AABBCollider& operator=(const AABBCollider& collider);
 
 private:
-    boost::recursive_mutex _mutex;
+    std::recursive_mutex _mutex;
 
     AABB _bounds;
 };
@@ -96,7 +96,7 @@ class RigidBody final
 public:
     RigidBody();
     RigidBody(const RigidBody& rigidbody);
-    virtual ~RigidBody() noexcept;
+    ~RigidBody() noexcept;
 
 public:
     const Vector3& velocity() const { return _velocity; }
@@ -118,7 +118,7 @@ private:
     void update(double dt);
 
 private:
-    boost::recursive_mutex _mutex;
+    std::recursive_mutex _mutex;
 
     Vector3 _velocity, _acceleration;
     float _mass;
@@ -155,7 +155,7 @@ protected:
     virtual bool on_simulate(double dt) { return true; }
 
 private:
-    boost::recursive_mutex _mutex;
+    std::recursive_mutex _mutex;
 
     Transform _transform;
     std::shared_ptr<Collider> _collider;

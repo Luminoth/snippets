@@ -16,20 +16,19 @@ public:
     virtual ~XmlMessage() noexcept;
 
 public:
-    XmlString type() const { return root().name(); }
-    virtual BufferedMessageType msg_type() const { return BufferedMessageType::Xml; }
+    virtual BufferedMessageType msg_type() const override { return BufferedMessageType::Xml; }
 
     XmlMessage& operator=(const XmlMessage& rhs);
 
 private:
-    virtual const unsigned char* data() /*const*/;
-    virtual size_t data_len() const;
+    virtual const unsigned char* data() /*const*/ override;
+    virtual size_t data_len() const override;
 
 private:
     std::shared_ptr<std::string> _data;
 
 private:
-    XmlMessage();
+    XmlMessage() = delete;
 };
 
 }

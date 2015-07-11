@@ -70,7 +70,7 @@ private:
     std::list<std::shared_ptr<TcpSession> > _sessions;
 
 private:
-    TcpServer();
+    TcpServer() = delete;
     DISALLOW_COPY_AND_ASSIGN(TcpServer);
 };
 

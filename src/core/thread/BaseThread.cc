@@ -43,7 +43,7 @@ void BaseThread::start()
     _quit = false;
     _own_thread = true;
 
-    _thread.reset(new boost::thread(std::bind(&BaseThread::run, this)));
+    _thread.reset(new std::thread(&BaseThread::run, this));
 }
 
 void BaseThread::stop()
@@ -59,7 +59,7 @@ void BaseThread::stop()
     }
 }
 
-std::shared_ptr<boost::thread> BaseThread::release()
+std::shared_ptr<std::thread> BaseThread::release()
 {
     _own_thread = false;
     return _thread;
@@ -93,11 +93,10 @@ void BaseThread::run()
     LOG_DEBUG("Running thread '" << name() << "'\n");
     //LOG_DEBUG(str() << "\n");
 
-    boost::this_thread::interruption_enabled();
-    while(!should_quit() && !boost::this_thread::interruption_requested()) {
+    while(!should_quit()) {
         try {
             if(pool()) {
-                boost::unique_lock<boost::recursive_mutex> guard(*(pool()), boost::try_to_lock);
+                std::unique_lock<std::recursive_mutex> guard(*(pool()), std::try_to_lock);
                 if(guard.owns_lock()) {
                     if(pool()->has_work()) {
                         std::shared_ptr<BaseJob> job(pool()->pop_work());
@@ -108,10 +107,8 @@ void BaseThread::run()
                on_run();
             }
 
-            boost::this_thread::sleep(boost::posix_time::microseconds(thread_sleep_time()));
-            //boost::this_thread::yield();
-        } catch(const boost::thread_interrupted&) {
-            quit();
+            std::this_thread::sleep_for(std::chrono::microseconds(thread_sleep_time()));
+            //std::this_thread::yield();
         } catch(const std::exception& e) {
             LOG_CRITICAL("Thread '" << name() << "' caught unhandled exception: " << e.what() << "\n");
 

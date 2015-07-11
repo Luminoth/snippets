@@ -17,7 +17,7 @@ StackAllocator::~StackAllocator() noexcept
 
 void* StackAllocator::allocate(size_t bytes)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     assert(_marker + bytes < _size);
 
@@ -33,7 +33,7 @@ void* StackAllocator::allocate(size_t bytes)
 
 void StackAllocator::release(void* ptr)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     //_marker -= ???;
     _allocation_count--;

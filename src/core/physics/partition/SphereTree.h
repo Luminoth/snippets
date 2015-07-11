@@ -69,7 +69,7 @@ private:
     }
 
 private:
-    SphereTree();
+    SphereTree() = delete;
     DISALLOW_COPY_AND_ASSIGN(SphereTree);
 };
 

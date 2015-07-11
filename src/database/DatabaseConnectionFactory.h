@@ -21,8 +21,8 @@ private:
     static long last_id;
 
 private:
-    DatabaseConnectionFactory();
-    virtual ~DatabaseConnectionFactory();
+    DatabaseConnectionFactory() = delete;
+    virtual ~DatabaseConnectionFactory() = default;
 };
 
 }

@@ -13,7 +13,6 @@ public:
     typedef std::pair<size_t, std::shared_ptr<Socket::BufferType>> UdpMessageChunk;
 
 public:
-    static const unsigned int MAX_PACKET_ID;
     static const unsigned int MAX_CHUNKS;
     static const unsigned int MAX_TTL;
     static const size_t HEADER_LEN;
@@ -31,14 +30,14 @@ public:
     unsigned int packetid() const { return _packetid; }
     unsigned int chunk_count() const { return _chunkcount; }
     bool chunks(std::vector<UdpMessageChunk>& chunks) const;
-    virtual BufferedMessageType msg_type() const { return BufferedMessageType::Udp; }
+    virtual BufferedMessageType msg_type() const override { return BufferedMessageType::Udp; }
 
     // NOTE: this is slow because it has to copy the packet
     UdpMessage& operator=(const UdpMessage& rhs);
 
 private:
-    virtual const unsigned char* data() /*const*/ { return reinterpret_cast<unsigned char*>(_packet.get()); }
-    virtual size_t data_len() const { return _len; }
+    virtual const unsigned char* data() /*const*/ override { return reinterpret_cast<unsigned char*>(_packet.get()); }
+    virtual size_t data_len() const override { return _len; }
 
 private:
     std::string chunk_header(unsigned int chunknum, unsigned int chunkcount) const;
@@ -53,7 +52,7 @@ private:
     unsigned int _chunkcount;
 
 private:
-    UdpMessage();
+    UdpMessage() = delete;
 };
 
 }

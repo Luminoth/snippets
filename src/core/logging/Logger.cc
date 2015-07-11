@@ -5,7 +5,7 @@ namespace energonsoftware {
 
 static const std::string LOG_LEVELS[] = { "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL" };
 
-boost::recursive_mutex Logger::logger_mutex;
+std::recursive_mutex Logger::logger_mutex;
 std::shared_ptr<Logger::ThreadSafeLoggerMap> Logger::_loggers;
 std::vector<std::ostream*> Logger::_callbacks;
 uint32_t Logger::_logger_type = LoggerTypeStdout;
@@ -21,7 +21,7 @@ Logger& Logger::instance(const std::string& category)
         _loggers.reset(new ThreadSafeLoggerMap());
     }
 
-    boost::lock_guard<boost::recursive_mutex> guard(_loggers->mutex);
+    std::lock_guard<std::recursive_mutex> guard(_loggers->mutex);
 
     std::shared_ptr<Logger> logger;
     try {
@@ -40,7 +40,7 @@ void Logger::register_callback(std::ostream* const callback)
 
 bool Logger::configure(uint32_t type, Level level, const boost::filesystem::path& filename)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(logger_mutex);
+    std::lock_guard<std::recursive_mutex> guard(logger_mutex);
 
     _logger_type = type;
     _logger_level = level;
@@ -56,7 +56,7 @@ bool Logger::configure(uint32_t type, Level level, const boost::filesystem::path
 
 void Logger::configure(Level level)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(logger_mutex);
+    std::lock_guard<std::recursive_mutex> guard(logger_mutex);
 
     _logger_type = LoggerTypeStdout;
     _logger_level = level;
@@ -99,7 +99,7 @@ Logger::~Logger() noexcept
 
 Logger& Logger::operator<<(std::ostream& (*rhs)(std::ostream&))
 {
-    boost::lock_guard<boost::recursive_mutex> guard(logger_mutex);
+    std::lock_guard<std::recursive_mutex> guard(logger_mutex);
 
     if(level() >= _logger_level) {
         if(config_stdout()) {
@@ -120,7 +120,7 @@ Logger& Logger::operator<<(std::ostream& (*rhs)(std::ostream&))
 
 Logger& operator<<(Logger& lhs, const Logger::Level& level)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(Logger::logger_mutex);
+    std::lock_guard<std::recursive_mutex> guard(Logger::logger_mutex);
 
     lhs._level = level;
     return lhs;

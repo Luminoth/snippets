@@ -1,6 +1,4 @@
 #include "src/pch.h"
-#include <errno.h>
-#include <fcntl.h>
 
 #if !defined WIN32
     #include <arpa/inet.h>
@@ -96,9 +94,8 @@ bool Socket::close()
 bool Socket::send(const BufferType* const buffer, size_t len, int flags)
 {
     size_t sent = 0;
-    int rval = 0;
     while(sent < len) {
-        rval = do_send(buffer + sent, len - sent, flags);
+        int rval = do_send(buffer + sent, len - sent, flags);
         if(rval < 0) {
             if(last_socket_error() == SOCKET_WOULDBLOCK) {
                 continue;
@@ -120,7 +117,7 @@ bool Socket::send(const std::string& buffer, int flags)
 size_t Socket::recv(Buffer& buffer, int flags)
 {
     size_t read = 0;
-    int rval = 0;
+    int rval;
     do {
         rval = do_recv(&(*(buffer.begin() + read)), buffer.size() - read, flags);
         read += rval;
@@ -331,9 +328,8 @@ bool ClientSocket::connect(const std::string& host, unsigned short port) throw(S
 bool ClientSocket::sendto(const BufferType* buffer, size_t len, int flags)
 {
     size_t sent = 0;
-    int rval = 0;
     while(sent < len) {
-        rval = ::sendto(socket(), buffer + sent, len - sent, flags, nullptr/*reinterpret_cast<sockaddr*>(&_addr)*/, 0/*sizeof(_addr)*/);
+        int rval = ::sendto(socket(), buffer + sent, len - sent, flags, nullptr/*reinterpret_cast<sockaddr*>(&_addr)*/, 0/*sizeof(_addr)*/);
         if(rval < 0) {
             if(last_socket_error() == SOCKET_WOULDBLOCK) {
                 continue;
@@ -432,9 +428,8 @@ ClientSocket ServerSocket::accept()
 bool ServerSocket::sendto(const BufferType* buffer, size_t len, const ClientSocket& socket, int flags)
 {
     size_t sent = 0;
-    int rval = 0;
     while(sent < len) {
-        rval = ::sendto(this->socket(), buffer + sent, len - sent, flags,
+        int rval = ::sendto(this->socket(), buffer + sent, len - sent, flags,
             reinterpret_cast<const sockaddr*>(&socket.addr()), sizeof(socket.addr()));
         if(rval < 0) {
             if(last_socket_error() == SOCKET_WOULDBLOCK) {
@@ -471,7 +466,7 @@ std::pair<size_t, std::shared_ptr<ClientSocket>> ServerSocket::do_recvfrom(Buffe
     socklen_t alen = sizeof(addr);
 
     size_t read = ::recvfrom(socket(), buffer, len, flags, reinterpret_cast<sockaddr*>(&addr), &alen);
-    return std::pair<size_t, std::shared_ptr<ClientSocket>>(read, std::shared_ptr<ClientSocket>(new ClientSocket(addr)));
+    return std::pair<size_t, std::shared_ptr<ClientSocket>>(read, std::make_shared<ClientSocket>(addr));
 }
 
 }

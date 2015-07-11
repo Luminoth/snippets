@@ -1,5 +1,4 @@
 #include "src/pch.h"
-#include <errno.h>
 #include "src/core/util/util.h"
 #include "network_util.h"
 

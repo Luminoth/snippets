@@ -9,7 +9,7 @@ public:
     explicit NotImplementedError(const std::string& function) noexcept
         : _what("Function not implemented: " + function + "()") { }
     virtual ~NotImplementedError() noexcept {}
-    virtual const char* what() const noexcept { return _what.c_str(); }
+    virtual const char* what() const noexcept override { return _what.c_str(); }
 
 private:
     std::string _what;

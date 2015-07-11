@@ -10,7 +10,7 @@ class MessageHandlerError : public std::exception
 public:
     explicit MessageHandlerError(const std::string& what) noexcept : _what(what) { }
     virtual ~MessageHandlerError() noexcept {}
-    virtual const char* what() const noexcept { return _what.c_str(); }
+    virtual const char* what() const noexcept override { return _what.c_str(); }
 
 protected:
     std::string _what;

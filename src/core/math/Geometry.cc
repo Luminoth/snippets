@@ -160,7 +160,7 @@ Geometry::~Geometry() noexcept
 
 void Geometry::allocate_buffers(size_t vertex_count, MemoryAllocator& allocator)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     _vertex_count = vertex_count;
 
@@ -181,7 +181,7 @@ void Geometry::allocate_buffers(size_t vertex_count, MemoryAllocator& allocator)
 
 void Geometry::allocate_buffers(size_t triangle_count, size_t vertex_count, MemoryAllocator& allocator)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     _vertex_count = triangle_count * 3;
 
@@ -202,7 +202,7 @@ void Geometry::allocate_buffers(size_t triangle_count, size_t vertex_count, Memo
 
 void Geometry::copy_vertices(const Vertex* const vertices, size_t vertex_count, size_t start)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     // fill the normal/tangent line buffers (for debugging)
     float *nlb = _normal_line_buffer.get(), *tnlb = _tangent_line_buffer.get();
@@ -255,7 +255,7 @@ void Geometry::copy_vertices(const Vertex* const vertices, size_t vertex_count, 
 
 void Geometry::copy_triangles(const Triangle* const triangles, size_t triangle_count, const Vertex* const vertices, size_t vertex_count, size_t start)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(_mutex);
+    std::lock_guard<std::recursive_mutex> guard(_mutex);
 
     // fill the normal/tangent line buffers (for debugging)
     float *nlb = _normal_line_buffer.get(), *tnlb = _tangent_line_buffer.get();

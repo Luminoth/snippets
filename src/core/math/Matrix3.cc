@@ -1,5 +1,4 @@
 #include "src/pch.h"
-#include "math_util.h"
 #include "Matrix3.h"
 
 namespace energonsoftware {

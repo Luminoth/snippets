@@ -7,15 +7,13 @@ namespace energonsoftware {
 
 boost::filesystem::path home_dir()
 {
-    char* dir = nullptr;
-
 #if defined WIN32
-    dir = "C:\\";
+    char* dir = "C:\\";
 
     TCHAR home_dir[MAX_PATH];
     ZeroMemory(home_dir, MAX_PATH * sizeof(TCHAR));
 
-    HANDLE token = 0;
+    HANDLE token = nullptr;
     if(OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token)) {
         DWORD size = MAX_PATH;
         if(GetUserProfileDirectory(token, home_dir, &size)) {
@@ -24,7 +22,7 @@ boost::filesystem::path home_dir()
         CloseHandle(token);
     }
 #else
-    dir = std::getenv("HOME");
+    char* dir = std::getenv("HOME");
 #endif
 
     return dir;

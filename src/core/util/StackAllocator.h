@@ -35,7 +35,7 @@ private:
     uint32_t _size, _marker;
 
 private:
-    StackAllocator();
+    StackAllocator() = delete;
     DISALLOW_COPY_AND_ASSIGN(StackAllocator);
 };
 

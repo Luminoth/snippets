@@ -25,7 +25,7 @@ private:
     XmlNode _root;
 
 private:
-    XmlDocument();
+    XmlDocument() = delete;
 
 public:
     template<typename T, typename traits>

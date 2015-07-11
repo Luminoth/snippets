@@ -3,7 +3,6 @@
 
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
-#include "XmlUtil.h"
 
 namespace energonsoftware {
 
@@ -30,17 +29,17 @@ public:
 public:
     /* NOTE: these may throw XmlDocumentParserError */
 
-    virtual void startDocument();
-    virtual void endDocument();
+    virtual void startDocument() override;
+    virtual void endDocument() override;
     virtual void startElement(const XMLCh* const uri, const XMLCh* const localname,
-        const XMLCh* const qname, const xercesc::Attributes& attrs);
-    virtual void endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname);
-    virtual void characters(const XMLCh* const chars, const XMLSize_t length);
-    virtual void ignorableWhitespace(const XMLCh* const chars, const XMLSize_t length);
-    virtual void skippedEntity(const XMLCh* const name);
-    virtual void error(const xercesc::SAXParseException& exc);
-    virtual void fatalError(const xercesc::SAXParseException& exc);
-    virtual void warning(const xercesc::SAXParseException& exc);
+        const XMLCh* const qname, const xercesc::Attributes& attrs) override;
+    virtual void endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname) override;
+    virtual void characters(const XMLCh* const chars, const XMLSize_t length) override;
+    virtual void ignorableWhitespace(const XMLCh* const chars, const XMLSize_t length) override;
+    virtual void skippedEntity(const XMLCh* const name) override;
+    virtual void error(const xercesc::SAXParseException& exc) override;
+    virtual void fatalError(const xercesc::SAXParseException& exc) override;
+    virtual void warning(const xercesc::SAXParseException& exc) override;
 
 private:
     bool _complete;

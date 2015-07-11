@@ -8,7 +8,7 @@ namespace energonsoftware {
 Logger& ConnectionPool::logger(Logger::instance("energonsoftware.core.database.ConnectionPool"));
 
 ConnectionPool::ConnectionPool(size_t size) throw(ConnectionPoolError)
-    : boost::recursive_mutex(), _pool(), _size(size)
+    : std::recursive_mutex(), _pool(), _size(size)
 {
 }
 
@@ -26,11 +26,11 @@ DatabaseConnection& ConnectionPool::acquire(bool block) throw(ConnectionPoolErro
 
     // wait for something to be in the pool
     while(block && _pool.empty()) {
-        boost::this_thread::sleep(boost::posix_time::microseconds(thread_sleep_time()));
-        //boost::thread::yield();
+        std::this_thread::sleep_for(std::chrono::microseconds(thread_sleep_time()));
+        //std::thread::yield();
     }
 
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     if(_pool.empty()) {
         throw ConnectionPoolError("Pool is empty!");
@@ -51,7 +51,7 @@ DatabaseConnection& ConnectionPool::acquire(bool block) throw(ConnectionPoolErro
 
 void ConnectionPool::release(std::shared_ptr<DatabaseConnection> connection)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     LOG_DEBUG("releasing (" << connection->id() << "), assuming disconnected\n");
     for(auto& conn : _pool) {
@@ -65,7 +65,7 @@ void ConnectionPool::release(std::shared_ptr<DatabaseConnection> connection)
 
 void ConnectionPool::cleanup() noexcept
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
 
     for(auto& connection : _pool) {
         connection.reset();
@@ -74,7 +74,7 @@ void ConnectionPool::cleanup() noexcept
 
 void ConnectionPool::push_connection(std::shared_ptr<DatabaseConnection> connection)
 {
-    boost::lock_guard<boost::recursive_mutex> guard(*this);
+    std::lock_guard<std::recursive_mutex> guard(*this);
     _pool.push_back(connection);
 }
 

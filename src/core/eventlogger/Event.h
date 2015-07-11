@@ -67,8 +67,8 @@ public:
 
     // universal timestamp in microseconds
     // NOTE: this gets logged with second precision
-    const boost::posix_time::ptime& timestamp() const { return _timestamp; }
-    void timestamp(const boost::posix_time::ptime& timestamp) { _timestamp = timestamp; }
+    const std::chrono::time_point<std::chrono::system_clock>& timestamp() const { return _timestamp; }
+    void timestamp(const std::chrono::time_point<std::chrono::system_clock>& timestamp) { _timestamp = timestamp; }
 
     const EventType& type() const { return *_type; }
 
@@ -81,7 +81,7 @@ public:
 
 private:
     uint64_t _id;
-    boost::posix_time::ptime _timestamp;
+    std::chrono::time_point<std::chrono::system_clock> _timestamp;
     std::shared_ptr<EventType> _type;
 };
 
@@ -107,10 +107,10 @@ public:
     virtual ~TestEvent() noexcept;
 
 public:
-    virtual uint32_t version() const { return 1; }
+    virtual uint32_t version() const override { return 1; }
     virtual void serialize(energonsoftware::Packer& packer) const throw(energonsoftware::SerializationError) override;
     virtual void deserialize(energonsoftware::Unpacker& unpacker) throw(energonsoftware::SerializationError) override;
-    virtual std::string str() const { return "TestEvent()"; }
+    virtual std::string str() const override { return "TestEvent()"; }
 
 private:
     bool _test_bool;

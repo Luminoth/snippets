@@ -98,20 +98,20 @@ public:
     virtual ~EventLoggerTest() noexcept {}
 
 public:
-    void setUp()
+    void setUp() override
     {
         energonsoftware::EventLogger::instance().init("test.evt");
         energonsoftware::EventLogger::instance().enable();
     }
 
-    void tearDown()
+    void tearDown() override
     {
         energonsoftware::EventLogger::instance().shutdown();
     }
 
     void test_log_event()
     {
-        energonsoftware::Event evt(std::shared_ptr<energonsoftware::EventType>(new TestEvent()));
+        energonsoftware::Event evt(std::static_pointer_cast<energonsoftware::EventType>(std::make_shared<TestEvent>()));
         energonsoftware::EventLogger::instance().log(evt);
     }
 };
