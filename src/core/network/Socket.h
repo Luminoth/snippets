@@ -36,16 +36,8 @@ public:
     // returns the last error value
     static int last_socket_error();
 
-    // returns a hostent* struct associated with the hostname
-    static hostent* gethostent(int domain, const std::string& host);
-
-    // converts the given hostname/ip address to an in_addr/in6_addr
-    // size is the size of the in_addr/in6_addr structure
-    // NOTE: this only deals with the first address resolved
-    // NOTE: this uses inet_addr()/gethostbyname() if
-    // inet_pton()/gethostbyname2() are not supported,
-    // thus ignoring IPv6 support (and the domain parameter)
-    static bool host_to_inaddr(int domain, const std::string& host, void* iaddr, size_t size);
+    // converts a hostname to a sockaddr using the getaddrinfo() method
+    static bool host_to_sockaddr(int domain, int type, const std::string& hostname, const std::string& service_name, sockaddr* saddr);
 
 private:
     static Logger& logger;
@@ -85,9 +77,6 @@ public:
     bool set_keepalive();
 
 #if defined WIN32
-    // calls WSAAsyncSelect()
-    bool async_select(HWND hWnd, UINT uMsg, long lEvent);
-
     // calls WSAEventSelect
     bool event_select(WSAEVENT hEventObject, long lNetworkEvents);
 #endif
@@ -99,6 +88,7 @@ public:
     SOCKET socket() const { return _sockfd; }
     const sockaddr_in& addr() const { return _addr; }
     int domain() const { return _domain; }
+    int type() const { return _type; }
     bool valid() const { return _sockfd > INVALID_SOCKET; }
     const std::string& host() const { return _host; }
     unsigned short port() const { return _port; }
@@ -129,6 +119,7 @@ protected:
 private:
     SOCKET _sockfd;
     int _domain;
+    int _type;
 };
 
 bool operator==(const SOCKET& lhs, const Socket& rhs);

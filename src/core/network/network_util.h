@@ -3,6 +3,7 @@
 
 #if defined WIN32
     #include <winsock2.h>
+    #include <ws2tcpip.h>
 
     // libraries
     #pragma comment(lib, "ws2_32.lib")
@@ -49,17 +50,6 @@
 
     // types
     typedef int socklen_t;
-
-    // this crap is in winsock.h but not winsock2.h? wtf?
-    struct ip_mreq {
-        struct in_addr  imr_multiaddr;  /* IP multicast address of group */
-        struct in_addr  imr_interface;  /* local IP address of interface */
-    };
-
-    #define IP_MULTICAST_IF     2           /* set/get IP multicast interface   */
-    #define IP_MULTICAST_TTL    3           /* set/get IP multicast timetolive  */
-    #define IP_MULTICAST_LOOP   4           /* set/get IP multicast loopback    */
-    #define IP_ADD_MEMBERSHIP   5           /* add  an IP group membership      */
 #else
     #include <sys/socket.h>
     #include <netinet/in.h>

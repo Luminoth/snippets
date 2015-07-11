@@ -121,9 +121,9 @@ bool PNG::load(const boost::filesystem::path& filename, MemoryAllocator& allocat
 
     allocate(allocator, size());
 
-    png_bytep* row_pointers = (png_bytep*)png_malloc(png_ptr, height() * sizeof(png_bytep));
+    png_bytep* row_pointers = static_cast<png_bytep*>(png_malloc(png_ptr, height() * sizeof(png_bytep)));
     for(size_t i=0; i<height(); ++i) {
-        row_pointers[i] = (png_bytep)png_malloc(png_ptr, width() * Bpp());
+        row_pointers[i] = static_cast<png_bytep>(png_malloc(png_ptr, width() * Bpp()));
     }
 
     png_read_image(png_ptr, row_pointers);
@@ -132,7 +132,7 @@ bool PNG::load(const boost::filesystem::path& filename, MemoryAllocator& allocat
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
 
     for(size_t i=0; i<height(); ++i) {
-        std::memcpy(pixels().get() + (i * pitch()), row_pointers[i], pitch());
+        std::memcpy(pixels() + (i * pitch()), row_pointers[i], pitch());
         png_free(png_ptr, row_pointers[i]);
     }
     png_free(png_ptr, row_pointers);
@@ -169,7 +169,7 @@ bool PNG::save(const boost::filesystem::path& filename) const
 
     png_infop info_ptr = png_create_info_struct(png_ptr);
     if(nullptr == info_ptr) {
-        png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
+        png_destroy_write_struct(&png_ptr, static_cast<png_infopp>(nullptr));
         fclose(fp);
         return false;
     }
@@ -191,7 +191,7 @@ bool PNG::save(const boost::filesystem::path& filename) const
 
     std::unique_ptr<png_bytep[]> row_pointers(new png_bytep[height()]);
     for(size_t i=0; i<height(); ++i) {
-        row_pointers[i] = (png_bytep)(pixels().get() + (i * pitch()));
+        row_pointers[i] = const_cast<png_bytep>(pixels() + (i * pitch()));
     }
     png_write_image(png_ptr, row_pointers.get());
     png_write_end(png_ptr, info_ptr);

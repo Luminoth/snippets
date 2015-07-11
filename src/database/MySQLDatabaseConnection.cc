@@ -1,4 +1,5 @@
 #include "src/pch.h"
+#if 0
 #include <mysql/mysql.h>
 #include "src/core/configuration/DatabaseConfiguration.h"
 #include "MySQLDatabaseConnection.h"
@@ -141,3 +142,4 @@ bool MySQLDatabaseConnection::handle_result(std::pair<int, DatabaseResults>& res
 }
 
 }
+#endif

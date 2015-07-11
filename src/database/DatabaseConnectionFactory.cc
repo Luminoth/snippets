@@ -1,7 +1,8 @@
 #include "src/pch.h"
 #include "src/core/configuration/DatabaseConfiguration.h"
+#include "src/core/database/DatabaseConnection.h"
 #include "DatabaseConnectionFactory.h"
-#include "MySQLDatabaseConnection.h"
+//#include "MySQLDatabaseConnection.h"
 //#include "SQLiteDatabaseConnection.h"
 
 namespace energonsoftware {
@@ -15,9 +16,9 @@ std::shared_ptr<DatabaseConnection> DatabaseConnectionFactory::new_connection(co
     std::string vendor(config.database_vendor());
 
     std::string scratch(boost::algorithm::to_lower_copy(vendor));
-    if(scratch == "mysql") {
+    /*if(scratch == "mysql") {
         return std::shared_ptr<DatabaseConnection>(new MySQLDatabaseConnection(id, config, pool));
-    } /*else if(scratch == "sqlite") {
+    }*/ /*else if(scratch == "sqlite") {
         return new SQLiteDatabaseConnection(id, config, pool);
     }*/
     throw DatabaseError("Vendor not supported: " + vendor);

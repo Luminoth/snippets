@@ -24,7 +24,8 @@ bool Multicaster::enable_broadcast()
 
     struct ip_mreq mreq;
     ZeroMemory(&mreq, sizeof(mreq));
-    mreq.imr_multiaddr.s_addr = inet_addr(_address.c_str());
+
+    inet_pton(AF_INET, _address.c_str(), &(mreq.imr_multiaddr.s_addr));
     mreq.imr_interface.s_addr = htonl(INADDR_ANY);
     if(!_socket->setsockopt(IP_ADD_MEMBERSHIP, reinterpret_cast<const char*>(&mreq), sizeof(mreq), IPPROTO_IP)) {
         LOG_CRITICAL("Could not join the multicast group: " << last_error(Socket::last_socket_error()) << "\n");

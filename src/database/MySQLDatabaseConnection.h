@@ -1,6 +1,7 @@
 #if !defined __MYSQLDATABASECONNECTION_H__
 #define __MYSQLDATABASECONNECTION_H__
 
+#if 0
 #include "src/core/database/DatabaseConnection.h"
 
 typedef struct st_mysql MYSQL;
@@ -42,5 +43,6 @@ private:
 };
 
 }
+#endif
 
 #endif

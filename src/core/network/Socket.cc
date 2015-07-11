@@ -7,6 +7,7 @@
     #include <netdb.h>
 #endif
 
+#include "src/core/text/string_util.h"
 #include "src/core/util/util.h"
 #include "Socket.h"
 
@@ -21,70 +22,42 @@ int Socket::last_socket_error()
 #endif
 }
 
-hostent* Socket::gethostent(int domain, const std::string& host)
+bool Socket::host_to_sockaddr(int domain, int type, const std::string& hostname, const std::string& service_name, sockaddr* saddr)
 {
-#if defined WIN32
-    return gethostbyname(host.c_str());
-#else
-    /*hostent haddr, *result;
-    size_t hblen = 1024;
-    char* hostbuf = malloc(hblen);
-    int res, herr;
-    while((res = gethostbyname2_r(host.c_str(), domain, &haddr, hostbuf, hblen, &result, &herr)) == ERANGE) {
-        hblen <<= 1;
-        hostbuf = realloc(hostbuf, hblen);
-    }
-    free(hostbuf);
-
-    if(0 != res || nullptr == result) {
-        return nullptr;
-    }
-    return result;*/
-return gethostbyname2(host.c_str(), domain);
-#endif
-}
-
-bool Socket::host_to_inaddr(int domain, const std::string& host, void* iaddr, size_t size)
-{
-#if defined WIN32
-    in_addr* saddr = reinterpret_cast<in_addr*>(iaddr);
-    assert(saddr);
-
-    // try IP address
-    saddr->s_addr = inet_addr(host.c_str());
-    if(saddr->s_addr == INADDR_NONE)
-#else
-    // try IP address
-    int rval = inet_pton(domain, host.c_str(), iaddr);
-    if(rval < 0) {
+    if(nullptr == saddr) {
         return false;
-    } else if(!rval)
-#endif
-    {
-        // failed, try hostname
-        hostent* haddr = gethostent(domain, host.c_str());
-        if(!haddr) return false;
-
-        // copy the in_addr
-        std::memcpy(iaddr, haddr->h_addr_list[0], size);
     }
+    std::memset(saddr, 0, sizeof(sockaddr));
+
+    struct addrinfo hints;
+    std::memset(&hints, 0, sizeof(addrinfo));
+    hints.ai_family = domain;
+    hints.ai_socktype = type;
+
+    struct addrinfo* servinfo;
+    int rv = getaddrinfo(hostname.c_str(), service_name.c_str(), &hints, &servinfo);
+    if(0 != rv) {
+        return false;
+    }
+
+    std::memcpy(saddr, servinfo->ai_addr, sizeof(sockaddr));
     return true;
 }
 
 Logger& Socket::logger(Logger::instance("energonsoftware.core.network.Socket"));
 
 Socket::Socket()
-    : _addr(), _host(), _port(0), _sockfd(INVALID_SOCKET), _domain(0)
+    : _addr(), _host(), _port(0), _sockfd(INVALID_SOCKET), _domain(0), _type(0)
 {
 }
 
 Socket::Socket(SOCKET sockfd)
-    : _addr(), _host(), _port(0), _sockfd(sockfd), _domain(0)
+    : _addr(), _host(), _port(0), _sockfd(sockfd), _domain(0), _type(0)
 {
 }
 
 Socket::Socket(const Socket& socket)
-    : _addr(), _host(socket._host), _port(socket._port), _sockfd(socket._sockfd), _domain(socket._domain)
+    : _addr(), _host(socket._host), _port(socket._port), _sockfd(socket._sockfd), _domain(socket._domain), _type(socket._type)
 {
     std::memmove(&_addr, &socket._addr, sizeof(sockaddr_in));
 }
@@ -102,8 +75,9 @@ bool Socket::create(int domain, int type, int protocol)
         close();
     }
     _domain = domain;
+    _type = type;
 
-    _sockfd = ::socket(_domain, type, protocol);
+    _sockfd = ::socket(_domain, _type, protocol);
     return valid();
 }
 
@@ -197,10 +171,8 @@ bool Socket::get_asynchronous()
 bool Socket::set_synchronous()
 {
 #if defined WIN32
-    bool retval = WSAAsyncSelect(_sockfd, nullptr, 0, 0) != SOCKET_ERROR;
     u_long mode = 0x00;
-    retval = (ioctlsocket(_sockfd, FIONBIO, &mode) != SOCKET_ERROR) && retval;
-    return retval;
+    return ioctlsocket(_sockfd, FIONBIO, &mode) != SOCKET_ERROR;
 #else
     int flags = fcntl(_sockfd, F_GETFL, 0);
     return fcntl(_sockfd, F_SETFL, ~O_NONBLOCK & flags) >= 0;
@@ -223,11 +195,6 @@ bool Socket::set_keepalive()
 }
 
 #if defined WIN32
-bool Socket::async_select(HWND hWnd, UINT uMsg, long lEvent)
-{
-    return WSAAsyncSelect(_sockfd, hWnd, uMsg, lEvent) != SOCKET_ERROR;
-}
-
 bool Socket::event_select(WSAEVENT hEventObject, long lNetworkEvents)
 {
     return WSAEventSelect(_sockfd, hEventObject, lNetworkEvents) != SOCKET_ERROR;
@@ -238,6 +205,7 @@ Socket& Socket::operator=(const Socket& rhs)
 {
     _sockfd = rhs.socket();
     _domain = rhs.domain();
+    _type = rhs.type();
     std::memmove(&_addr, &rhs._addr, sizeof(sockaddr_in));
 
     return *this;
@@ -308,12 +276,12 @@ void Socket::create_addr(const std::string& host, unsigned short port) throw(Soc
 
 /* TODO: need an ipv6 version */
 
-    if(!host_to_inaddr(domain(), _host, &_addr.sin_addr, sizeof(_addr.sin_addr))) {
-        throw SocketError("Socket::host_to_inaddr() failed: " + last_error(Socket::last_socket_error()));
+    if(!host_to_sockaddr(domain(), type(), _host, to_string(port), reinterpret_cast<sockaddr*>(&_addr))) {
+        throw SocketError("Socket::host_to_sockaddr() failed: " + last_error(Socket::last_socket_error()));
     }
 
-    _addr.sin_family = domain();
-    _addr.sin_port = htons(_port);
+    /*_addr.sin_family = domain();
+    _addr.sin_port = htons(_port);*/
 }
 
 void ClientSocket::create_client_socket(ClientSocket& socket, int domain, int type, int protocol, const std::string& host, unsigned short port) throw(SocketError)
